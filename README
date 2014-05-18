@@ -64,34 +64,27 @@ pieces: librjj_objgen.a, librjj_objgen_plots.a and librjj_objgen_wcs.a.
 
 Use the included makefile to install the 3 libraries that make up this distribution.
 
-> make
-> make install
+> make all
+> make install [optional command to copy the compiled libaries and header files to another directory --- default position is /usr/local/lib and /usr/local/include]
+> make clean [optional command to remove object files that are no longer required]
 
-The command sudo might be required when using `make install'.
+The command sudo might be required when using `make install' eg. > sudo make install. If installing on a Mac OS X system and something goes wrong, Libtool will sometimes prevent a library from being recompiled. Use the command
 
+> make distclean
 
+to remove *everything*. This should allow you to try again.
 
+You can specify the following environmental flags that will be picked up by the makefile:
+CXX ---- C++ compiler.
+INSTALL_DIR --- Location to copy the compiled libraries.
+INSTALL_INC --- Location to copy the compiled library headers.
+FITS_DIR, FITS_LIB, FITS_INC --- The location of the FITSIO installation and the relative path to the library and include files.
+PGPLOT_DIR --- The location of the PGPLOT installation.
+WCS_DIR, WCS_LIB, WCS_INC --- The location of the WCS installation and the relative path to the library and include files.
 
-// library sans cfitsio code that generates mask .fits files
-c++ -c RJJ_ObjGen_DetectDefn.cpp RJJ_ObjGen_CatPrint.cpp RJJ_ObjGen_PlotGlobal.cpp RJJ_ObjGen_CreateObjs.cpp RJJ_ObjGen_ThreshObjs.cpp RJJ_ObjGen_AddObjs.cpp RJJ_ObjGen_MemManage.cpp RJJ_ObjGen_Dmetric.cpp -I/Users/Jurek83/CatalogCode/latest_prototype/trunk -O2
-Libtool -static -o librjj_objgen.a RJJ_ObjGen_DetectDefn.o RJJ_ObjGen_CatPrint.o RJJ_ObjGen_PlotGlobal.o RJJ_ObjGen_CreateObjs.o RJJ_ObjGen_ThreshObjs.o RJJ_ObjGen_AddObjs.o RJJ_ObjGen_MemManage.o RJJ_ObjGen_Dmetric.o
-
-// library with cfitsio code that generates mask .fits files
-c++ -c RJJ_ObjGen_DetectDefn.cpp RJJ_ObjGen_CatPrint.cpp RJJ_ObjGen_PlotGlobal.cpp RJJ_ObjGen_CreateObjs.cpp RJJ_ObjGen_ThreshObjs.cpp RJJ_ObjGen_AddObjs.cpp RJJ_ObjGen_MemManage.cpp RJJ_ObjGen_MakeMask.cpp RJJ_ObjGen_Dmetric.cpp -I/Users/Jurek83/CatalogCode/latest_prototype/trunk -O2
-Libtool -static -o librjj_objgen.a RJJ_ObjGen_DetectDefn.o RJJ_ObjGen_CatPrint.o RJJ_ObjGen_PlotGlobal.o RJJ_ObjGen_CreateObjs.o RJJ_ObjGen_ThreshObjs.o RJJ_ObjGen_AddObjs.o RJJ_ObjGen_MemManage.o RJJ_ObjGen_MakeMask.o RJJ_ObjGen_Dmetric.o -lcfitsio
-
-// plotting code that relies upon pgplot
-c++ -c RJJ_ObjGen_Plots.cpp -I/Users/Jurek83/CatalogCode/latest_prototype/trunk -I/usr/local/pgplot -L/usr/local/pgplot -O2
-Libtool -static -o librjj_objgen_plots.a RJJ_ObjGen_Plots.o -L/Users/Jurek83/CatalogCode -lrjj_objgen -L/usr/local/pgplot -lcpgplot -lpgplot
-
-// catalogue generation with WCS generated co-ordinates
-c++ -c RJJ_ObjGen_CatPrint_WCS.cpp -I/Users/Jurek83/CatalogCode/latest_prototype/trunk -I/usr/local/include/wcslib-4.18 -O2
-Libtool -static -o librjj_objgen_wcs.a RJJ_ObjGen_CatPrint_WCS.o -L/Users/Jurek83/CatalogCode -lwcs-4.18
-
-
-===============================================================================
+============================================================================================================================================================
 Using the library:
-===============================================================================
+============================================================================================================================================================
 
 This library relies on a C++ object type, called `object_props'. This type of object contains a range of scalar properties 
 and arrays that are used to store postage stamps for the moment-0, RA position-velocity and DEC position-velocity diagrams, 
@@ -125,12 +118,8 @@ CAUTION!!! The size of the two working arrays, which are internally labelled che
 	   keywords SIZE_OBJ_IDS and SIZE_CHECK_OBJ_IDS in the library header. I often use values of 1E5 or 1E6. This value is 
 	   arbitrary though, and merely needs to be sufficienty large at runtime.
 
-
-
 The function prototypes for AddObjsToChunk() and CreateObjects() are shown below. A description of the various parameters 
 follows.
-
-
 
 int AddObjsToChunk(int * flag_vals, object_props ** detections, int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, int data_x_size, int data_y_size, int data_z_size, int * check_obj_ids);
 

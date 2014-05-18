@@ -1,6 +1,8 @@
 #include<iostream>
 #include<RJJ_ObjGen.h>
 
+using namespace std;
+
 void PrintCatalogueHeader(std::fstream& output_file, int cat_mode){
 
   if(cat_mode > 0){
@@ -16,7 +18,9 @@ void PrintCatalogueHeader(std::fstream& output_file, int cat_mode){
 
 }
 
-int CreateCatalogue(std::fstream& output_file, object_props ** detections, int NOobj, int obj_limit, int cat_mode){
+// functions using floats
+
+int CreateCatalogue(std::fstream& output_file, vector<object_props *> & detections, int NOobj, int obj_limit, int cat_mode){
 
   int k,m,obj_batch;
   float progress;
@@ -45,6 +49,125 @@ int CreateCatalogue(std::fstream& output_file, object_props ** detections, int N
     m++;
 
     while(progress <= (((float) (k + 1)) / ((float) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
+
+    //for(k = 0; k < NOobj; k++) 
+  }
+  std::cout << "* done." << std::endl;
+  std::cout << (m - 1) << " objects written to output catalogue." << std::endl;
+
+  return m;
+
+}
+
+long int CreateCatalogue(std::fstream& output_file, vector<object_props *> & detections, long int NOobj, int obj_limit, int cat_mode){
+
+  long int k,m,obj_batch;
+  float progress;
+
+  progress = 0.0;
+  std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
+  m = 1;
+  for(k = 0; k < NOobj; k++){
+      
+    // calculate obj_batch
+    obj_batch = floorf(((double) k / (double) obj_limit));
+    
+    // move on if this object has been re-initialised
+    if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
+      
+      while(progress <= (((double) (k + 1)) / ((double) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
+      continue; 
+      
+    }
+    
+    // calculate properties
+    detections[obj_batch][(k - (obj_batch * obj_limit))].CalcProps();
+    
+    // write object properties to output file/terminal
+    detections[obj_batch][(k - (obj_batch * obj_limit))].ShowAll_file(m,output_file,cat_mode);
+    m++;
+
+    while(progress <= (((double) (k + 1)) / ((double) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
+
+    //for(k = 0; k < NOobj; k++) 
+  }
+  std::cout << "* done." << std::endl;
+  std::cout << (m - 1) << " objects written to output catalogue." << std::endl;
+
+  return m;
+
+}
+
+// functions using doubles
+
+int CreateCatalogue(std::fstream& output_file, vector<object_props_dbl *> & detections, int NOobj, int obj_limit, int cat_mode){
+
+  int k,m,obj_batch;
+  float progress;
+
+  progress = 0.0;
+  std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
+  m = 1;
+  for(k = 0; k < NOobj; k++){
+      
+    // calculate obj_batch
+    obj_batch = floorf(((float) k / (float) obj_limit));
+    
+    // move on if this object has been re-initialised
+    if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
+      
+      while(progress <= (((float) (k + 1)) / ((float) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
+      continue; 
+      
+    }
+    
+    // calculate properties
+    detections[obj_batch][(k - (obj_batch * obj_limit))].CalcProps();
+    
+    // write object properties to output file/terminal
+    detections[obj_batch][(k - (obj_batch * obj_limit))].ShowAll_file(m,output_file,cat_mode);
+    m++;
+
+    while(progress <= (((float) (k + 1)) / ((float) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
+
+    //for(k = 0; k < NOobj; k++) 
+  }
+  std::cout << "* done." << std::endl;
+  std::cout << (m - 1) << " objects written to output catalogue." << std::endl;
+
+  return m;
+
+}
+
+long int CreateCatalogue(std::fstream& output_file, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, int cat_mode){
+
+  long int k,m,obj_batch;
+  float progress;
+
+  progress = 0.0;
+  std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
+  m = 1;
+  for(k = 0; k < NOobj; k++){
+      
+    // calculate obj_batch
+    obj_batch = floorf(((double) k / (double) obj_limit));
+    
+    // move on if this object has been re-initialised
+    if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
+      
+      while(progress <= (((double) (k + 1)) / ((double) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
+      continue; 
+      
+    }
+    
+    // calculate properties
+    detections[obj_batch][(k - (obj_batch * obj_limit))].CalcProps();
+    
+    // write object properties to output file/terminal
+    detections[obj_batch][(k - (obj_batch * obj_limit))].ShowAll_file(m,output_file,cat_mode);
+    m++;
+
+    while(progress <= (((double) (k + 1)) / ((double) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 
     //for(k = 0; k < NOobj; k++) 
   }
