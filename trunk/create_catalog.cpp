@@ -8,6 +8,7 @@
 #include<ctype.h>
 #include<RJJ_ObjGen.h>
 #include<RJJ_ObjGen_Plots.h>
+#include<vector>
 extern "C" {
 
 #include<fitsio.h>
@@ -18,7 +19,7 @@ extern "C" {
 using namespace std;
 
 // compile line
-// c++ /Users/Jurek83/CatalogCode/Prototype_Catalog_v7.cpp -o /Users/Jurek83/CatalogCode/Prototype_Catalog_v7 -O2 -lcfitsio -I/usr/local/pgplot -L/usr/local/pgplot -lcpgplot -lpgplot -I/Users/Jurek83/CatalogCode -L/Users/Jurek83/CatalogCode -lrjj_objgen -lrjj_objgen_plots 
+// c++ /Users/Jurek83/CatalogCode/latest_prototype/trunk/create_catalog.cpp -o /Users/Jurek83/CatalogCode/latest_prototype/trunk/create_catalog -O2 -lcfitsio -I/usr/local/pgplot -L/usr/local/pgplot -lcpgplot -lpgplot -I/Users/Jurek83/CatalogCode/latest_prototype/trunk -L/Users/Jurek83/CatalogCode/latest_prototype/trunk -lrjj_objgen -lrjj_objgen_plots 
 
 int main(int argc, char* argv[]){
 
@@ -50,8 +51,9 @@ int main(int argc, char* argv[]){
   int plot_mode;
 
   // variables used for cataloguing
-  object_props ** detections;
-  int * obj_ids, * check_obj_ids, obj_limit = 1000, obj_batch_limit = 10000, obj_batch;
+  vector<object_props *> detections;
+  vector<int> obj_ids, check_obj_ids;
+  int obj_limit = 1000, obj_batch_limit = 10000, obj_batch;
   int NO_check_obj_ids, NO_obj_ids, cat_mode;
   fstream outputfile;
   
@@ -83,7 +85,7 @@ int main(int argc, char* argv[]){
   if((argc == 2) && (output_code != "-h")){ cout << "WARNING: Incorrect arguments! Exiting.\nEnter Prototype_Catalog_v6 -h on the command line to see the command line input.\n"; return 1; }
 
   // create initial arrays used for cataloguing and object construction
-  InitObjGen(detections,NOobj,obj_limit,obj_batch_limit,obj_ids,NO_obj_ids,check_obj_ids,data_metric,xyz_order);
+  InitObjGen(detections,NOobj,obj_limit,obj_ids,check_obj_ids,data_metric,xyz_order);
 
   dummy2.str("");
   dummy2.clear();
@@ -597,7 +599,7 @@ int main(int argc, char* argv[]){
 
       // call function to create objects out of array of flagged voxels, and generate sparse representation of objects
       cout << "Creating objects using array of flag_vals and noise+source datacube . . . " << endl;
-      NOobj = CreateObjects(data_vals,flag_vals,(fits_read_finish[0] - fits_read_start[0] + 1),(fits_read_finish[1] - fits_read_start[1] + 1),(fits_read_finish[2] - fits_read_start[2] + 1),chunk_x_start,chunk_y_start,chunk_z_start,merge_x,merge_y,merge_z,min_x_size,min_y_size,min_z_size,min_v_size,intens_thresh_min,intens_thresh_max,flag_val_em,NOobj,detections,obj_ids,NO_obj_ids,check_obj_ids,NO_check_obj_ids,obj_limit,obj_batch_limit,NOx,NOy,NOf,ss_mode,data_metric,xyz_order);
+      NOobj = CreateObjects(data_vals,flag_vals,(fits_read_finish[0] - fits_read_start[0] + 1),(fits_read_finish[1] - fits_read_start[1] + 1),(fits_read_finish[2] - fits_read_start[2] + 1),chunk_x_start,chunk_y_start,chunk_z_start,merge_x,merge_y,merge_z,min_x_size,min_y_size,min_z_size,min_v_size,intens_thresh_min,intens_thresh_max,flag_val_em,NOobj,detections,obj_ids,check_obj_ids,obj_limit,NOx,NOy,NOf,ss_mode,data_metric,xyz_order);
  
       // count the number of objects remaining and display
       k = 0;
@@ -674,12 +676,12 @@ int main(int argc, char* argv[]){
   }
 
   // create plots if at least 1 object has been written to file
-  CreateObjPlots(m,plot_mode,output_code,xyz_order,NOx,NOy,NOf,detections,NOobj,obj_limit,obj_batch_limit,ctype3,crpix3,crval3,cdelt3,restfreq);
+  CreateObjPlots(m,plot_mode,output_code,xyz_order,NOx,NOy,NOf,detections,NOobj,obj_limit,ctype3,crpix3,crval3,cdelt3,restfreq);
     
   // free up memory
   delete [] data_vals;
   delete [] flag_vals;
-  FreeObjGen(detections,NOobj,obj_batch_limit,obj_ids,check_obj_ids,data_metric,xyz_order);
+  FreeObjGen(detections,data_metric,xyz_order);
 
 }
 
