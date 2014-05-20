@@ -76,7 +76,7 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props *
   // search through objects and construct moment 0 map
   for(k = 0; k < NOobj; k++){
     
-    obj_batch = floorf((double) k / (double) obj_limit);
+    obj_batch = (long int) floor((double) k / (double) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
@@ -179,7 +179,7 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props *> 
   // search through objects and construct moment 0 map
   for(k = 0; k < NOobj; k++){
     
-    obj_batch = floorf((double) k / (double) obj_limit);
+    obj_batch = (long int) floor((double) k / (double) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
@@ -282,7 +282,7 @@ float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props *>
   // search through objects and construct moment 0 map
   for(k = 0; k < NOobj; k++){
     
-    obj_batch = floorf((double) k / (double) obj_limit);
+    obj_batch = (long int) floor((double) k / (double) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
@@ -422,7 +422,7 @@ int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int siz
   // if it is, add entry to boundary list
 
   // 0. calculate obj_batch value
-  obj_batch = floorf((double) obj / (double) obj_limit);
+  obj_batch = (long int) floor((double) obj / (double) obj_limit);
     
   // 1. identify left edge of source
   for(j = 0; j < size_y; j++){
@@ -689,7 +689,7 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
   // if it is, add entry to boundary list
 
   // 0. calculate obj_batch value
-  obj_batch = floorf((double) obj / (double) obj_limit);
+  obj_batch = (long int) floor((double) obj / (double) obj_limit);
     
   // 1. identify left edge of source
   for(k = 0; k < size_z; k++){
@@ -1024,7 +1024,7 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
   // if it is, add entry to boundary list
   
   // 0. calculate obj_batch value
-  obj_batch = floorf((double) obj / (double) obj_limit);
+  obj_batch = (long int) floor((double) obj / (double) obj_limit);
   
   // 1. identify left edge of source
   for(k = 0; k < size_z; k++){
@@ -1256,7 +1256,7 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props_d
   // search through objects and construct moment 0 map
   for(k = 0; k < NOobj; k++){
     
-    obj_batch = floorf((double) k / (double) obj_limit);
+    obj_batch = (long int) floor((double) k / (double) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
@@ -1359,7 +1359,7 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props_dbl
   // search through objects and construct moment 0 map
   for(k = 0; k < NOobj; k++){
     
-    obj_batch = floorf((double) k / (double) obj_limit);
+    obj_batch = (long int) floor((double) k / (double) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
@@ -1462,7 +1462,7 @@ float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props_db
   // search through objects and construct moment 0 map
   for(k = 0; k < NOobj; k++){
     
-    obj_batch = floorf((double) k / (double) obj_limit);
+    obj_batch = (long int) floor((double) k / (double) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
@@ -1602,7 +1602,7 @@ int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int
   // if it is, add entry to boundary list
 
   // 0. calculate obj_batch value
-  obj_batch = floorf((double) obj / (double) obj_limit);
+  obj_batch = (long int) floor((double) obj / (double) obj_limit);
     
   // 1. identify left edge of source
   for(j = 0; j < size_y; j++){
@@ -1869,7 +1869,7 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
   // if it is, add entry to boundary list
 
   // 0. calculate obj_batch value
-  obj_batch = floorf((double) obj / (double) obj_limit);
+  obj_batch = (long int) floor((double) obj / (double) obj_limit);
     
   // 1. identify left edge of source
   for(k = 0; k < size_z; k++){
@@ -2204,7 +2204,7 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
   // if it is, add entry to boundary list
   
   // 0. calculate obj_batch value
-  obj_batch = floorf((double) obj / (double) obj_limit);
+  obj_batch = (long int) floor((double) obj / (double) obj_limit);
   
   // 1. identify left edge of source
   for(k = 0; k < size_z; k++){

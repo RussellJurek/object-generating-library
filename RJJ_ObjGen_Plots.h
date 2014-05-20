@@ -25,10 +25,12 @@ extern void HeapSort(int n, float ra[]);
 // functions using floats
 
 extern void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_order, int NOx, int NOy, int NOf, vector<object_props *> & detections, int NOobj, int obj_limit, int ctype3, float crpix3, float crval3, float cdelt3, float restfreq);
+extern void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_order, int NOx, int NOy, int NOf, vector<object_props *> & detections, long int NOobj, int obj_limit, int ctype3, float crpix3, float crval3, float cdelt3, float restfreq);
 
 // functions using doubles
 
 extern void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_order, int NOx, int NOy, int NOf, vector<object_props_dbl *> & detections, int NOobj, int obj_limit, int ctype3, float crpix3, float crval3, float cdelt3, float restfreq);
+extern void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_order, int NOx, int NOy, int NOf, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, int ctype3, float crpix3, float crval3, float cdelt3, float restfreq);
 
 #endif
 
