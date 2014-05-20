@@ -407,62 +407,82 @@ extern void CreateMetric(int * data_metric, int * xyz_order, int NOx, int NOy, i
 // functions using floats
 
 extern int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intens_thresh_min, float intens_thresh_max, int flag_value, int start_obj, vector<object_props *> & detections, vector<int> & obj_ids, vector<int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, int * data_metric, int * xyz_order);
-
-extern int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intens_thresh_min, float intens_thresh_max, int flag_value, int start_obj, vector<object_props *> & detections, vector<int> & obj_ids, vector<int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, int * data_metric, int * xyz_order);
+extern long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intens_thresh_min, float intens_thresh_max, long int flag_value, long int start_obj, vector<object_props *> & detections, vector<long int> & obj_ids, vector<long int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, int * data_metric, int * xyz_order);
 
 extern int AddObjsToChunk(int * flag_vals, vector<object_props *> & detections, int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, vector<int> & check_obj_ids, int * data_metric, int * xyz_order);
+extern long int AddObjsToChunk(long int * flag_vals, vector<object_props *> & detections, long int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, vector<long int> & check_obj_ids, int * data_metric, int * xyz_order);
 
 extern void ThresholdObjs(vector<object_props *> & detections, int NOobj, int obj_limit, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intens_thresh_min, float intens_thresh_max, int min_LoS_count);
+extern void ThresholdObjs(vector<object_props *> & detections, long int NOobj, int obj_limit, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intens_thresh_min, float intens_thresh_max, int min_LoS_count);
 
 extern float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props *> & detections, int NOx, int NOy, int obj_limit);
+extern float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props *> & detections, int NOx, int NOy, int obj_limit);
 
 extern float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props *> & detections, int NOx, int NOz, int obj_limit);
+extern float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props *> & detections, int NOx, int NOz, int obj_limit);
 
 extern float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props *> & detections, int NOy, int NOz, int obj_limit);
+extern float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props *> & detections, int NOy, int NOz, int obj_limit);
 
 extern int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int size_y, int min_x, int min_y, float * plot_x, float * plot_y, int obj, int obj_limit);
+extern int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int size_y, int min_x, int min_y, float * plot_x, float * plot_y, long int obj, int obj_limit);
 
 extern int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y, int size_z, int min_x, int min_z, float * plot_x, float * plot_y, int obj, int obj_limit);
+extern int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y, int size_z, int min_x, int min_z, float * plot_x, float * plot_y, long int obj, int obj_limit);
 
 extern int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_y, int size_z, int min_y, int min_z, float * plot_x, float * plot_y, int obj, int obj_limit);
+extern int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_y, int size_z, int min_y, int min_z, float * plot_x, float * plot_y, long int obj, int obj_limit);
 
 extern int CreateCatalogue(std::fstream& output_file, vector<object_props *> & detections, int NOobj, int obj_limit, int cat_mode);
+extern long int CreateCatalogue(std::fstream& output_file, vector<object_props *> & detections, long int NOobj, int obj_limit, int cat_mode);
 
 extern void InitObjGen(vector<object_props *> & detections, int & NOobj, int obj_limit, vector<int> & obj_ids, vector<int> & check_obj_ids, int *& data_metric, int *& xyz_order);
+extern void InitObjGen(vector<object_props *> & detections, long int & NOobj, int obj_limit, vector<long int> & obj_ids, vector<long int> & check_obj_ids, int *& data_metric, int *& xyz_order);
 
 extern void FreeObjGen(vector<object_props *> & detections, int * & data_metric, int * & xyz_order);
 
 extern void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props *> & detections, int NOobj, int obj_limit, int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, int * data_metric, int * xyz_order);
+extern void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props *> & detections, long int NOobj, int obj_limit, long int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, int * data_metric, int * xyz_order);
 
 // functions using doubles
 
 extern int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, double intens_thresh_min, double intens_thresh_max, int flag_value, int start_obj, vector<object_props_dbl *> & detections, vector<int> & obj_ids, vector<int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, int * data_metric, int * xyz_order);
-
-extern int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, double intens_thresh_min, double intens_thresh_max, int flag_value, int start_obj, vector<object_props_dbl *> & detections, vector<int> & obj_ids, vector<int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, int * data_metric, int * xyz_order);
+extern long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, double intens_thresh_min, double intens_thresh_max, long int flag_value, long int start_obj, vector<object_props_dbl *> & detections, vector<long int> & obj_ids, vector<long int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, int * data_metric, int * xyz_order);
 
 extern int AddObjsToChunk(int * flag_vals, vector<object_props_dbl *> & detections, int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, vector<int> & check_obj_ids, int * data_metric, int * xyz_order);
+extern long int AddObjsToChunk(long int * flag_vals, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, vector<long int> & check_obj_ids, int * data_metric, int * xyz_order);
 
 extern void ThresholdObjs(vector<object_props_dbl *> & detections, int NOobj, int obj_limit, int min_x_size, int min_y_size, int min_z_size, int min_v_size, double intens_thresh_min, double intens_thresh_max, int min_LoS_count);
+extern void ThresholdObjs(vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, int min_x_size, int min_y_size, int min_z_size, int min_v_size, double intens_thresh_min, double intens_thresh_max, int min_LoS_count);
 
 extern float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props_dbl *> & detections, int NOx, int NOy, int obj_limit);
+extern float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props_dbl *> & detections, int NOx, int NOy, int obj_limit);
 
 extern float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> & detections, int NOx, int NOz, int obj_limit);
+extern float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props_dbl *> & detections, int NOx, int NOz, int obj_limit);
 
 extern float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> & detections, int NOy, int NOz, int obj_limit);
+extern float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props_dbl *> & detections, int NOy, int NOz, int obj_limit);
 
 extern int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int size_y, int min_x, int min_y, float * plot_x, float * plot_y, int obj, int obj_limit);
+extern int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int size_y, int min_x, int min_y, float * plot_x, float * plot_y, long int obj, int obj_limit);
 
 extern int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int size_y, int size_z, int min_x, int min_z, float * plot_x, float * plot_y, int obj, int obj_limit);
+extern int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int size_y, int size_z, int min_x, int min_z, float * plot_x, float * plot_y, long int obj, int obj_limit);
 
 extern int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int size_y, int size_z, int min_y, int min_z, float * plot_x, float * plot_y, int obj, int obj_limit);
+extern int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int size_y, int size_z, int min_y, int min_z, float * plot_x, float * plot_y, long int obj, int obj_limit);
 
 extern int CreateCatalogue(std::fstream& output_file, vector<object_props_dbl *> & detections, int NOobj, int obj_limit, int cat_mode);
+extern long int CreateCatalogue(std::fstream& output_file, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, int cat_mode);
 
 extern void InitObjGen(vector<object_props_dbl *> & detections, int & NOobj, int obj_limit, vector<int> & obj_ids, vector<int> & check_obj_ids, int *& data_metric, int *& xyz_order);
+extern void InitObjGen(vector<object_props_dbl *> & detections, long int & NOobj, int obj_limit, vector<long int> & obj_ids, vector<long int> & check_obj_ids, int *& data_metric, int *& xyz_order);
 
 extern void FreeObjGen(vector<object_props_dbl *> & detections, int * & data_metric, int * & xyz_order);
 
 extern void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props_dbl *> & detections, int NOobj, int obj_limit, int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, int * data_metric, int * xyz_order);
+extern void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, long int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, int * data_metric, int * xyz_order);
 
 #endif
 

@@ -1500,7 +1500,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       for(i = 0; i < NO_check_obj_ids; i++){
 	
 	// calculate the obj_batch value for the existing object
-	obj_batch = (long int) floorf(((double) check_obj_ids[i] / (double) obj_limit));
+	obj_batch = (long int) floor(((double) check_obj_ids[i] / (double) obj_limit));
 	
 	// move to the next object if this one has been re-initialised
 	if(detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
@@ -1859,7 +1859,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (x*data_metric[0]))] = obj_ids[0]; 
 	    
 	    // calculate the obj_batch value for this obj_id
-	    obj_batch = (long int) floorf(((double) obj_ids[0] / (double) obj_limit));
+	    obj_batch = (long int) floor(((double) obj_ids[0] / (double) obj_limit));
 	    
 	    // add this initial point to the object
 	    detections[obj_batch][(obj_ids[0] - (obj_batch * obj_limit))].AddPoint(((float) (chunk_x_start + x)),((float) (chunk_y_start + y)),((float) (chunk_z_start + z)),data_vals[((z*data_metric[2]) + (y*data_metric[1]) + (x*data_metric[0]))]);
@@ -1919,7 +1919,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (x*data_metric[0]))] = existing;
 	    
 	    // calculate the obj_batch value for the existing object
-	    obj_batch = (int) floorf(((float) existing / (float) obj_limit));
+	    obj_batch = (long int) floor(((double) existing / (double) obj_limit));
 	    
 	    // add this point to the existing object
 	    detections[obj_batch][(existing - (obj_batch * obj_limit))].AddPoint((chunk_x_start + x),(chunk_y_start + y),(chunk_z_start + z),data_vals[((z*data_metric[2]) + (y*data_metric[1]) + (x*data_metric[0]))]);
@@ -1938,7 +1938,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		}
 		
 		// calculate a temporary obj_batch value
-		obj_batch_2 = (long int) floorf(((double) match_init[i] / (double) obj_limit));		
+		obj_batch_2 = (long int) floor(((double) match_init[i] / (double) obj_limit));		
 		
 		// add this object to an existing object
 		//detections[obj_batch][(existing - (obj_batch * obj_limit))].AddObject(detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))]);
@@ -2022,7 +2022,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
   for(o = 0; o < obj; o++){
     
     // calculate the obj_batch value for this object
-    obj_batch = (long int) floorf(((double) o / (double) obj_limit));
+    obj_batch = (long int) floor(((double) o / (double) obj_limit));
     
     // move on if this object has been re-initialised
     if(detections[obj_batch][(o - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -2038,7 +2038,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
     if((detections[obj_batch][(o - (obj_batch * obj_limit))].GetRAmax() < chunk_x_start) || (detections[obj_batch][(o - (obj_batch * obj_limit))].GetDECmax() < chunk_y_start) || (detections[obj_batch][(o - (obj_batch * obj_limit))].GetFREQmax() < chunk_z_start) || (detections[obj_batch][(o - (obj_batch * obj_limit))].GetRAmin() >= (chunk_x_start + size_x)) || (detections[obj_batch][(o - (obj_batch * obj_limit))].GetDECmin() >= (chunk_y_start + size_y)) || (detections[obj_batch][(o - (obj_batch * obj_limit))].GetFREQmin() >= (chunk_z_start + size_z))){ 
 
       // update progress on display
-      while(progress <= (((double) (i + 1) / ((double) obj)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }  
+      while(progress <= (((double) (o + 1) / ((double) obj)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }  
       continue; 
       
     }
@@ -2088,7 +2088,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	  for(sz = sz_start; (sz <= sz_finish) && (sz < size_z); sz++){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
-	    if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
+	    if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
 	      
 	      // if previously this was not part of an object string, j == -1, then increment the number of object strings and
 	      // adjust the value of j
@@ -2194,7 +2194,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	  for(sz = 0; sz < sz_finish; sz++){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
-	    if(flag_vals[(((sz + sz_start) * data_metric[2]) + ((sy + sy_start) * data_metric[1]) + ((sx + sx_start) * data_metric[0]))] == i){ 
+	    if(flag_vals[(((sz + sz_start) * data_metric[2]) + ((sy + sy_start) * data_metric[1]) + ((sx + sx_start) * data_metric[0]))] == o){ 
 	      
 	      // update mini_mom0
 	      detections[obj_batch][(o - (obj_batch * obj_limit))].Add_mom0(((sy * sx_finish) + sx),data_vals[(((sz + sz_start) * data_metric[2]) + ((sy + sy_start) * data_metric[1]) + ((sx + sx_start) * data_metric[0]))]);
@@ -2336,7 +2336,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    for(sz = sz_start; sz <= sz_finish; sz++){
 	      
 	      // change i to reflect if this voxel in the flag_vals array belongs to the source
-	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
+	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
 		
 		// if previously this was not part of an object string, i == -1, then increment the number of object strings and
 		// write the position to the sparse_reps array
@@ -2514,7 +2514,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    for(sz = sz_start; sz <= sz_finish; sz++){
 	      
 	      // change j to reflect if this voxel in the flag_vals array belongs to the source
-	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
+	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
 		
 		// update mini_mom0
 		temp_mom0[(((sy - sy_start) * (sx_finish - sx_start + 1)) + sx - sx_start)]+=data_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))];
@@ -4198,7 +4198,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       for(i = 0; i < NO_check_obj_ids; i++){
 	
 	// calculate the obj_batch value for the existing object
-	obj_batch = (long int) floorf(((double) check_obj_ids[i] / (double) obj_limit));
+	obj_batch = (long int) floor(((double) check_obj_ids[i] / (double) obj_limit));
 	
 	// move to the next object if this one has been re-initialised
 	if(detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
@@ -4557,7 +4557,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (x*data_metric[0]))] = obj_ids[0]; 
 	    
 	    // calculate the obj_batch value for this obj_id
-	    obj_batch = (int) floorf(((float) obj_ids[0] / (float) obj_limit));
+	    obj_batch = (long int) floor(((double) obj_ids[0] / (double) obj_limit));
 	    
 	    // add this initial point to the object
 	    detections[obj_batch][(obj_ids[0] - (obj_batch * obj_limit))].AddPoint(((double) (chunk_x_start + x)),((double) (chunk_y_start + y)),((double) (chunk_z_start + z)),data_vals[((z*data_metric[2]) + (y*data_metric[1]) + (x*data_metric[0]))]);
@@ -4617,7 +4617,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (x*data_metric[0]))] = existing;
 	    
 	    // calculate the obj_batch value for the existing object
-	    obj_batch = (long int) floorf(((double) existing / (double) obj_limit));
+	    obj_batch = (long int) floor(((double) existing / (double) obj_limit));
 	    
 	    // add this point to the existing object
 	    detections[obj_batch][(existing - (obj_batch * obj_limit))].AddPoint((chunk_x_start + x),(chunk_y_start + y),(chunk_z_start + z),data_vals[((z*data_metric[2]) + (y*data_metric[1]) + (x*data_metric[0]))]);
@@ -4636,7 +4636,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		}
 		
 		// calculate a temporary obj_batch value
-		obj_batch_2 = (long int) floorf(((double) match_init[i] / (double) obj_limit));		
+		obj_batch_2 = (long int) floor(((double) match_init[i] / (double) obj_limit));		
 		
 		// add this object to an existing object
 		//detections[obj_batch][(existing - (obj_batch * obj_limit))].AddObject(detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))]);
@@ -4720,7 +4720,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
   for(o = 0; o < obj; o++){
     
     // calculate the obj_batch value for this object
-    obj_batch = (long int) floorf(((double) o / (double) obj_limit));
+    obj_batch = (long int) floor(((double) o / (double) obj_limit));
     
     // move on if this object has been re-initialised
     if(detections[obj_batch][(o - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -4786,7 +4786,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	  for(sz = sz_start; (sz <= sz_finish) && (sz < size_z); sz++){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
-	    if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
+	    if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
 	      
 	      // if previously this was not part of an object string, j == -1, then increment the number of object strings and
 	      // adjust the value of j
@@ -4892,7 +4892,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	  for(sz = 0; sz < sz_finish; sz++){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
-	    if(flag_vals[(((sz + sz_start) * data_metric[2]) + ((sy + sy_start) * data_metric[1]) + ((sx + sx_start) * data_metric[0]))] == i){ 
+	    if(flag_vals[(((sz + sz_start) * data_metric[2]) + ((sy + sy_start) * data_metric[1]) + ((sx + sx_start) * data_metric[0]))] == o){ 
 	      
 	      // update mini_mom0
 	      detections[obj_batch][(o - (obj_batch * obj_limit))].Add_mom0(((sy * sx_finish) + sx),data_vals[(((sz + sz_start) * data_metric[2]) + ((sy + sy_start) * data_metric[1]) + ((sx + sx_start) * data_metric[0]))]);
@@ -5034,7 +5034,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    for(sz = sz_start; sz <= sz_finish; sz++){
 	      
 	      // change i to reflect if this voxel in the flag_vals array belongs to the source
-	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
+	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
 		
 		// if previously this was not part of an object string, i == -1, then increment the number of object strings and
 		// write the position to the sparse_reps array
@@ -5212,7 +5212,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    for(sz = sz_start; sz <= sz_finish; sz++){
 	      
 	      // change j to reflect if this voxel in the flag_vals array belongs to the source
-	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
+	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
 		
 		// update mini_mom0
 		temp_mom0[(((sy - sy_start) * (sx_finish - sx_start + 1)) + sx - sx_start)]+=data_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))];

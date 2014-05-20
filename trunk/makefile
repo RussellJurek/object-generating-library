@@ -157,13 +157,14 @@ else
 endif
 
 # define rules used to create BusyFunction library and test programs
-all: ./librjj_objgen.a ./librjj_objgen_plots.a ./librjj_objgen_wcs.a ./create_catalog_NP ./create_catalog ./ProcessSourceOnlyCube
+all: ./librjj_objgen.a ./librjj_objgen_plots.a ./librjj_objgen_wcs.a ./create_catalog_NP ./create_catalog ./create_HUGE_catalog ./ProcessSourceOnlyCube ./Process_HUGE_SourceOnlyCube
 
 ifneq ($(THIS_FITS_DIR), )
 
+INCLUDES = RJJ_ObjGen.h RJJ_ObjGen_Plots.h RJJ_ObjGen_WCS.h
 SOURCES = RJJ_ObjGen_DetectDefn.cpp RJJ_ObjGen_CatPrint.cpp RJJ_ObjGen_PlotGlobal.cpp RJJ_ObjGen_CreateObjs.cpp RJJ_ObjGen_ThreshObjs.cpp RJJ_ObjGen_AddObjs.cpp RJJ_ObjGen_MemManage.cpp RJJ_ObjGen_MakeMask.cpp RJJ_ObjGen_Dmetric.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
-./librjj_objgen.a: $(SOURCES)
+./librjj_objgen.a: $(INCLUDES) $(SOURCES)
 	@echo Creating C++ library --- INCLUDING cfitsio extensions . . . 
 	$(CXX) $(CFLAGS) -c $(SOURCES) -I. -I/$(THIS_FITS_DIR)/$(THIS_FITS_INC)/ -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/
 	$(LIB_METHOD) $@ $(OBJECTS) -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/ -lcfitsio
@@ -199,8 +200,16 @@ ifneq ($(THIS_FITS_DIR), )
 	@echo Creating terminal application create_catalog . . . 
 	$(CXX) $< -o $@ $(CFLAGS) -I. -I/$(THIS_FITS_DIR)/$(THIS_FITS_INC)/ -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/ -I/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_INC)/ -L/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_LIB)/ -lcpgplot -lpgplot -L. -lrjj_objgen -lrjj_objgen_plots -lcfitsio 
 
+./create_HUGE_catalog: ./create_HUGE_catalog.cpp ./librjj_objgen.a ./librjj_objgen_plots.a
+	@echo Creating terminal application create_HUGE_catalog . . . 
+	$(CXX) $< -o $@ $(CFLAGS) -I. -I/$(THIS_FITS_DIR)/$(THIS_FITS_INC)/ -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/ -I/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_INC)/ -L/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_LIB)/ -lcpgplot -lpgplot -L. -lrjj_objgen -lrjj_objgen_plots -lcfitsio 
+
 ./ProcessSourceOnlyCube: ./ProcessSourceOnlyCube.cpp ./librjj_objgen.a ./librjj_objgen_plots.a
 	@echo Creating terminal application ProcessSourceOnlyCube . . . 
+	$(CXX) $< -o $@ $(CFLAGS) -I. -I/$(THIS_FITS_DIR)/$(THIS_FITS_INC)/ -I/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_INC)/ -L/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_LIB)/ -lcpgplot -lpgplot -L. -lrjj_objgen -lrjj_objgen_plots -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/ -lcfitsio 
+
+./Process_HUGE_SourceOnlyCube: ./Process_HUGE_SourceOnlyCube.cpp ./librjj_objgen.a ./librjj_objgen_plots.a
+	@echo Creating terminal application Process_HUGE_SourceOnlyCube . . . 
 	$(CXX) $< -o $@ $(CFLAGS) -I. -I/$(THIS_FITS_DIR)/$(THIS_FITS_INC)/ -I/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_INC)/ -L/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_LIB)/ -lcpgplot -lpgplot -L. -lrjj_objgen -lrjj_objgen_plots -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/ -lcfitsio 
 
 else
@@ -208,8 +217,14 @@ else
 ./create_catalog: ./create_catalog.cpp ./librjj_objen.a
 	@echo NOT creating terminal application create_catalog . . . Couldn\'t find cfitsio and pgplot installation.
 
+./create_catalog: ./create_HUGE_catalog.cpp ./librjj_objen.a
+	@echo NOT creating terminal application create_HUGE_catalog . . . Couldn\'t find cfitsio and pgplot installation.
+
 ./ProcessSourceOnlyCube: ./ProcessSourceOnlyCube.cpp ./librjj_objgen.a ./librjj_objgen_plots.a
 	@echo NOT creating terminal application ProcessSourceOnlyCube . . . Couldn\'t find cfitsio and pgplot installation.
+
+./Process_HUGE_SourceOnlyCube: ./Process_HUGE_SourceOnlyCube.cpp ./librjj_objgen.a ./librjj_objgen_plots.a
+	@echo NOT creating terminal application ProcessSource_HUGE_OnlyCube . . . Couldn\'t find cfitsio and pgplot installation.
 
 endif
 
@@ -245,8 +260,10 @@ distclean:
 	@rm -vf librjj_objgen_plots.a
 	@rm -vf librjj_objgen_wcs.a
 	@rm -vf create_catalog
+	@rm -vf create_HUGE_catalog
 	@rm -vf create_catalog_NP
 	@rm -vf ProcessSourceOnly
+	@rm -vf Process_HUGE_SourceOnly
 
 install:
 	@echo Copying libraries and include files to $(INSTALL_DIR) and $(INSTALL_INC) . . .

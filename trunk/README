@@ -1,6 +1,9 @@
 Programmer: Dr. Russell J. Jurek
-Current version: 1.0
-Version date: 1st April 2014
+Current version: 1.1
+Version date: 19th May 2014
+
+Previous versions:
+1.0 1st April 2014
 
 ===============================================================================================================================================================
 The current version of my C++ object generating library consists of the following files:
@@ -41,13 +44,24 @@ RJJ_ObjGen_CatPrint_WCS.cpp --> The functions that print a header and the detect
 Ancillary files included with the current version.
 ==============================================================================================================================================================
 
-create_catalogue.cpp --> A command line program that generates a catalogue from two .fits files. One of these files is the data file, and the other is the
+create_catalog.cpp --> A command line program that generates a catalogue from two .fits files. One of these files is the data file, and the other is the
 		     	 corresponding mask file. This mask file should consist of 0's for non-object pixels/voxels and negative values otherwise.
 
-create_catalogue_NP.cpp --> This is a variant of create_catalogue.cpp with all usage of the PGPLOT-based plotting removed.
+create_HUGE_catalog.cpp --> This is a variant of create_catalog.cpp that uses `long int' functions and double precision objects, obj_props_dbl.
 
-ProcessSourceOnlyCube.cpp --> This is a variant of create_catalogue.cpp that retains the PGPLOT-based plotting, but only requires a single .fits file. Instead 
-			      of obtaining a mask from a .fits file, it generates one from the data .fits file using an intensity threshold.  
+create_catalog_NP.cpp --> This is a variant of create_catalog.cpp with all usage of the PGPLOT-based plotting removed.
+
+ProcessSourceOnlyCube.cpp --> This is a variant of create_catalog.cpp that retains the PGPLOT-based plotting, but only requires a single .fits file. Instead 
+			      of obtaining a mask from a .fits file, it generates one from the data .fits file using an intensity threshold. 
+
+Process_HUGE_SourceOnlyCube.cpp --> This is a variant of ProcessSourceOnlyCube.cpp that uses `long int' functions and double precision objects, obj_props_dbl.
+
+You can view instructions for using these ancillary files/programs by calling them at the terminal with the flag, -h. For example,
+
+> ./create_catalog -h
+ 
+Note that you will have to specify the current directory if you don't have `.', which is the Unix/Mac OSX symbol for the current directory, included in your
+PATH variable. 
 
 ==============================================================================================================================================================
 Installation instructions:
@@ -90,13 +104,19 @@ This library relies on a C++ object type, called `object_props'. This type of ob
 and arrays that are used to store postage stamps for the moment-0, RA position-velocity and DEC position-velocity diagrams, 
 the integrated spectrum and the reference spectrum (integrated spectrum of data cube over the source bounding box).
 
-The four main functions required to use this library are InitObjGen(), FreeObjGen(), CreateObjects() and AddObjsToChunk(). 
+The five main functions required to use this library are: InitObjGen(), FreeObjGen(), CreateMetric(), CreateObjects() and AddObjsToChunk(). 
 
 This library assumes that the user has a copy of the data in one array and a second array of identical size storing 
 the binary mask of this datacube (referred to as flag array). It is assumed that both of these arrays are 1-dimensional, 
 and that higher dimensionality is achieved by using pointer arithmetic. For instance, pixel 2,3 in a 2-D image of size 
 100x200 is array element (2 * 100) + 3. This design choice was made so that the code will work equally well for 1-D spectra, 
-2-D images and 3-D spectral datacubes.
+2-D images and 3-D spectral datacubes. 
+
+This library also assumes that the binary mask uses a value of 0 for non-source pixels/voxels, and a consistent negative value 
+source pixels/voxels eg. -1. Multiple negative vales can be used in this binary mask to reflect different sets of source 
+pixels/voxels, such as might be produced using the Negative Detections algorithm (Serra, Jurek & De Floer, 2012). The library
+will only process a pixels/voxels that contain the user-specified negative flag value eg. -99. Positive values are not allowed
+because the library populates this flag_vals array with positive values as it creates objects.
 
 If the data is sufficiently small that both the data and flag array fit into memory, then objects can be created by calling 
 CreateObjects() just once. If the data is too large to do this, then the data can be processed in `chunks' using a two step 
@@ -110,18 +130,20 @@ objects that are still within the merging box of the voxel currently being linke
 obj_ids, keeps track of the available object IDs. This includes the object IDs that have been recycled during processing.
 
 Both of these working arrays are initialised when the function InitObjGen() is called, provided the user passes in the required 
-information and a pointer of type int for each of the working arrays. InitObjGen() will also initialise a couple of variables 
+information and a vector of type int for each of the working arrays. InitObjGen() will also initialise a couple of variables 
 at the same time, and setup the internally labelled `detections' array. The associated function if FreeObjGen(), which will 
 properly clean up the memory allocated to the two working arrays and the `detections' array.
 
-CAUTION!!! The size of the two working arrays, which are internally labelled check_obj_ids and obj_ids, are specified by the 
-	   keywords SIZE_OBJ_IDS and SIZE_CHECK_OBJ_IDS in the library header. I often use values of 1E5 or 1E6. This value is 
-	   arbitrary though, and merely needs to be sufficienty large at runtime.
+The function, CreateMetric(), sets up the final working arrays, data_metric. This array is used to carry out the pointer 
+arithmetic that maps 1D/2D/3D positions to the internal memory layout of the data_vals & flag_vals array (among others).
+The xyz_order array allows you to specify the order of the 'x/RA', 'y/Dec' and 'z/Frequency/Velocity' in the input arrays,
+data_vals and flag_vals. For instance, a fits file with RA, Dec and Frequency in that order would use xyz_order: 1 2 3. A 
+fits file with Frequency, RA and Dec axes would use xyz_order: 3 1 2. 
 
 The function prototypes for AddObjsToChunk() and CreateObjects() are shown below. A description of the various parameters 
 follows.
 
-int AddObjsToChunk(int * flag_vals, object_props ** detections, int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, int data_x_size, int data_y_size, int data_z_size, int * check_obj_ids);
+int AddObjsToChunk(int * flag_vals, vector<object_props *> & detections, int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, int data_x_size, int data_y_size, int data_z_size, vector<int> & check_obj_ids);
 
 Returns: The number of objects added to the flag array of the current data chunk as an integer.
 
@@ -131,12 +153,13 @@ flag_vals: A pointer of type int, which is used to store the binary mask describ
 	   This is only an internal labelling of the flag_vals array, and does not have to match the labelling of the external 
 	   program that calls the AddObjsToChunk() function.
 
-detections: A pointer to a pointer of type object_props (the object type defined by this library). This is the array 
-	    containing all of the objects that have been created by previous calls of CreateObjects(). The pointer of a 
-	    pointer design allows groups of objects to be created and initialised at once. Creating the detections array in 
+detections: A vector of pointers of type object_props (the object type defined by this library). This is the array 
+	    containing all of the objects that have been created by previous calls of CreateObjects(). The vector of  
+	    pointers design allows groups of objects to be created and initialised at once. Creating the detections array in 
 	    groups allows only the required memory to be created at any one time. The maximum number of detections that can be 
 	    generated is equal to the multiplication of the number of groups by the number of objects in a group: 
-	    internally labelled, this is --> obj_limit (objects per group) x obj_batch_limit (number of groups).
+	    internally labelled, this is --> obj_limit (objects per group) x obj_batch_limit (number of groups). The value of
+	    obj_limit is set by your machines limit on vector size.
 
 NOobj: An int corresponding to the total number of sources found so far (after all calls of CreateObjects()) and stored in the
        detections variable.
@@ -166,13 +189,13 @@ data_y_size: An integer corresponding to the size of the entire dataset along th
 
 data_z_size: An integer corresponding to the size of the entire dataset along the internally labelled z axis.
 
-check_obj_ids: A pointer to an integer array that stores the numeric IDs of all the existing objects in the detections array, 
+check_obj_ids: A vector of integers that stores the numeric IDs of all the existing objects in the detections array, 
 	       that have been added to the flag_vals array of the chunk that is currently being processed, during this call of
 	       the AddObjsToChunk() function.
 
 
 
-int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intensity_threshold, int flag_value, int start_obj, object_props ** detections, int * obj_ids, int& NO_obj_ids, int * check_obj_ids, int& NO_check_obj_ids, int obj_limit, int obj_batch_limit, int max_x_val, int max_y_val, int max_z_val);
+int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intensity_threshold, int flag_value, int start_obj, vector<object_props *> & detections, vector<int> & obj_ids, int& NO_obj_ids, vector<int> & check_obj_ids, int& NO_check_obj_ids, int obj_limit, int obj_batch_limit, int max_x_val, int max_y_val, int max_z_val);
 
 Returns: The total number of objects created so far (across all chunks that have been processed) as an integer.
 
@@ -226,19 +249,20 @@ flag_value: The integer value in the flag_vals array that corresponds to a sourc
 
 start_obj: The starting value of the object IDs assigned to objects created in the current call of CreateObjects().
 
-detections: A pointer to a pointer of type object_props (the object type defined by this library). This is the array 
-	    containing all of the objects that have been created by previous calls of CreateObjects(). The pointer of a 
-	    pointer design allows groups of objects to be created and initialised at once. Creating the detections array in 
+detections: A vector of pointers of type object_props (the object type defined by this library). This is the array 
+	    containing all of the objects that have been created by previous calls of CreateObjects(). The vector of 
+	    pointers design allows groups of objects to be created and initialised at once. Creating the detections array in 
 	    groups allows only the required memory to be created at any one time. The maximum number of detections that can be 
 	    generated is equal to the multiplication of the number of groups by the number of objects in a group: 
-	    internally labelled, this is --> obj_limit (objects per group) x obj_batch_limit (number of groups).
+	    internally labelled, this is --> obj_limit (objects per group) x obj_batch_limit (number of groups). The value of
+	    obj_limit is set by your machines limit on vector size.
 
-obj_ids: A pointer of type int, which is one of the two `working arrays' required by the CreateObjects() function. This array 
+obj_ids: A vector of integers, which is one of the two `working arrays' required by the CreateObjects() function. This array 
 	 stores the available object IDs. 
 
 NO_obj_ids: An integer value set to the number of available object IDs stored in the array, obj_ids.
 
-check_obj_ids: A pointer to an integer array that stores the numeric IDs of all the existing objects in the detections array, 
+check_obj_ids: A vector of integers that stores the numeric IDs of all the existing objects in the detections array, 
 	       that have been added to the flag_vals array of the chunk that is currently being processed, during this call of
 	       the AddObjsToChunk() function.
 
@@ -247,8 +271,6 @@ NO_check_obj_ids: An integer value set to the number of object IDs stored in the
 obj_limit: The detections variable is designed such that groups of objects of type object_props are created and initialised at 
 	   once. The integer obj_limit specifies the size of these groups. A value of 1 can be used, which will effectively 
 	   side-step this behaviour. An integer value.
-
-obj_batch_limit: An integer value that describes the maximum number of object groups that can be created.
 
 max_x_val: An integer corresponding to the size of the chunk to be populated, along the internally labelled x axis.
 

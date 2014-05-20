@@ -33,8 +33,7 @@ void ThresholdObjs(vector< object_props *> & detections, int NOobj, int obj_limi
 
     }
 
-    // apply the size threshold, and if it fails re-initialise the object and pop it's id to the list
-    // of available obj_ids
+    // apply the thresholds, and if it fails re-initialise the object
     if(((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) < min_x_size)  || ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) < min_y_size) || ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1) < min_z_size) || (detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < min_v_size) || (detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() < intens_thresh_min) || (detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() > intens_thresh_max) || (i < min_LoS_count)){
 
       // re-initialise object
@@ -87,8 +86,7 @@ void ThresholdObjs(vector< object_props *> & detections, long int NOobj, int obj
 
     }
 
-    // apply the size threshold, and if it fails re-initialise the object and pop it's id to the list
-    // of available obj_ids
+    // apply the thresholds, and if it fails re-initialise the object 
     if(((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) < min_x_size)  || ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) < min_y_size) || ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1) < min_z_size) || (detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < min_v_size) || (detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() < intens_thresh_min) || (detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() > intens_thresh_max) || (i < min_LoS_count)){
 
       // re-initialise object
@@ -142,8 +140,7 @@ void ThresholdObjs(vector< object_props_dbl *> & detections, int NOobj, int obj_
 
     }
 
-    // apply the size threshold, and if it fails re-initialise the object and pop it's id to the list
-    // of available obj_ids
+    // apply the thresholds, and if it fails re-initialise the object
     if(((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) < min_x_size)  || ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) < min_y_size) || ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1) < min_z_size) || (detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < min_v_size) || (detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() < intens_thresh_min) || (detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() > intens_thresh_max) || (i < min_LoS_count)){
 
       // re-initialise object
@@ -196,8 +193,7 @@ void ThresholdObjs(vector< object_props_dbl *> & detections, long int NOobj, int
 
     }
 
-    // apply the size threshold, and if it fails re-initialise the object and pop it's id to the list
-    // of available obj_ids
+    // apply the thresholds, and if it fails re-initialise the object
     if(((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) < min_x_size)  || ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) < min_y_size) || ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1) < min_z_size) || (detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < min_v_size) || (detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() < intens_thresh_min) || (detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() > intens_thresh_max) || (i < min_LoS_count)){
 
       // re-initialise object

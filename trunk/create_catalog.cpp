@@ -18,9 +18,6 @@ extern "C" {
 
 using namespace std;
 
-// compile line
-// c++ /Users/Jurek83/CatalogCode/latest_prototype/trunk/create_catalog.cpp -o /Users/Jurek83/CatalogCode/latest_prototype/trunk/create_catalog -O2 -lcfitsio -I/usr/local/pgplot -L/usr/local/pgplot -lcpgplot -lpgplot -I/Users/Jurek83/CatalogCode/latest_prototype/trunk -L/Users/Jurek83/CatalogCode/latest_prototype/trunk -lrjj_objgen -lrjj_objgen_plots 
-
 int main(int argc, char* argv[]){
 
   fitsfile * fits_input, * fits_input_source, * mask_input;
@@ -79,7 +76,7 @@ int main(int argc, char* argv[]){
   dummy2 >> output_code;
 
   // if the output_code is -h, display the command line parameters and exit
-  if(output_code == "-h"){ cout << "\nUsage: ./Prototype_Catalog_v7 output_code mask_file data_file min_x_size min_y_size min_z_size min_LoS fill_factor flag_val Tflux_thresh_min Tflux_thresh_max merge_x merge_y merge_z plot_mode [-SR] [-C] [-M] [-DO x-order y-order z-order] \n\nOutput: \n\"output_code\"_obj.cat ; file listing objects and calculated properties. \n\"output_code\"_plots.ps ; moment-0 and position-velocity plots of objects over entire dataset.\n\nplot_mode 0 = no plots, plot_mode 1 = global plot only, plot_mode 2 = spectra + postage stamps only, plot_mode 3 = all plots \n\n" << endl; return 0; }
+  if(output_code == "-h"){ cout << "\nUsage: ./create_catalog output_code mask_file data_file min_x_size min_y_size min_z_size min_LoS fill_factor flag_val Tflux_thresh_min Tflux_thresh_max merge_x merge_y merge_z plot_mode [-SR] [-C] [-M] [-DO x-order y-order z-order] \n\nInput:\n\nmask_file: A .fits file containing a binary mask of source and non-source pixels/voxels. Non-source pixels/voxels should have a value of 0. All source pixels/voxels should be a single, consistent negative value eg. -10. This is the value that should be specified as \"flag_val\" on the commadn line. Positive values are not allowed. \n\ndata_file: A .fits file containing a 2D/3D image.\n\nmin_x_size: The minimum size requirement, in pixels, of sources along the x axis.\n\nmin_y_size: The minimum size requirement, in pixels, of sources along the y axis.\n\nmin_z_size: The minimum size requirement, in pixels, of sources along the z axis.\n\nmin_LoS: The minimum projected size of sources in the x-y plane.\n\nfill_factor: The minimum `filling factor' of sources. The `filling factor' is the fraction of the source's bounding box that is `filled' with source pixels/voxels. This effectively defines the minimum number of pixels/voxels that comprise a source. An explicit size can be specified by using a negative integer value.\n\nflag_val: The negative integer value in the flag_vals array that denotes a source pixel/voxel.\n\nTflux_thresh_min: The minimum total flux accepted for sources.\n\nTflux_thresh_max: The maximum total flux accepted for sources.\n\nmerge_x: The empty space, in pixels, separating components of a single source.\n\nmerge_y: The empty space, in pixels, separating components of a single source.\n\nmerge_z: The empty space, in pixels, separating components of a single source.\n\nplot_mode: An integer flag specifying the plotting mode to use.\n\nOptional inputs:\n\n-SR: Use this flag to create an output catalog that has each object's sparse representation appended to it.\n\n-C: Use this flag to link source components using an ellipse in the x-y plane instead of a rectangle.\n\n-M: Create an output .fits file containing an image of the data_vals array where each pixel/voxel is labelled with the ID of the object that it belongs to. The output file is \"output_code\"_mask.fits.\n\n-DO x-order y-order z-order: This option allows a user to specify the order of the x/RA, y/Dec, z/Frequency/Velocity axes in the input .fits files. For instance, a .fits file with RA, Dec, Frequency axes would use the order: 1 2 3 (the default). A .fits file with Frequency, RA, Dec axes however would use the order: 3 1 2.\n\nOutput: \n\"output_code\"_obj.cat ; file listing objects and calculated properties. \n\"output_code\"_plots.ps ; moment-0 and position-velocity plots of objects over entire dataset.\n\nplot_mode 0 = no plots, plot_mode 1 = global plot only, plot_mode 2 = spectra + postage stamps only, plot_mode 3 = all plots \n\n" << endl; return 0; }
 
   // check if the right command line option was entered
   if((argc == 2) && (output_code != "-h")){ cout << "WARNING: Incorrect arguments! Exiting.\nEnter Prototype_Catalog_v6 -h on the command line to see the command line input.\n"; return 1; }
@@ -581,8 +578,6 @@ int main(int argc, char* argv[]){
 
 	      // regular version
 	      flag_vals[((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x)] = -1 * abs(flag_vals[((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x)]); 
-	      // temporary version for processing Attilla's Duchamp code
-	      //flag_vals[((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x)] = -1; 
 
 	    }
 	    	    
@@ -637,7 +632,7 @@ int main(int argc, char* argv[]){
   dummy1.clear();
   dummy1 = output_code+"_obj.cat";
   outputfile.open(dummy1.c_str(),ios::out);
-  outputfile << "# Catalogue produced by Prototype_Catalog_v6.cpp.\n# " << endl;
+  outputfile << "# Catalogue produced by create_catalog.cpp.\n# " << endl;
   outputfile << "# Input parameters are . . . " << endl;
   outputfile << "# Output code: " << output_code << endl;
   outputfile << "# Mask file: " << maskfile << endl;
