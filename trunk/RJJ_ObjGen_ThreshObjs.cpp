@@ -12,7 +12,7 @@ void ThresholdObjs(vector< object_props *> & detections, int NOobj, int obj_limi
 
   progress = 0.0;
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
 	
     // calculate the obj_batch value for the existing object
     obj_batch = (int) floorf(((float) k / (float) obj_limit));
@@ -27,9 +27,9 @@ void ThresholdObjs(vector< object_props *> & detections, int NOobj, int obj_limi
 	
     // count the number of LOSs through this object that contain an object section
     i = 0;
-    for(j = 0; j < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){
+    for(j = 0; j < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){
 
-      if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid((j + 1)) > detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid(j)){ i++; }
+      if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid((j + 1)) > detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid(j)){ ++i; }
 
     }
 
@@ -51,7 +51,7 @@ void ThresholdObjs(vector< object_props *> & detections, int NOobj, int obj_limi
     
     while(progress <= (((float) (k + 1)) / ((float) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
       
-    // for(i = 0; i < NO_check_obj_ids; i++)
+    // for(i = 0; i < NO_check_obj_ids; ++i)
   }
   std::cout << "* done." << std::endl;
 
@@ -65,10 +65,10 @@ void ThresholdObjs(vector< object_props *> & detections, long int NOobj, int obj
 
   progress = 0.0;
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
 	
     // calculate the obj_batch value for the existing object
-    obj_batch = (long int) floorf(((double) k / (double) obj_limit));
+    obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	
     // move to the next object if this one has been re-initialised
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -80,9 +80,9 @@ void ThresholdObjs(vector< object_props *> & detections, long int NOobj, int obj
 	
     // count the number of LOSs through this object that contain an object section
     i = 0;
-    for(j = 0; j < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){
+    for(j = 0; j < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){
 
-      if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid((j + 1)) > detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid(j)){ i++; }
+      if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid((j + 1)) > detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid(j)){ ++i; }
 
     }
 
@@ -104,7 +104,7 @@ void ThresholdObjs(vector< object_props *> & detections, long int NOobj, int obj
     
     while(progress <= (((float) (k + 1)) / ((float) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
       
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
   std::cout << "* done." << std::endl;
 
@@ -119,7 +119,7 @@ void ThresholdObjs(vector< object_props_dbl *> & detections, int NOobj, int obj_
 
   progress = 0.0;
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
 	
     // calculate the obj_batch value for the existing object
     obj_batch = (int) floorf(((float) k / (float) obj_limit));
@@ -134,9 +134,9 @@ void ThresholdObjs(vector< object_props_dbl *> & detections, int NOobj, int obj_
 	
     // count the number of LOSs through this object that contain an object section
     i = 0;
-    for(j = 0; j < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){
+    for(j = 0; j < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){
 
-      if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid((j + 1)) > detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid(j)){ i++; }
+      if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid((j + 1)) > detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid(j)){ ++i; }
 
     }
 
@@ -158,7 +158,7 @@ void ThresholdObjs(vector< object_props_dbl *> & detections, int NOobj, int obj_
     
     while(progress <= (((float) (k + 1)) / ((float) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
       
-    // for(i = 0; i < NO_check_obj_ids; i++)
+    // for(i = 0; i < NO_check_obj_ids; ++i)
   }
   std::cout << "* done." << std::endl;
 
@@ -172,10 +172,10 @@ void ThresholdObjs(vector< object_props_dbl *> & detections, long int NOobj, int
 
   progress = 0.0;
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
 	
     // calculate the obj_batch value for the existing object
-    obj_batch = (long int) floorf(((double) k / (double) obj_limit));
+    obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	
     // move to the next object if this one has been re-initialised
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -187,9 +187,9 @@ void ThresholdObjs(vector< object_props_dbl *> & detections, long int NOobj, int
 	
     // count the number of LOSs through this object that contain an object section
     i = 0;
-    for(j = 0; j < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){
+    for(j = 0; j < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){
 
-      if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid((j + 1)) > detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid(j)){ i++; }
+      if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid((j + 1)) > detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_grid(j)){ ++i; }
 
     }
 
@@ -211,7 +211,7 @@ void ThresholdObjs(vector< object_props_dbl *> & detections, long int NOobj, int
     
     while(progress <= (((float) (k + 1)) / ((float) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
       
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
   std::cout << "* done." << std::endl;
 

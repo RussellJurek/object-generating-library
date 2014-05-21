@@ -120,9 +120,9 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
       std::cout << "Creating boundaries of objects . . . " << std::endl;
       cpgsci(3);
       cpgslw(1.5);
-      for(k = 0; k < NOobj; k++){
+      for(k = 0; k < NOobj; ++k){
 	
-	obj_batch = floor(((float) k / (float) obj_limit));
+	obj_batch = (int) floor(((float) k / (float) obj_limit));
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	plot_points = CreateMoment0Bounds(detections,(detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1),(detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1),detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin(),detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin(),plot_x,plot_y,k,obj_limit);
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() < 0.0){ cpgsci(4); }
@@ -134,15 +134,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
       
       // create list of object pixel centres
       plot_points = 0;
-      for(k = 0; k < NOobj; k++){
+      for(k = 0; k < NOobj; ++k){
 	
-	obj_batch = floorf(((float) k / (float) obj_limit));
+	obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRA();
 	plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDEC();
-	plot_points++;
+	++plot_points;
 	
-	//for(k = 0; k < NOobj; k++) 
+	//for(k = 0; k < NOobj; ++k) 
       }
       
       // plot object pixel centres
@@ -201,9 +201,9 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	std::cout << "Creating boundaries of objects . . . " << std::endl;
 	cpgsci(3);
 	cpgslw(1.5);
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
-	  obj_batch = floor(((float) k / (float) obj_limit));
+	  obj_batch = (int) floor(((float) k / (float) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_points = CreateRAPVBounds(detections,(detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1),(detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1),(detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1),detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin(),detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin(),plot_x,plot_y,k,obj_limit);
 	  
@@ -216,15 +216,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// create list of object pixel centres
 	plot_points = 0;
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
-	  obj_batch = floorf(((float) k / (float) obj_limit));   
+	  obj_batch = (int) floorf(((float) k / (float) obj_limit));   
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRA();
 	  plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQ();
-	  plot_points++;
+	  ++plot_points;
 	  
-	  //for(k = 0; k < NOobj; k++) 
+	  //for(k = 0; k < NOobj; ++k) 
 	}
 	
 	// plot object pixel centres
@@ -281,9 +281,9 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	std::cout << "Creating boundaries of objects . . . " << std::endl;
 	cpgsci(3);
 	cpgslw(1.5);
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
-	  obj_batch = floor(((float) k / (float) obj_limit));
+	  obj_batch = (int) floor(((float) k / (float) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_points = CreateDecPVBounds(detections,(detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1),(detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1),(detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1),detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin(),detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin(),plot_x,plot_y,k,obj_limit);
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() < 0.0){ cpgsci(4); }
@@ -295,15 +295,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// create list of object pixel centres
 	plot_points = 0;
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
-	  obj_batch = floorf(((float) k / (float) obj_limit));
+	  obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDEC();
 	  plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQ();
-	  plot_points++;
+	  ++plot_points;
 	  
-	  //for(k = 0; k < NOobj; k++) 
+	  //for(k = 0; k < NOobj; ++k) 
 	}
 	
 	// plot object pixel centres
@@ -336,15 +336,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// z axis is already in velocity
 	
-	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	  // calculate obj_batch number of object
-	  obj_batch = floorf(((float) k / (float) obj_limit));
+	  obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	
 	  // skip if this object has been re-initialised
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	 
-	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){
+	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){
 
 	    detections[obj_batch][(k - (obj_batch * obj_limit))].Set_vfield(g,(1.0 * (fabs(cdelt3)) * detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g)));
 
@@ -356,15 +356,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 
 	// z axis is in frequency
 
-	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	  // calculate obj_batch number of object
-	  obj_batch = floorf(((float) k / (float) obj_limit));
+	  obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	  
 	  // skip if this object has been re-initialised
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  
-	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){
+	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){
 	    
 	    detections[obj_batch][(k - (obj_batch * obj_limit))].Set_vfield(g,(299792.458 * restfreq * ((1.0/(crval3 + ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g) - crpix3) * cdelt3))) - (1.0/(crval3 + ((detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQi() - crpix3) * cdelt3))))));
 
@@ -403,10 +403,10 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 
       // plotting 10 integrated spectra on each page along with postage stamps
       i = -1;
-      for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+      for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	// calculate obj_batch number of object
-	obj_batch = floorf(((float) k / (float) obj_limit));
+	obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	
 	// skip if this object has been re-initialised
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
@@ -415,7 +415,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	plot_array = new float[(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)];
 
 	// increment i - tracks the number of objects plotted on the current page
-	i++;
+	++i;
 	
 	// move to a new page if this is a new block of 10 spectra to be plotted
 	if((i % 10) == 0){ cpgpage(); }
@@ -425,7 +425,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	plot_max = -1E10;
 	if((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1) >= 10){
 	  
-	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){
+	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){
 	    
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) <= plot_min){ plot_min = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
@@ -434,7 +434,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  
 	} else {
 	  
-	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); g++){
+	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++g){
 	    
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) <= plot_min){ plot_min = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
@@ -442,7 +442,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  }
 	  
 	}
-	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); g++){
+	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++g){
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g);
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g); }
@@ -496,7 +496,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	    
 	  }
 	  
-	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 
 	    plot_x[g] = g + (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (float) (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1))))); 
 	    plot_y[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g);
@@ -533,7 +533,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	    
 	  }
 	  
-	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); g++){ 
+	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++g){ 
 
 	    plot_x[g] = g + detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 	    plot_y[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g);
@@ -590,7 +590,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	cpgsls(1);
 	cpgsci(1);
 
-	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); g++){ 
+	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++g){ 
 
 	  plot_x[g] = g + detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4); 
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g);
@@ -648,7 +648,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -701,12 +701,12 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// c. adjust plot_max
 	j = 0;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(g) != 0.0){
 
 	    plot_array[j] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g);
-	    j++;
+	    ++j;
 
 	  }
 
@@ -717,7 +717,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	g = 1 + ((int) floorf(((2.0/3.0) * ((float) j))));
 	if(g < j){ plot_max = plot_array[g]; } else { plot_max = plot_array[(j - 1)]; }
 
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g);
 
@@ -782,7 +782,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_RAPV(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -836,7 +836,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_DECPV(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -868,7 +868,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// display progress
 	while(progress <= (((float) (k + 1)) / ((float) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
-	//for(k = 0; k < NOobj; k++) 
+	//for(k = 0; k < NOobj; ++k) 
       }  
 
       std::cout << "* done." << std::endl;
@@ -996,7 +996,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
       std::cout << "Creating boundaries of objects . . . " << std::endl;
       cpgsci(3);
       cpgslw(1.5);
-      for(k = 0; k < NOobj; k++){
+      for(k = 0; k < NOobj; ++k){
 	
 	obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
@@ -1010,15 +1010,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
       
       // create list of object pixel centres
       plot_points = 0;
-      for(k = 0; k < NOobj; k++){
+      for(k = 0; k < NOobj; ++k){
 	
 	obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRA();
 	plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDEC();
-	plot_points++;
+	++plot_points;
 	
-	//for(k = 0; k < NOobj; k++) 
+	//for(k = 0; k < NOobj; ++k) 
       }
       
       // plot object pixel centres
@@ -1077,7 +1077,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	std::cout << "Creating boundaries of objects . . . " << std::endl;
 	cpgsci(3);
 	cpgslw(1.5);
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
@@ -1092,15 +1092,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// create list of object pixel centres
 	plot_points = 0;
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));   
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRA();
 	  plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQ();
-	  plot_points++;
+	  ++plot_points;
 	  
-	  //for(k = 0; k < NOobj; k++) 
+	  //for(k = 0; k < NOobj; ++k) 
 	}
 	
 	// plot object pixel centres
@@ -1157,7 +1157,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	std::cout << "Creating boundaries of objects . . . " << std::endl;
 	cpgsci(3);
 	cpgslw(1.5);
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
@@ -1171,15 +1171,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// create list of object pixel centres
 	plot_points = 0;
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDEC();
 	  plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQ();
-	  plot_points++;
+	  ++plot_points;
 	  
-	  //for(k = 0; k < NOobj; k++) 
+	  //for(k = 0; k < NOobj; ++k) 
 	}
 	
 	// plot object pixel centres
@@ -1212,7 +1212,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// z axis is already in velocity
 	
-	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	  // calculate obj_batch number of object
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));
@@ -1220,7 +1220,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  // skip if this object has been re-initialised
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	 
-	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){
+	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){
 
 	    detections[obj_batch][(k - (obj_batch * obj_limit))].Set_vfield(g,(1.0 * (fabs(cdelt3)) * detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g)));
 
@@ -1232,7 +1232,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 
 	// z axis is in frequency
 
-	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	  // calculate obj_batch number of object
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));
@@ -1240,7 +1240,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  // skip if this object has been re-initialised
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  
-	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){
+	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){
 	    
 	    detections[obj_batch][(k - (obj_batch * obj_limit))].Set_vfield(g,(299792.458 * restfreq * ((1.0/(crval3 + ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g) - crpix3) * cdelt3))) - (1.0/(crval3 + ((detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQi() - crpix3) * cdelt3))))));
 
@@ -1279,7 +1279,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 
       // plotting 10 integrated spectra on each page along with postage stamps
       i = -1;
-      for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+      for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	// calculate obj_batch number of object
 	obj_batch = (long int) floor(((double) k / (double) obj_limit));
@@ -1291,7 +1291,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	plot_array = new float[(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)];
 
 	// increment i - tracks the number of objects plotted on the current page
-	i++;
+	++i;
 	
 	// move to a new page if this is a new block of 10 spectra to be plotted
 	if((i % 10) == 0){ cpgpage(); }
@@ -1301,7 +1301,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	plot_max = -1E10;
 	if((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1) >= 10){
 	  
-	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){
+	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){
 	    
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) <= plot_min){ plot_min = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
@@ -1310,7 +1310,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  
 	} else {
 	  
-	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); g++){
+	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++g){
 	    
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) <= plot_min){ plot_min = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
@@ -1318,7 +1318,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  }
 	  
 	}
-	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); g++){
+	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++g){
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g);
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g); }
@@ -1372,7 +1372,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	    
 	  }
 	  
-	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 
 	    plot_x[g] = g + (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (float) (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1))))); 
 	    plot_y[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g);
@@ -1409,7 +1409,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	    
 	  }
 	  
-	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); g++){ 
+	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++g){ 
 
 	    plot_x[g] = g + detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 	    plot_y[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g);
@@ -1466,7 +1466,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	cpgsls(1);
 	cpgsci(1);
 
-	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); g++){ 
+	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++g){ 
 
 	  plot_x[g] = g + detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4); 
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g);
@@ -1524,7 +1524,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -1577,12 +1577,12 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// c. adjust plot_max
 	j = 0;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(g) != 0.0){
 
 	    plot_array[j] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g);
-	    j++;
+	    ++j;
 
 	  }
 
@@ -1593,7 +1593,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	g = 1 + ((int) floorf(((2.0/3.0) * ((float) j))));
 	if(g < j){ plot_max = plot_array[g]; } else { plot_max = plot_array[(j - 1)]; }
 
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g);
 
@@ -1658,7 +1658,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_RAPV(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -1712,7 +1712,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_DECPV(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -1744,7 +1744,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// display progress
 	while(progress <= (((float) (k + 1)) / ((float) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
-	//for(k = 0; k < NOobj; k++) 
+	//for(k = 0; k < NOobj; ++k) 
       }  
 
       std::cout << "* done." << std::endl;
@@ -1785,7 +1785,7 @@ void HeapSort(int n, float ra[]){
     i=l;
     j=l+l;
     while (j <= ir) {
-      if (j < ir && ra[j] < ra[j+1]) j++;
+      if (j < ir && ra[j] < ra[j+1]){ ++j; }
       if (rra < ra[j]) {
 	ra[i]=ra[j];
 	i=j;
@@ -1909,9 +1909,9 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
       std::cout << "Creating boundaries of objects . . . " << std::endl;
       cpgsci(3);
       cpgslw(1.5);
-      for(k = 0; k < NOobj; k++){
+      for(k = 0; k < NOobj; ++k){
 	
-	obj_batch = floor(((float) k / (float) obj_limit));
+	obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	plot_points = CreateMoment0Bounds(detections,(detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1),(detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1),detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin(),detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin(),plot_x,plot_y,k,obj_limit);
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() < 0.0){ cpgsci(4); }
@@ -1923,15 +1923,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
       
       // create list of object pixel centres
       plot_points = 0;
-      for(k = 0; k < NOobj; k++){
+      for(k = 0; k < NOobj; ++k){
 	
-	obj_batch = floorf(((float) k / (float) obj_limit));
+	obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRA();
 	plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDEC();
-	plot_points++;
+	++plot_points;
 	
-	//for(k = 0; k < NOobj; k++) 
+	//for(k = 0; k < NOobj; ++k) 
       }
       
       // plot object pixel centres
@@ -1990,9 +1990,9 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	std::cout << "Creating boundaries of objects . . . " << std::endl;
 	cpgsci(3);
 	cpgslw(1.5);
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
-	  obj_batch = floor(((float) k / (float) obj_limit));
+	  obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_points = CreateRAPVBounds(detections,(detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1),(detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1),(detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1),detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin(),detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin(),plot_x,plot_y,k,obj_limit);
 	  
@@ -2005,15 +2005,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// create list of object pixel centres
 	plot_points = 0;
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
-	  obj_batch = floorf(((float) k / (float) obj_limit));   
+	  obj_batch = (int) floorf(((float) k / (float) obj_limit));   
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRA();
 	  plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQ();
-	  plot_points++;
+	  ++plot_points;
 	  
-	  //for(k = 0; k < NOobj; k++) 
+	  //for(k = 0; k < NOobj; ++k) 
 	}
 	
 	// plot object pixel centres
@@ -2070,9 +2070,9 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	std::cout << "Creating boundaries of objects . . . " << std::endl;
 	cpgsci(3);
 	cpgslw(1.5);
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
-	  obj_batch = floor(((float) k / (float) obj_limit));
+	  obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_points = CreateDecPVBounds(detections,(detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1),(detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1),(detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1),detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin(),detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin(),plot_x,plot_y,k,obj_limit);
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].GetTI() < 0.0){ cpgsci(4); }
@@ -2084,15 +2084,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// create list of object pixel centres
 	plot_points = 0;
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
-	  obj_batch = floorf(((float) k / (float) obj_limit));
+	  obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDEC();
 	  plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQ();
-	  plot_points++;
+	  ++plot_points;
 	  
-	  //for(k = 0; k < NOobj; k++) 
+	  //for(k = 0; k < NOobj; ++k) 
 	}
 	
 	// plot object pixel centres
@@ -2125,15 +2125,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// z axis is already in velocity
 	
-	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	  // calculate obj_batch number of object
-	  obj_batch = floorf(((float) k / (float) obj_limit));
+	  obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	
 	  // skip if this object has been re-initialised
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	 
-	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){
+	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){
 
 	    detections[obj_batch][(k - (obj_batch * obj_limit))].Set_vfield(g,(1.0 * (fabs(cdelt3)) * detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g)));
 
@@ -2145,15 +2145,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 
 	// z axis is in frequency
 
-	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	  // calculate obj_batch number of object
-	  obj_batch = floorf(((float) k / (float) obj_limit));
+	  obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	  
 	  // skip if this object has been re-initialised
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  
-	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){
+	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){
 	    
 	    detections[obj_batch][(k - (obj_batch * obj_limit))].Set_vfield(g,(299792.458 * restfreq * ((1.0/(crval3 + ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g) - crpix3) * cdelt3))) - (1.0/(crval3 + ((detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQi() - crpix3) * cdelt3))))));
 
@@ -2192,10 +2192,10 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 
       // plotting 10 integrated spectra on each page along with postage stamps
       i = -1;
-      for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+      for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	// calculate obj_batch number of object
-	obj_batch = floorf(((float) k / (float) obj_limit));
+	obj_batch = (int) floorf(((float) k / (float) obj_limit));
 	
 	// skip if this object has been re-initialised
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
@@ -2204,7 +2204,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	plot_array = new float[(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)];
 
 	// increment i - tracks the number of objects plotted on the current page
-	i++;
+	++i;
 	
 	// move to a new page if this is a new block of 10 spectra to be plotted
 	if((i % 10) == 0){ cpgpage(); }
@@ -2214,7 +2214,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	plot_max = -1E10;
 	if((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1) >= 10){
 	  
-	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){
+	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){
 	    
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) <= plot_min){ plot_min = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
@@ -2223,7 +2223,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  
 	} else {
 	  
-	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); g++){
+	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++g){
 	    
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) <= plot_min){ plot_min = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
@@ -2231,7 +2231,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  }
 	  
 	}
-	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); g++){
+	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++g){
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g);
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g); }
@@ -2285,7 +2285,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	    
 	  }
 	  
-	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 
 	    plot_x[g] = g + (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (float) (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1))))); 
 	    plot_y[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g);
@@ -2322,7 +2322,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	    
 	  }
 	  
-	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); g++){ 
+	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++g){ 
 
 	    plot_x[g] = g + detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 	    plot_y[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g);
@@ -2379,7 +2379,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	cpgsls(1);
 	cpgsci(1);
 
-	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); g++){ 
+	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++g){ 
 
 	  plot_x[g] = g + detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4); 
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g);
@@ -2437,7 +2437,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -2490,12 +2490,12 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// c. adjust plot_max
 	j = 0;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(g) != 0.0){
 
 	    plot_array[j] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g);
-	    j++;
+	    ++j;
 
 	  }
 
@@ -2506,7 +2506,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	g = 1 + ((int) floorf(((2.0/3.0) * ((float) j))));
 	if(g < j){ plot_max = plot_array[g]; } else { plot_max = plot_array[(j - 1)]; }
 
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g);
 
@@ -2571,7 +2571,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_RAPV(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -2625,7 +2625,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_DECPV(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -2657,7 +2657,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// display progress
 	while(progress <= (((float) (k + 1)) / ((float) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
-	//for(k = 0; k < NOobj; k++) 
+	//for(k = 0; k < NOobj; ++k) 
       }  
 
       std::cout << "* done." << std::endl;
@@ -2677,7 +2677,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 
 void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_order, int NOx, int NOy, int NOf, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, int ctype3, float crpix3, float crval3, float cdelt3, float restfreq){
   
-  long k, obj, obj_batch;
+  long int k, obj, obj_batch;
   int g, i, j, plot_points, temp_x, temp_y, temp_z;
   std::string dummy1;
   std::stringstream dummy2;
@@ -2785,7 +2785,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
       std::cout << "Creating boundaries of objects . . . " << std::endl;
       cpgsci(3);
       cpgslw(1.5);
-      for(k = 0; k < NOobj; k++){
+      for(k = 0; k < NOobj; ++k){
 	
 	obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
@@ -2799,15 +2799,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
       
       // create list of object pixel centres
       plot_points = 0;
-      for(k = 0; k < NOobj; k++){
+      for(k = 0; k < NOobj; ++k){
 	
 	obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRA();
 	plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDEC();
-	plot_points++;
+	++plot_points;
 	
-	//for(k = 0; k < NOobj; k++) 
+	//for(k = 0; k < NOobj; ++k) 
       }
       
       // plot object pixel centres
@@ -2866,7 +2866,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	std::cout << "Creating boundaries of objects . . . " << std::endl;
 	cpgsci(3);
 	cpgslw(1.5);
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
@@ -2881,15 +2881,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// create list of object pixel centres
 	plot_points = 0;
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));   
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRA();
 	  plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQ();
-	  plot_points++;
+	  ++plot_points;
 	  
-	  //for(k = 0; k < NOobj; k++) 
+	  //for(k = 0; k < NOobj; ++k) 
 	}
 	
 	// plot object pixel centres
@@ -2946,7 +2946,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	std::cout << "Creating boundaries of objects . . . " << std::endl;
 	cpgsci(3);
 	cpgslw(1.5);
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
@@ -2960,15 +2960,15 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// create list of object pixel centres
 	plot_points = 0;
-	for(k = 0; k < NOobj; k++){
+	for(k = 0; k < NOobj; ++k){
 	  
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  plot_x[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDEC();
 	  plot_y[plot_points] = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQ();
-	  plot_points++;
+	  ++plot_points;
 	  
-	  //for(k = 0; k < NOobj; k++) 
+	  //for(k = 0; k < NOobj; ++k) 
 	}
 	
 	// plot object pixel centres
@@ -3001,7 +3001,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// z axis is already in velocity
 	
-	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	  // calculate obj_batch number of object
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));
@@ -3009,7 +3009,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  // skip if this object has been re-initialised
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	 
-	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){
+	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){
 
 	    detections[obj_batch][(k - (obj_batch * obj_limit))].Set_vfield(g,(1.0 * (fabs(cdelt3)) * detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g)));
 
@@ -3021,7 +3021,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 
 	// z axis is in frequency
 
-	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+	for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	  // calculate obj_batch number of object
 	  obj_batch = (long int) floor(((double) k / (double) obj_limit));
@@ -3029,7 +3029,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  // skip if this object has been re-initialised
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
 	  
-	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){
+	  for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){
 	    
 	    detections[obj_batch][(k - (obj_batch * obj_limit))].Set_vfield(g,(299792.458 * restfreq * ((1.0/(crval3 + ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g) - crpix3) * cdelt3))) - (1.0/(crval3 + ((detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQi() - crpix3) * cdelt3))))));
 
@@ -3068,7 +3068,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 
       // plotting 10 integrated spectra on each page along with postage stamps
       i = -1;
-      for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); k++){
+      for(k = 0; ((k < NOobj) && (k < SPEC_PLOT_LIMIT)); ++k){
 	
 	// calculate obj_batch number of object
 	obj_batch = (long int) floor(((double) k / (double) obj_limit));
@@ -3080,7 +3080,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	plot_array = new float[(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)];
 
 	// increment i - tracks the number of objects plotted on the current page
-	i++;
+	++i;
 	
 	// move to a new page if this is a new block of 10 spectra to be plotted
 	if((i % 10) == 0){ cpgpage(); }
@@ -3090,7 +3090,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	plot_max = -1E10;
 	if((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1) >= 10){
 	  
-	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){
+	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){
 	    
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) <= plot_min){ plot_min = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
@@ -3099,7 +3099,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  
 	} else {
 	  
-	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); g++){
+	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++g){
 	    
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
 	    if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g) <= plot_min){ plot_min = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g); }
@@ -3107,7 +3107,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	  }
 	  
 	}
-	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); g++){
+	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++g){
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g);
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g) >= plot_max){ plot_max = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g); }
@@ -3161,7 +3161,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	    
 	  }
 	  
-	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	  for(g = 0; g < (2 * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 
 	    plot_x[g] = g + (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (float) (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1))))); 
 	    plot_y[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g);
@@ -3198,7 +3198,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	    
 	  }
 	  
-	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); g++){ 
+	  for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++g){ 
 
 	    plot_x[g] = g + detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 	    plot_y[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_rspec(g);
@@ -3255,7 +3255,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	cpgsls(1);
 	cpgsci(1);
 
-	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); g++){ 
+	for(g = 0; g < (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++g){ 
 
 	  plot_x[g] = g + detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4); 
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_ospec(g);
@@ -3313,7 +3313,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -3366,12 +3366,12 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	
 	// c. adjust plot_max
 	j = 0;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  if(detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(g) != 0.0){
 
 	    plot_array[j] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g);
-	    j++;
+	    ++j;
 
 	  }
 
@@ -3382,7 +3382,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	g = 1 + ((int) floorf(((2.0/3.0) * ((float) j))));
 	if(g < j){ plot_max = plot_array[g]; } else { plot_max = plot_array[(j - 1)]; }
 
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_vfield(g);
 
@@ -3447,7 +3447,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_RAPV(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -3501,7 +3501,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// c. adjust plot_max
 	plot_max = -1E10;
 	plot_min = 1E10;
-	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); g++){ 
+	for(g = 0; g < ((detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(k - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++g){ 
 	  
 	  plot_array[g] = detections[obj_batch][(k - (obj_batch * obj_limit))].Get_DECPV(g);
 	  if(plot_array[g] >= plot_max){ plot_max = plot_array[g]; } 
@@ -3533,7 +3533,7 @@ void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_ord
 	// display progress
 	while(progress <= (((double) (k + 1)) / ((double) NOobj))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
-	//for(k = 0; k < NOobj; k++) 
+	//for(k = 0; k < NOobj; ++k) 
       }  
 
       std::cout << "* done." << std::endl;

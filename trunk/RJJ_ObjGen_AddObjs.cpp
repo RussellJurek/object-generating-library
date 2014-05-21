@@ -81,10 +81,10 @@ int AddObjsToChunk(int * flag_vals, vector<object_props *> & detections, int NOo
     progress = 0.0;
     std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
     
-    for(obj = 0; obj < NOobj; obj++){
+    for(obj = 0; obj < NOobj; ++obj){
       
       // calculate obj_batch number for this object
-      obj_batch = floorf(((float) obj / (float) obj_limit));
+      obj_batch = (int) floorf(((float) obj / (float) obj_limit));
       
       // move to the next object if it's been re-initialised
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -106,16 +106,16 @@ int AddObjsToChunk(int * flag_vals, vector<object_props *> & detections, int NOo
       check_obj_ids.push_back(obj);
 
       // reconstruct the object from the sparse representation and update the flag_vals array
-      for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); x++){
+      for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); ++x){
 	
-	for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); y++){
+	for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); ++y){
 	  
 	  // x,y position of object lies inside boundaries of chunk, so flag the flag_vals array with the obj number for every object string
 	  if((x >= chunk_x_start) && (x < (chunk_x_start + chunk_x_size)) && (y >= chunk_y_start) && (y < (chunk_y_start + chunk_y_size))){
 	    
-	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); g++){
+	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); f++){
+	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = obj;
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = obj;
@@ -149,7 +149,7 @@ int AddObjsToChunk(int * flag_vals, vector<object_props *> & detections, int NOo
   
 }
 
-long int AddObjsToChunk(long int * flag_vals, vector<object_props *> & detections, long int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, vector<long int> & check_obj_ids, int * data_metric, int * xyz_order){
+int AddObjsToChunk(long int * flag_vals, vector<object_props *> & detections, long int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, vector<long int> & check_obj_ids, int * data_metric, int * xyz_order){
 
   float progress;
   long int obj, obj_batch;
@@ -226,10 +226,10 @@ long int AddObjsToChunk(long int * flag_vals, vector<object_props *> & detection
     progress = 0.0;
     std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
     
-    for(obj = 0; obj < NOobj; obj++){
+    for(obj = 0; obj < NOobj; ++obj){
       
       // calculate obj_batch number for this object
-      obj_batch = floorf(((double) obj / (double) obj_limit));
+      obj_batch = (long int) floor(((double) obj / (double) obj_limit));
       
       // move to the next object if it's been re-initialised
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -251,16 +251,16 @@ long int AddObjsToChunk(long int * flag_vals, vector<object_props *> & detection
       check_obj_ids.push_back(obj);
 
       // reconstruct the object from the sparse representation and update the flag_vals array
-      for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); x++){
+      for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); ++x){
 	
-	for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); y++){
+	for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); ++y){
 	  
 	  // x,y position of object lies inside boundaries of chunk, so flag the flag_vals array with the obj number for every object string
 	  if((x >= chunk_x_start) && (x < (chunk_x_start + chunk_x_size)) && (y >= chunk_y_start) && (y < (chunk_y_start + chunk_y_size))){
 	    
-	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); g++){
+	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); f++){
+	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = obj;
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = obj;
@@ -372,10 +372,10 @@ int AddObjsToChunk(int * flag_vals, vector<object_props_dbl *> & detections, int
     progress = 0.0;
     std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
     
-    for(obj = 0; obj < NOobj; obj++){
+    for(obj = 0; obj < NOobj; ++obj){
       
       // calculate obj_batch number for this object
-      obj_batch = floorf(((float) obj / (float) obj_limit));
+      obj_batch = (int) floorf(((float) obj / (float) obj_limit));
       
       // move to the next object if it's been re-initialised
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -397,16 +397,16 @@ int AddObjsToChunk(int * flag_vals, vector<object_props_dbl *> & detections, int
       check_obj_ids.push_back(obj);
 
       // reconstruct the object from the sparse representation and update the flag_vals array
-      for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); x++){
+      for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); ++x){
 	
-	for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); y++){
+	for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); ++y){
 	  
 	  // x,y position of object lies inside boundaries of chunk, so flag the flag_vals array with the obj number for every object string
 	  if((x >= chunk_x_start) && (x < (chunk_x_start + chunk_x_size)) && (y >= chunk_y_start) && (y < (chunk_y_start + chunk_y_size))){
 	    
-	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); g++){
+	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); f++){
+	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = obj;
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = obj;
@@ -440,7 +440,7 @@ int AddObjsToChunk(int * flag_vals, vector<object_props_dbl *> & detections, int
   
 }
 
-long int AddObjsToChunk(long int * flag_vals, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, vector<long int> & check_obj_ids, int * data_metric, int * xyz_order){
+int AddObjsToChunk(long int * flag_vals, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, vector<long int> & check_obj_ids, int * data_metric, int * xyz_order){
 
   float progress;
   long int obj, obj_batch;
@@ -517,10 +517,10 @@ long int AddObjsToChunk(long int * flag_vals, vector<object_props_dbl *> & detec
     progress = 0.0;
     std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
     
-    for(obj = 0; obj < NOobj; obj++){
+    for(obj = 0; obj < NOobj; ++obj){
       
       // calculate obj_batch number for this object
-      obj_batch = floorf(((double) obj / (double) obj_limit));
+      obj_batch = (long int) floor(((double) obj / (double) obj_limit));
       
       // move to the next object if it's been re-initialised
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -542,16 +542,16 @@ long int AddObjsToChunk(long int * flag_vals, vector<object_props_dbl *> & detec
       check_obj_ids.push_back(obj);
 
       // reconstruct the object from the sparse representation and update the flag_vals array
-      for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); x++){
+      for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); ++x){
 	
-	for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); y++){
+	for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); ++y){
 	  
 	  // x,y position of object lies inside boundaries of chunk, so flag the flag_vals array with the obj number for every object string
 	  if((x >= chunk_x_start) && (x < (chunk_x_start + chunk_x_size)) && (y >= chunk_y_start) && (y < (chunk_y_start + chunk_y_size))){
 	    
-	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); g++){
+	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); f++){
+	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = obj;
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = obj;

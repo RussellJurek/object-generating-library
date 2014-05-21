@@ -152,7 +152,7 @@ int main(int argc, char* argv[]){
   xyz_order[0] = 1;
   xyz_order[1] = 2;
   xyz_order[2] = 3;
-  for(i = 15; i < argc; i++){
+  for(i = 15; i < argc; ++i){
 
     dummy2.str("");
     dummy2.clear();
@@ -164,21 +164,21 @@ int main(int argc, char* argv[]){
     if((dummy1 == "-m") || (dummy1 == "-M")){ mask_output_flag = 1; }
     if((dummy1 == "-do") || (dummy1 == "-DO") || (dummy1 == "-dO") || (dummy1 == "-Do")){
 
-      i++;
+      ++i;
       dummy2.str("");
       dummy2.clear();
       dummy2 << argv[i];
       dummy1.clear();
       dummy2 >> xyz_order[0];
      
-      i++;
+      ++i;
       dummy2.str("");
       dummy2.clear();
       dummy2 << argv[i];
       dummy1.clear();
       dummy2 >> xyz_order[1];
 
-      i++;
+      ++i;
       dummy2.str("");
       dummy2.clear();
       dummy2 << argv[i];
@@ -262,7 +262,7 @@ int main(int argc, char* argv[]){
 
     dummy1.clear();
     dummy1 = dummy3;
-    for(i = 0; i < dummy1.length(); i++){ dummy1[i] = toupper(dummy1[i]); }
+    for(i = 0; i < dummy1.length(); ++i){ dummy1[i] = toupper(dummy1[i]); }
     cout << "Datacube units are " << dummy1 << ". Calculating conversion factor to mJy/beam." << endl;
     
     if(dummy1 == "JY/BEAM"){ 
@@ -409,9 +409,9 @@ int main(int argc, char* argv[]){
   if(status > 0){ fits_report_error(stderr,status); return 1; }
   
   // for each chunk, load it into memory, then smooth it, updating progress in terms of 1GB chunk and overall
-  for(j = 0; j < temp_chunk_y_size; j++){
+  for(j = 0; j < temp_chunk_y_size; ++j){
     
-    for(i = 0; i < temp_chunk_x_size; i++){
+    for(i = 0; i < temp_chunk_x_size; ++i){
       
       cout << "\nProcessing chunk " << (1 + i + (j * temp_chunk_x_size)) << " of " << (temp_chunk_x_size * temp_chunk_y_size) << " . . . " << endl;
       
@@ -440,9 +440,9 @@ int main(int argc, char* argv[]){
 
       // initialise mask array
       cout << "Initialising flag_vals array for this chunk . . . " << endl;
-      for(f = 0; f < chunk_z_size; f++){
-	for(y = 0; y < chunk_y_size; y++){
-	  for(x = 0; x < chunk_x_size; x++){
+      for(f = 0; f < chunk_z_size; ++f){
+	for(y = 0; y < chunk_y_size; ++y){
+	  for(x = 0; x < chunk_x_size; ++x){
 	    flag_vals[((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x)] = -99;
 	  }
 	}
@@ -460,9 +460,9 @@ int main(int argc, char* argv[]){
 
       // initialise data array
       cout << "Initialising data_vals array for this chunk . . . " << endl;
-      for(f = 0; f < chunk_z_size; f++){
-	for(y = 0; y < chunk_y_size; y++){
-	  for(x = 0; x < chunk_x_size; x++){
+      for(f = 0; f < chunk_z_size; ++f){
+	for(y = 0; y < chunk_y_size; ++y){
+	  for(x = 0; x < chunk_x_size; ++x){
 	    data_vals[((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x)] = 0.0;
 	  }
 	}
@@ -484,9 +484,9 @@ int main(int argc, char* argv[]){
 	cout << "Converting fluxes to mJy/beam . . . " << endl;
 	cout << "0 | |:| | : | |:| | 100% complete" << endl;
 	progress = 0.0;
-	for(f = 0; (f < chunk_z_size); f++){
-	  for(y = 0; (y < chunk_y_size); y++){
-	    for(x = 0; (x < chunk_x_size); x++){
+	for(f = 0; (f < chunk_z_size); ++f){
+	  for(y = 0; (y < chunk_y_size); ++y){
+	    for(x = 0; (x < chunk_x_size); ++x){
 	      
 	      while(progress <= (((float) ((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x + 1)) / ((float) (chunk_x_size * chunk_y_size * NOf)))){ cout << "*"; cout.flush(); progress+=0.05; }
 	      data_vals[((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x)]*=unit_scaling;
@@ -502,9 +502,9 @@ int main(int argc, char* argv[]){
       cout << "Checking that flag_vals array consists of negative definite values . . . " << endl;
       cout << "0 | |:| | : | |:| | 100% complete" << endl;
       progress = 0.0;
-      for(f = 0; (f < chunk_z_size); f++){
-	for(y = 0; (y < chunk_y_size); y++){
-	  for(x = 0; (x < chunk_x_size); x++){ 
+      for(f = 0; (f < chunk_z_size); ++f){
+	for(y = 0; (y < chunk_y_size); ++y){
+	  for(x = 0; (x < chunk_x_size); ++x){ 
 	    
 	    while(progress <= (((float) ((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x + 1)) / ((float) (chunk_x_size * chunk_y_size * NOf)))){ cout << "*"; cout.flush(); progress+=0.05; }
 
@@ -538,21 +538,21 @@ int main(int argc, char* argv[]){
  
       // count the number of objects remaining and display
       k = 0;
-      for(obj = 0; obj < NOobj; obj++){
+      for(obj = 0; obj < NOobj; ++obj){
 
        	// calculate obj_batch number for this object
-	obj_batch = floorf(((float) obj / (float) obj_limit));
+	obj_batch = (int) floorf(((float) obj / (float) obj_limit));
 
 	// increment count if not a re-initialised object
-	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() >= 1){ k++; }
+	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() >= 1){ ++k; }
 	
       }   
       cout << "Maximum number of objects found so far is " << NOobj << ", " << k << " unique objects remain after merging then size thresholding." << endl;
    
-      // for(i = 0; i < temp_chunk_x_size; i++)
+      // for(i = 0; i < temp_chunk_x_size; ++i)
     }
 
-    // for(j = 0; j < temp_chunk_y_size; j++)
+    // for(j = 0; j < temp_chunk_y_size; ++j)
   }
 
   // close input files
