@@ -708,22 +708,22 @@ void object_props::CalcProps(){
   }
 
   // remove inf's and nan's from the various arrays
-  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1)); g++){
+  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1)); ++g){
     if((std::isinf(mini_mom0[g])) || (std::isnan(mini_mom0[g]))){ mini_mom0[g] = 0.0; }
     if((std::isinf(mini_vfield[g])) || (std::isnan(mini_vfield[g]))){ mini_vfield[g] = 0.0; }
   }
-  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[5] - srep_size[4] + 1)); g++){
+  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[5] - srep_size[4] + 1)); ++g){
     if((std::isinf(mini_RAPV[g])) || (std::isnan(mini_RAPV[g]))){ mini_RAPV[g] = 0.0; }
   }
-  for(g = 0; g < ((srep_size[3] - srep_size[2] + 1) * (srep_size[5] - srep_size[4] + 1)); g++){
+  for(g = 0; g < ((srep_size[3] - srep_size[2] + 1) * (srep_size[5] - srep_size[4] + 1)); ++g){
     if((std::isinf(mini_DECPV[g])) || (std::isnan(mini_DECPV[g]))){ mini_DECPV[g] = 0.0; }
   }
-  for(g = 0; g < ((srep_size[5] - srep_size[4] + 1)); g++){
+  for(g = 0; g < ((srep_size[5] - srep_size[4] + 1)); ++g){
     if((std::isinf(mini_obj_spec[g])) || (std::isnan(mini_obj_spec[g]))){ mini_obj_spec[g] = 0.0; }
   }  
 
   // normalise velocity field array
-  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1)); g++){ 
+  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1)); ++g){ 
 
     if(mini_mom0[g] != 0.0){
 
@@ -747,9 +747,9 @@ void object_props::CalcProps(){
       
     // a. calculate W_50 and W_20 in conventional manner
     dummy = -1E10;
-    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); g++){ if((flip * mini_obj_spec[g]) >= dummy){ dummy = (flip * mini_obj_spec[g]); w_max = (float) (g + srep_size[4]); } }
+    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); ++g){ if((flip * mini_obj_spec[g]) >= dummy){ dummy = (flip * mini_obj_spec[g]); w_max = (float) (g + srep_size[4]); } }
     w20_min = (float) (srep_size[4]);
-    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); g++){ 
+    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); ++g){ 
       
       if((flip * mini_obj_spec[g]) >= (0.2 * dummy)){ 
 	
@@ -769,7 +769,7 @@ void object_props::CalcProps(){
       
     }
     w20_max = (float) (srep_size[5]);
-    for(g = srep_size[5] - srep_size[4]; g >= 0; g--){ 
+    for(g = srep_size[5] - srep_size[4]; g >= 0; --g){ 
       
       if((flip * mini_obj_spec[g]) >= (0.2 * dummy)){ 
 	
@@ -789,7 +789,7 @@ void object_props::CalcProps(){
 	
     }
     w50_min = (float) (srep_size[4]);
-    for(g = (int) floorf((w20_min - (float) srep_size[4])); g < (srep_size[5] - srep_size[4] + 1); g++){ 
+    for(g = (int) floorf((w20_min - (float) srep_size[4])); g < (srep_size[5] - srep_size[4] + 1); ++g){ 
       
       if((flip * mini_obj_spec[g]) >= (0.5 * dummy)){ 
 	
@@ -809,7 +809,7 @@ void object_props::CalcProps(){
       
     }
     w50_max = (float) (srep_size[5]);
-    for(g = (int) floorf((w20_max - (float) srep_size[4])); g >= 0; g--){ 
+    for(g = (int) floorf((w20_max - (float) srep_size[4])); g >= 0; --g){ 
       
       if((flip * mini_obj_spec[g]) >= (0.5 * dummy)){ 
 	
@@ -831,7 +831,7 @@ void object_props::CalcProps(){
     
     // b. calculate W_50 and W_20 according to c.f.d. values that correspond to FWHM and 1/5th of peak for a gaussian profile
     cw_max = cw20_min = cw50_min = dummy = 0.0;
-    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); g++){ 
+    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); ++g){ 
       
       if(((dummy + (mini_obj_spec[g]/tot_intens)) >= 0.5) && (dummy < 0.5)){ 
 	
@@ -879,7 +879,7 @@ void object_props::CalcProps(){
       
     }
     cw20_max = cw50_max = dummy = 1.0;
-    for(g = srep_size[5] - srep_size[4]; ((g >= 0) && (g > (cw_max - 1 - srep_size[4]))); g--){ 
+    for(g = srep_size[5] - srep_size[4]; ((g >= 0) && (g > (cw_max - 1 - srep_size[4]))); --g){ 
       
       if(((dummy - (mini_obj_spec[g]/tot_intens)) <= 0.880484) && (dummy > 0.880484)){ 
 	
@@ -957,13 +957,13 @@ void object_props::ShowAll_file(int id, std::fstream& output_file, int cat_mode)
 
 void object_props::ShowProps_file_WCS(int id, std::fstream& output_file, double wcs_vals[6]){
     
-  output_file << id << " " << NOvox << " " << wcs_vals[0] << " " << wcs_vals[1] << " " << wcs_vals[2] << " " << wcs_vals[3] << " " << wcs_vals[4] << " " << wcs_vals[5] << " " << ra << " " << dec << " " << freq << " " << ra_i << " " << dec_i << " " << freq_i << " " << tot_intens << " " << avg_intens << " " << sigma_intens << " " << rms << " " << min_intens << " " << max_intens << " " << ra_min << " " << ra_max << " " << dec_min << " " << dec_max << " " << freq_min << " " << freq_max << " " << w_max << " " << w50_min << " " << w50_max << " " << w20_min << " " << w20_max << " " << cw_max << " " << cw50_min << " " << cw50_max << " " << cw20_min << " " << cw20_max << " " << std::flush;
+  output_file << id << " " << NOvox << " " << wcs_vals[0] << " " << wcs_vals[1] << " " << wcs_vals[2] << " " << wcs_vals[3] << " " << wcs_vals[4] << " " << wcs_vals[5] << " " << ra << " " << dec << " " << freq << " " << ra_i << " " << dec_i << " " << freq_i << " " << p_ra_i << " " << p_dec_i << " " << p_freq_i << " " << n_ra_i << " " << n_dec_i << " " << n_freq_i << " " << tot_intens << " " << p_tot_intens << " " << n_tot_intens << " " << avg_intens << " " << sigma_intens << " " << rms << " " << min_intens << " " << max_intens << " " << ra_min << " " << ra_max << " " << dec_min << " " << dec_max << " " << freq_min << " " << freq_max << " " << w_max << " " << w50_min << " " << w50_max << " " << w20_min << " " << w20_max << " " << cw_max << " " << cw50_min << " " << cw50_max << " " << cw20_min << " " << cw20_max << " " << std::flush;
   
 }
 
 void object_props::ShowProps_file(int id, std::fstream& output_file){
     
-  output_file << id << " " << NOvox << " " << ra << " " << dec << " " << freq << " " << ra_i << " " << dec_i << " " << freq_i << " " << tot_intens << " " << avg_intens << " " << sigma_intens << " " << rms << " " << min_intens << " " << max_intens << " " << ra_min << " " << ra_max << " " << dec_min << " " << dec_max << " " << freq_min << " " << freq_max << " " << w_max << " " << w50_min << " " << w50_max << " " << w20_min << " " << w20_max << " " << cw_max << " " << cw50_min << " " << cw50_max << " " << cw20_min << " " << cw20_max << " " << std::flush;
+  output_file << id << " " << NOvox << " " << ra << " " << dec << " " << freq << " " << ra_i << " " << dec_i << " " << freq_i << " " << p_ra_i << " " << p_dec_i << " " << p_freq_i << " " << n_ra_i << " " << n_dec_i << " " << n_freq_i << " " << tot_intens << " " << p_tot_intens << " " << n_tot_intens << " " << avg_intens << " " << sigma_intens << " " << rms << " " << min_intens << " " << max_intens << " " << ra_min << " " << ra_max << " " << dec_min << " " << dec_max << " " << freq_min << " " << freq_max << " " << w_max << " " << w50_min << " " << w50_max << " " << w20_min << " " << w20_max << " " << cw_max << " " << cw50_min << " " << cw50_max << " " << cw20_min << " " << cw20_max << " " << std::flush;
   
 }
 
@@ -972,9 +972,9 @@ void object_props::ShowSrep_file(std::fstream& output_file){
   int g;
   
   output_file << ": " << std::flush;
-  for(g = 0; g < (1 + ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1))); g++){ output_file << srep_grid[g] << " "; }
+  for(g = 0; g < (1 + ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1))); ++g){ output_file << srep_grid[g] << " "; }
   output_file << ": " << std::flush;
-  for(g = 0; g < (2 * srep_grid[((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1))]); g++){ output_file << srep_strings[g] << " "; }
+  for(g = 0; g < (2 * srep_grid[((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1))]); ++g){ output_file << srep_strings[g] << " "; }
   output_file << std::flush;
 
 }
@@ -1297,12 +1297,12 @@ void object_props::AddObject(object_props & merged){
       
       // a. grid
       temp_sparse_reps_grid.resize(0);
-      for(g = 0; g < (1 + ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1))); g++){ temp_sparse_reps_grid.push_back(0); }
+      for(g = 0; g < (1 + ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1))); ++g){ temp_sparse_reps_grid.push_back(0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_sparse_reps_grid[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())] = this->Get_srep_grid(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx + 1)) - this->Get_srep_grid(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -1314,13 +1314,13 @@ void object_props::AddObject(object_props & merged){
       
       // b. mom-0
       temp_mom0.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); g++){ temp_mom0.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); ++g){ temp_mom0.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_mom0[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_mom0(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -1332,13 +1332,13 @@ void object_props::AddObject(object_props & merged){
       
       // c. RAPV
       temp_RAPV.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_RAPV.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_RAPV.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	    
 	    temp_RAPV[(((sz + this->Get_srep_size(4) - this->GetFREQmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_RAPV(((sz * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -1350,13 +1350,13 @@ void object_props::AddObject(object_props & merged){
       
       // d. DECPV
       temp_DECPV.resize(0);
-      for(g = 0; g < ((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_DECPV.push_back(0.0); }
+      for(g = 0; g < ((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_DECPV.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	    
 	    temp_DECPV[(((sz + this->Get_srep_size(4) - this->GetFREQmin()) * (this->GetDECmax() - this->GetDECmin() + 1)) + sy + this->Get_srep_size(2) - this->GetDECmin())]+=this->Get_DECPV(((sz * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + sy));
 	    
@@ -1370,22 +1370,22 @@ void object_props::AddObject(object_props & merged){
       if((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) >= 10){
 	
 	temp_ref_spec.resize(0);
-	for(g = 0; g < (2 * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_ref_spec.push_back(0.0); }
+	for(g = 0; g < (2 * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_ref_spec.push_back(0.0); }
 	
 	if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	  
-	  for(sz = 0; sz < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); sz++){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 
+	  for(sz = 0; sz < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++sz){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 
 	  
 	}
 	
       } else {
 	
 	temp_ref_spec.resize(0);
-	for(g = 0; g < (this->GetFREQmax() - this->GetFREQmin() + 11); g++){ temp_ref_spec.push_back(0.0); }
+	for(g = 0; g < (this->GetFREQmax() - this->GetFREQmin() + 11); ++g){ temp_ref_spec.push_back(0.0); }
 	
 	if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); sz++){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 		    
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); ++sz){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 		    
 	  
 	}
 	
@@ -1393,10 +1393,10 @@ void object_props::AddObject(object_props & merged){
       
       // f. obj_spec
       temp_obj_spec.resize(0);
-      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); g++){ temp_obj_spec.push_back(0.0); }		  
+      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++g){ temp_obj_spec.push_back(0.0); }		  
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_obj_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_ospec(sz);
 	  
@@ -1406,13 +1406,13 @@ void object_props::AddObject(object_props & merged){
       
       // g. vfield
       temp_vfield.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); g++){ temp_vfield.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); ++g){ temp_vfield.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_vfield[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_vfield(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -1425,9 +1425,9 @@ void object_props::AddObject(object_props & merged){
       // write the merged object's sparse representations into temporary arrays
       
       // a. grid
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_sparse_reps_grid[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=(merged.Get_srep_grid(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx + 1)) - merged.Get_srep_grid(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx)));
 	  
@@ -1436,9 +1436,9 @@ void object_props::AddObject(object_props & merged){
       }
       
       // b. mom-0
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_mom0[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_mom0(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -1447,9 +1447,9 @@ void object_props::AddObject(object_props & merged){
       }
       
       // c. RAPV
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_RAPV[(((sz + merged.Get_srep_size(4) - this->GetFREQmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_RAPV(((sz * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -1458,9 +1458,9 @@ void object_props::AddObject(object_props & merged){
       }
       
       // d. DECPV
-      for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+      for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_DECPV[(((sz + merged.Get_srep_size(4) - this->GetFREQmin()) * (this->GetDECmax() - this->GetDECmin() + 1)) + sy + merged.Get_srep_size(2) - this->GetDECmin())]+=merged.Get_DECPV(((sz * (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1)) + sy));
 	  
@@ -1471,7 +1471,7 @@ void object_props::AddObject(object_props & merged){
       // e. ref_spec
       if((merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1) >= 10){
 	
-	for(sz = 0; sz < (2 * (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1)); sz++){ 
+	for(sz = 0; sz < (2 * (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1)); ++sz){ 
 	  
 	  if((sz + merged.Get_srep_size(4) - merged.GetFREQmin()) >= 0){
 	    
@@ -1483,7 +1483,7 @@ void object_props::AddObject(object_props & merged){
 	
       } else {
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 11); sz++){ 
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 11); ++sz){ 
 	  
 	  if((sz + merged.Get_srep_size(4) - this->GetFREQmin()) >= 0){
 	    
@@ -1496,16 +1496,16 @@ void object_props::AddObject(object_props & merged){
       }
       
       // f. obj_spec
-      for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	
 	temp_obj_spec[(sz + merged.Get_srep_size(4) - this->GetFREQmin())]+=merged.Get_ospec(sz);
 	
       }
       
       // g. vfield
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_vfield[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_vfield(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -1516,20 +1516,20 @@ void object_props::AddObject(object_props & merged){
       // convert temp_sparse_reps_grid from differential to cumulative counts using temp_sparse_reps_string as an intermediary
       temp_sparse_reps_strings.resize(1);
       temp_sparse_reps_strings[0] = 0;
-      for(g = 1; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); g++){ temp_sparse_reps_strings.push_back(temp_sparse_reps_strings[(g - 1)] + temp_sparse_reps_grid[(g - 1)]); }
-      for(g = 0; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); g++){ temp_sparse_reps_grid[g] = temp_sparse_reps_strings[g]; }
+      for(g = 1; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); ++g){ temp_sparse_reps_strings.push_back(temp_sparse_reps_strings[(g - 1)] + temp_sparse_reps_grid[(g - 1)]); }
+      for(g = 0; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); ++g){ temp_sparse_reps_grid[g] = temp_sparse_reps_strings[g]; }
       
       // write new sparse_reps_strings value to temp_sparse_reps_strings array, using various grids to achieve indexing
       
       // a. initialise temp_sparse_reps_strings
       temp_sparse_reps_strings.resize(0);
-      for(g = 0; g < (2 * temp_sparse_reps_grid[((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetRAmax() - this->GetRAmin() + 1))]); g++){ temp_sparse_reps_strings.push_back(0); }
+      for(g = 0; g < (2 * temp_sparse_reps_grid[((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetRAmax() - this->GetRAmin() + 1))]); ++g){ temp_sparse_reps_strings.push_back(0); }
       
       
       // b. for each line of sight through the new existing object bounding box, retrieve the channel range of each object string along this LoS
-      for(sy = this->GetDECmin(); sy <= this->GetDECmax(); sy++){
+      for(sy = this->GetDECmin(); sy <= this->GetDECmax(); ++sy){
 	
-	for(sx = this->GetRAmin(); sx <= this->GetRAmax(); sx++){
+	for(sx = this->GetRAmin(); sx <= this->GetRAmax(); ++sx){
 	  
 	  // initialise the number of object strings written to this LoS
 	  k = 0;
@@ -1542,12 +1542,12 @@ void object_props::AddObject(object_props & merged){
 	    
 	    if((sx >= this->Get_srep_size(0)) && (sx <= this->Get_srep_size(1)) && (sy >= this->Get_srep_size(2)) && (sy <= this->Get_srep_size(3))){
 	      
-	      for(g = this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0))); g < this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0) + 1)); g++){
+	      for(g = this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0))); g < this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0) + 1)); ++g){
 		
 		temp_sparse_reps_strings[(j + k)] = this->Get_srep_strings((2 * g));
-		k++;
+		++k;
 		temp_sparse_reps_strings[(j + k)] = this->Get_srep_strings(((2 * g) + 1));
-		k++;
+		++k;
 		
 	      }
 	      
@@ -1560,22 +1560,22 @@ void object_props::AddObject(object_props & merged){
 	  // write match_init[i] object strings to temp_strings_array
 	  if((sx >= merged.Get_srep_size(0)) && (sx <= merged.Get_srep_size(1)) && (sy >= merged.Get_srep_size(2)) && (sy <= merged.Get_srep_size(3))){
 	    
-	    for(g = merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0))); g < merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0) + 1)); g++){
+	    for(g = merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0))); g < merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0) + 1)); ++g){
 	      
 	      temp_sparse_reps_strings[(j + k)] = merged.Get_srep_strings((2 * g));
-	      k++;
+	      ++k;
 	      temp_sparse_reps_strings[(j + k)] = merged.Get_srep_strings(((2 * g) + 1));
-	      k++;
+	      ++k;
 	      
 	    }
 	    
 	    // if((sx >= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][0]) && (sx <= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][1]) && (sy >= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][2]) && (sy <= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][3]))
 	  }
 	  
-	  // for(sx = 0; sx < (); sx++)
+	  // for(sx = 0; sx < (); ++sx)
 	}
 	
-	// for(sy = 0; sy < (); sy++)
+	// for(sy = 0; sy < (); ++sy)
       }
       
       // over-write the existing object's sparse representations with the existing+merged sparse representations
@@ -1589,51 +1589,51 @@ void object_props::AddObject(object_props & merged){
       // a. grid
       this->Free_srep_grid();
       this->Create_srep_grid((((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1));
-      for(g = 0; g < (((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1); g++){ this->Set_srep_grid(g,temp_sparse_reps_grid[g]); }
+      for(g = 0; g < (((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1); ++g){ this->Set_srep_grid(g,temp_sparse_reps_grid[g]); }
       
       // b. mini_mom0
       this->Free_mom0();
       this->Create_mom0(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); g++){ this->Set_mom0(g,temp_mom0[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); ++g){ this->Set_mom0(g,temp_mom0[g]); }
       
       // c. mini_RAPV
       this->Free_RAPV();
       this->Create_RAPV(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_RAPV(g,temp_RAPV[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_RAPV(g,temp_RAPV[g]); }
       
       // d. mini_DECPV
       this->Free_DECPV();
       this->Create_DECPV(((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(3) - this->Get_srep_size(2) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_DECPV(g,temp_DECPV[g]); }
+      for(g = 0; g < ((this->Get_srep_size(3) - this->Get_srep_size(2) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_DECPV(g,temp_DECPV[g]); }
       
       // e. mini_obj_spec
       this->Free_ospec();
       this->Create_ospec((this->Get_srep_size(5) - this->Get_srep_size(4) + 1));
-      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); g++){ this->Set_ospec(g,temp_obj_spec[g]); }
+      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++g){ this->Set_ospec(g,temp_obj_spec[g]); }
       
       // f. mini_ref_spec
       this->Free_rspec();
       if((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) >= 10){
 	
 	this->Create_rspec((2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)));
-	for(g = 0; g < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_rspec(g,temp_ref_spec[g]); }
+	for(g = 0; g < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_rspec(g,temp_ref_spec[g]); }
 	
       } else {
 	
 	this->Create_rspec((this->Get_srep_size(5) - this->Get_srep_size(4) + 11));
-	for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); g++){ this->Set_rspec(g,temp_ref_spec[g]); }
+	for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); ++g){ this->Set_rspec(g,temp_ref_spec[g]); }
 	
       }
       
       // g. mini_vfield
       this->Free_vfield();
       this->Create_vfield(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); g++){ this->Set_vfield(g,temp_vfield[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); ++g){ this->Set_vfield(g,temp_vfield[g]); }
       
       // h. sparse_reps_strings
       this->Free_srep_strings();
       this->Create_srep_strings((2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))));
-      for(g = 0; g < (2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))); g++){ this->Set_srep_strings(g,temp_sparse_reps_strings[g]); }
+      for(g = 0; g < (2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))); ++g){ this->Set_srep_strings(g,temp_sparse_reps_strings[g]); }
       
     }
   
@@ -1675,12 +1675,12 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       
       // a. grid
       temp_sparse_reps_grid.resize(0);
-      for(g = 0; g < (1 + ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1))); g++){ temp_sparse_reps_grid.push_back(0); }
+      for(g = 0; g < (1 + ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1))); ++g){ temp_sparse_reps_grid.push_back(0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_sparse_reps_grid[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())] = this->Get_srep_grid(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx + 1)) - this->Get_srep_grid(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -1692,13 +1692,13 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       
       // b. mom-0
       temp_mom0.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); g++){ temp_mom0.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); ++g){ temp_mom0.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_mom0[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_mom0(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -1710,13 +1710,13 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       
       // c. RAPV
       temp_RAPV.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_RAPV.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_RAPV.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	    
 	    temp_RAPV[(((sz + this->Get_srep_size(4) - this->GetFREQmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_RAPV(((sz * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -1728,13 +1728,13 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       
       // d. DECPV
       temp_DECPV.resize(0);
-      for(g = 0; g < ((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_DECPV.push_back(0.0); }
+      for(g = 0; g < ((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_DECPV.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	    
 	    temp_DECPV[(((sz + this->Get_srep_size(4) - this->GetFREQmin()) * (this->GetDECmax() - this->GetDECmin() + 1)) + sy + this->Get_srep_size(2) - this->GetDECmin())]+=this->Get_DECPV(((sz * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + sy));
 	    
@@ -1748,22 +1748,22 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       if((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) >= 10){
 	
 	temp_ref_spec.resize(0);
-	for(g = 0; g < (2 * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_ref_spec.push_back(0.0); }
+	for(g = 0; g < (2 * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_ref_spec.push_back(0.0); }
 	
 	if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	  
-	  for(sz = 0; sz < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); sz++){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 
+	  for(sz = 0; sz < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++sz){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 
 	  
 	}
 	
       } else {
 	
 	temp_ref_spec.resize(0);
-	for(g = 0; g < (this->GetFREQmax() - this->GetFREQmin() + 11); g++){ temp_ref_spec.push_back(0.0); }
+	for(g = 0; g < (this->GetFREQmax() - this->GetFREQmin() + 11); ++g){ temp_ref_spec.push_back(0.0); }
 	
 	if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); sz++){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 		    
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); ++sz){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 		    
 	  
 	}
 	
@@ -1771,10 +1771,10 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       
       // f. obj_spec
       temp_obj_spec.resize(0);
-      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); g++){ temp_obj_spec.push_back(0.0); }		  
+      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++g){ temp_obj_spec.push_back(0.0); }		  
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_obj_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_ospec(sz);
 	  
@@ -1784,13 +1784,13 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       
       // g. vfield
       temp_vfield.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); g++){ temp_vfield.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); ++g){ temp_vfield.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_vfield[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_vfield(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -1803,9 +1803,9 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       // write the merged object's sparse representations into temporary arrays
       
       // a. grid
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_sparse_reps_grid[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=(merged.Get_srep_grid(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx + 1)) - merged.Get_srep_grid(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx)));
 	  
@@ -1814,9 +1814,9 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       }
       
       // b. mom-0
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_mom0[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_mom0(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -1825,9 +1825,9 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       }
       
       // c. RAPV
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_RAPV[(((sz + merged.Get_srep_size(4) - this->GetFREQmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_RAPV(((sz * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -1836,9 +1836,9 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       }
       
       // d. DECPV
-      for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+      for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_DECPV[(((sz + merged.Get_srep_size(4) - this->GetFREQmin()) * (this->GetDECmax() - this->GetDECmin() + 1)) + sy + merged.Get_srep_size(2) - this->GetDECmin())]+=merged.Get_DECPV(((sz * (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1)) + sy));
 	  
@@ -1849,7 +1849,7 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       // e. ref_spec
       if((merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1) >= 10){
 	
-	for(sz = 0; sz < (2 * (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1)); sz++){ 
+	for(sz = 0; sz < (2 * (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1)); ++sz){ 
 	  
 	  if((sz + merged.Get_srep_size(4) - merged.GetFREQmin()) >= 0){
 	    
@@ -1861,7 +1861,7 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
 	
       } else {
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 11); sz++){ 
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 11); ++sz){ 
 	  
 	  if((sz + merged.Get_srep_size(4) - this->GetFREQmin()) >= 0){
 	    
@@ -1874,16 +1874,16 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       }
       
       // f. obj_spec
-      for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	
 	temp_obj_spec[(sz + merged.Get_srep_size(4) - this->GetFREQmin())]+=merged.Get_ospec(sz);
 	
       }
       
       // g. vfield
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_vfield[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_vfield(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -1894,20 +1894,20 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       // convert temp_sparse_reps_grid from differential to cumulative counts using temp_sparse_reps_string as an intermediary
       temp_sparse_reps_strings.resize(1);
       temp_sparse_reps_strings[0] = 0;
-      for(g = 1; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); g++){ temp_sparse_reps_strings.push_back(temp_sparse_reps_strings[(g - 1)] + temp_sparse_reps_grid[(g - 1)]); }
-      for(g = 0; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); g++){ temp_sparse_reps_grid[g] = temp_sparse_reps_strings[g]; }
+      for(g = 1; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); ++g){ temp_sparse_reps_strings.push_back(temp_sparse_reps_strings[(g - 1)] + temp_sparse_reps_grid[(g - 1)]); }
+      for(g = 0; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); ++g){ temp_sparse_reps_grid[g] = temp_sparse_reps_strings[g]; }
       
       // write new sparse_reps_strings value to temp_sparse_reps_strings array, using various grids to achieve indexing
       
       // a. initialise temp_sparse_reps_strings
       temp_sparse_reps_strings.resize(0);
-      for(g = 0; g < (2 * temp_sparse_reps_grid[((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetRAmax() - this->GetRAmin() + 1))]); g++){ temp_sparse_reps_strings.push_back(0); }
+      for(g = 0; g < (2 * temp_sparse_reps_grid[((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetRAmax() - this->GetRAmin() + 1))]); ++g){ temp_sparse_reps_strings.push_back(0); }
       
       
       // b. for each line of sight through the new existing object bounding box, retrieve the channel range of each object string along this LoS
-      for(sy = this->GetDECmin(); sy <= this->GetDECmax(); sy++){
+      for(sy = this->GetDECmin(); sy <= this->GetDECmax(); ++sy){
 	
-	for(sx = this->GetRAmin(); sx <= this->GetRAmax(); sx++){
+	for(sx = this->GetRAmin(); sx <= this->GetRAmax(); ++sx){
 	  
 	  // initialise the number of object strings written to this LoS
 	  k = 0;
@@ -1920,12 +1920,12 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
 	    
 	    if((sx >= this->Get_srep_size(0)) && (sx <= this->Get_srep_size(1)) && (sy >= this->Get_srep_size(2)) && (sy <= this->Get_srep_size(3))){
 	      
-	      for(g = this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0))); g < this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0) + 1)); g++){
+	      for(g = this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0))); g < this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0) + 1)); ++g){
 		
 		temp_sparse_reps_strings[(j + k)] = this->Get_srep_strings((2 * g));
-		k++;
+		++k;
 		temp_sparse_reps_strings[(j + k)] = this->Get_srep_strings(((2 * g) + 1));
-		k++;
+		++k;
 		
 	      }
 	      
@@ -1938,22 +1938,22 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
 	  // write match_init[i] object strings to temp_strings_array
 	  if((sx >= merged.Get_srep_size(0)) && (sx <= merged.Get_srep_size(1)) && (sy >= merged.Get_srep_size(2)) && (sy <= merged.Get_srep_size(3))){
 	    
-	    for(g = merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0))); g < merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0) + 1)); g++){
+	    for(g = merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0))); g < merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0) + 1)); ++g){
 	      
 	      temp_sparse_reps_strings[(j + k)] = merged.Get_srep_strings((2 * g));
-	      k++;
+	      ++k;
 	      temp_sparse_reps_strings[(j + k)] = merged.Get_srep_strings(((2 * g) + 1));
-	      k++;
+	      ++k;
 	      
 	    }
 	    
 	    // if((sx >= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][0]) && (sx <= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][1]) && (sy >= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][2]) && (sy <= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][3]))
 	  }
 	  
-	  // for(sx = 0; sx < (); sx++)
+	  // for(sx = 0; sx < (); ++sx)
 	}
 	
-	// for(sy = 0; sy < (); sy++)
+	// for(sy = 0; sy < (); ++sy)
       }
       
       // over-write the existing object's sparse representations with the existing+merged sparse representations
@@ -1967,51 +1967,51 @@ void object_props::AddObject(object_props & merged,vector<int> & temp_sparse_rep
       // a. grid
       this->Free_srep_grid();
       this->Create_srep_grid((((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1));
-      for(g = 0; g < (((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1); g++){ this->Set_srep_grid(g,temp_sparse_reps_grid[g]); }
+      for(g = 0; g < (((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1); ++g){ this->Set_srep_grid(g,temp_sparse_reps_grid[g]); }
       
       // b. mini_mom0
       this->Free_mom0();
       this->Create_mom0(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); g++){ this->Set_mom0(g,temp_mom0[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); ++g){ this->Set_mom0(g,temp_mom0[g]); }
       
       // c. mini_RAPV
       this->Free_RAPV();
       this->Create_RAPV(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_RAPV(g,temp_RAPV[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_RAPV(g,temp_RAPV[g]); }
       
       // d. mini_DECPV
       this->Free_DECPV();
       this->Create_DECPV(((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(3) - this->Get_srep_size(2) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_DECPV(g,temp_DECPV[g]); }
+      for(g = 0; g < ((this->Get_srep_size(3) - this->Get_srep_size(2) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_DECPV(g,temp_DECPV[g]); }
       
       // e. mini_obj_spec
       this->Free_ospec();
       this->Create_ospec((this->Get_srep_size(5) - this->Get_srep_size(4) + 1));
-      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); g++){ this->Set_ospec(g,temp_obj_spec[g]); }
+      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++g){ this->Set_ospec(g,temp_obj_spec[g]); }
       
       // f. mini_ref_spec
       this->Free_rspec();
       if((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) >= 10){
 	
 	this->Create_rspec((2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)));
-	for(g = 0; g < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_rspec(g,temp_ref_spec[g]); }
+	for(g = 0; g < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_rspec(g,temp_ref_spec[g]); }
 	
       } else {
 	
 	this->Create_rspec((this->Get_srep_size(5) - this->Get_srep_size(4) + 11));
-	for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); g++){ this->Set_rspec(g,temp_ref_spec[g]); }
+	for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); ++g){ this->Set_rspec(g,temp_ref_spec[g]); }
 	
       }
       
       // g. mini_vfield
       this->Free_vfield();
       this->Create_vfield(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); g++){ this->Set_vfield(g,temp_vfield[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); ++g){ this->Set_vfield(g,temp_vfield[g]); }
       
       // h. sparse_reps_strings
       this->Free_srep_strings();
       this->Create_srep_strings((2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))));
-      for(g = 0; g < (2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))); g++){ this->Set_srep_strings(g,temp_sparse_reps_strings[g]); }
+      for(g = 0; g < (2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))); ++g){ this->Set_srep_strings(g,temp_sparse_reps_strings[g]); }
       
     }
   
@@ -2725,22 +2725,22 @@ void object_props_dbl::CalcProps(){
   }
 
   // remove inf's and nan's from the various arrays
-  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1)); g++){
+  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1)); ++g){
     if((std::isinf(mini_mom0[g])) || (std::isnan(mini_mom0[g]))){ mini_mom0[g] = 0.0; }
     if((std::isinf(mini_vfield[g])) || (std::isnan(mini_vfield[g]))){ mini_vfield[g] = 0.0; }
   }
-  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[5] - srep_size[4] + 1)); g++){
+  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[5] - srep_size[4] + 1)); ++g){
     if((std::isinf(mini_RAPV[g])) || (std::isnan(mini_RAPV[g]))){ mini_RAPV[g] = 0.0; }
   }
-  for(g = 0; g < ((srep_size[3] - srep_size[2] + 1) * (srep_size[5] - srep_size[4] + 1)); g++){
+  for(g = 0; g < ((srep_size[3] - srep_size[2] + 1) * (srep_size[5] - srep_size[4] + 1)); ++g){
     if((std::isinf(mini_DECPV[g])) || (std::isnan(mini_DECPV[g]))){ mini_DECPV[g] = 0.0; }
   }
-  for(g = 0; g < ((srep_size[5] - srep_size[4] + 1)); g++){
+  for(g = 0; g < ((srep_size[5] - srep_size[4] + 1)); ++g){
     if((std::isinf(mini_obj_spec[g])) || (std::isnan(mini_obj_spec[g]))){ mini_obj_spec[g] = 0.0; }
   }  
 
   // normalise velocity field array
-  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1)); g++){ 
+  for(g = 0; g < ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1)); ++g){ 
 
     if(mini_mom0[g] != 0.0){
 
@@ -2764,9 +2764,9 @@ void object_props_dbl::CalcProps(){
       
     // a. calculate W_50 and W_20 in conventional manner
     dummy = -1E10;
-    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); g++){ if((flip * mini_obj_spec[g]) >= dummy){ dummy = (flip * mini_obj_spec[g]); w_max = (double) (g + srep_size[4]); } }
+    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); ++g){ if((flip * mini_obj_spec[g]) >= dummy){ dummy = (flip * mini_obj_spec[g]); w_max = (double) (g + srep_size[4]); } }
     w20_min = (double) (srep_size[4]);
-    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); g++){ 
+    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); ++g){ 
       
       if((flip * mini_obj_spec[g]) >= (0.2 * dummy)){ 
 	
@@ -2786,7 +2786,7 @@ void object_props_dbl::CalcProps(){
       
     }
     w20_max = (double) (srep_size[5]);
-    for(g = srep_size[5] - srep_size[4]; g >= 0; g--){ 
+    for(g = srep_size[5] - srep_size[4]; g >= 0; --g){ 
       
       if((flip * mini_obj_spec[g]) >= (0.2 * dummy)){ 
 	
@@ -2806,7 +2806,7 @@ void object_props_dbl::CalcProps(){
 	
     }
     w50_min = (double) (srep_size[4]);
-    for(g = (int) floorf((w20_min - (double) srep_size[4])); g < (srep_size[5] - srep_size[4] + 1); g++){ 
+    for(g = (int) floorf((w20_min - (double) srep_size[4])); g < (srep_size[5] - srep_size[4] + 1); ++g){ 
       
       if((flip * mini_obj_spec[g]) >= (0.5 * dummy)){ 
 	
@@ -2826,7 +2826,7 @@ void object_props_dbl::CalcProps(){
       
     }
     w50_max = (double) (srep_size[5]);
-    for(g = (int) floorf((w20_max - (double) srep_size[4])); g >= 0; g--){ 
+    for(g = (int) floorf((w20_max - (double) srep_size[4])); g >= 0; --g){ 
       
       if((flip * mini_obj_spec[g]) >= (0.5 * dummy)){ 
 	
@@ -2848,7 +2848,7 @@ void object_props_dbl::CalcProps(){
     
     // b. calculate W_50 and W_20 according to c.f.d. values that correspond to FWHM and 1/5th of peak for a gaussian profile
     cw_max = cw20_min = cw50_min = dummy = 0.0;
-    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); g++){ 
+    for(g = 0; g < (srep_size[5] - srep_size[4] + 1); ++g){ 
       
       if(((dummy + (mini_obj_spec[g]/tot_intens)) >= 0.5) && (dummy < 0.5)){ 
 	
@@ -2896,7 +2896,7 @@ void object_props_dbl::CalcProps(){
       
     }
     cw20_max = cw50_max = dummy = 1.0;
-    for(g = srep_size[5] - srep_size[4]; ((g >= 0) && (g > (cw_max - 1 - srep_size[4]))); g--){ 
+    for(g = srep_size[5] - srep_size[4]; ((g >= 0) && (g > (cw_max - 1 - srep_size[4]))); --g){ 
       
       if(((dummy - (mini_obj_spec[g]/tot_intens)) <= 0.880484) && (dummy > 0.880484)){ 
 	
@@ -2974,13 +2974,13 @@ void object_props_dbl::ShowAll_file(int id, std::fstream& output_file, int cat_m
 
 void object_props_dbl::ShowProps_file_WCS(int id, std::fstream& output_file, double wcs_vals[6]){
     
-  output_file << id << " " << NOvox << " " << wcs_vals[0] << " " << wcs_vals[1] << " " << wcs_vals[2] << " " << wcs_vals[3] << " " << wcs_vals[4] << " " << wcs_vals[5] << " " << ra << " " << dec << " " << freq << " " << ra_i << " " << dec_i << " " << freq_i << " " << tot_intens << " " << avg_intens << " " << sigma_intens << " " << rms << " " << min_intens << " " << max_intens << " " << ra_min << " " << ra_max << " " << dec_min << " " << dec_max << " " << freq_min << " " << freq_max << " " << w_max << " " << w50_min << " " << w50_max << " " << w20_min << " " << w20_max << " " << cw_max << " " << cw50_min << " " << cw50_max << " " << cw20_min << " " << cw20_max << " " << std::flush;
+  output_file << id << " " << NOvox << " " << wcs_vals[0] << " " << wcs_vals[1] << " " << wcs_vals[2] << " " << wcs_vals[3] << " " << wcs_vals[4] << " " << wcs_vals[5] << " " << ra << " " << dec << " " << freq << " " << ra_i << " " << dec_i << " " << freq_i << " " << p_ra_i << " " << p_dec_i << " " << p_freq_i << " " << n_ra_i << " " << n_dec_i << " " << n_freq_i << " " << tot_intens << " " << p_tot_intens << " " << n_tot_intens << " " << avg_intens << " " << sigma_intens << " " << rms << " " << min_intens << " " << max_intens << " " << ra_min << " " << ra_max << " " << dec_min << " " << dec_max << " " << freq_min << " " << freq_max << " " << w_max << " " << w50_min << " " << w50_max << " " << w20_min << " " << w20_max << " " << cw_max << " " << cw50_min << " " << cw50_max << " " << cw20_min << " " << cw20_max << " " << std::flush;
   
 }
 
 void object_props_dbl::ShowProps_file(int id, std::fstream& output_file){
     
-  output_file << id << " " << NOvox << " " << ra << " " << dec << " " << freq << " " << ra_i << " " << dec_i << " " << freq_i << " " << tot_intens << " " << avg_intens << " " << sigma_intens << " " << rms << " " << min_intens << " " << max_intens << " " << ra_min << " " << ra_max << " " << dec_min << " " << dec_max << " " << freq_min << " " << freq_max << " " << w_max << " " << w50_min << " " << w50_max << " " << w20_min << " " << w20_max << " " << cw_max << " " << cw50_min << " " << cw50_max << " " << cw20_min << " " << cw20_max << " " << std::flush;
+  output_file << id << " " << NOvox << " " << ra << " " << dec << " " << freq << " " << ra_i << " " << dec_i << " " << freq_i << " " << p_ra_i << " " << p_dec_i << " " << p_freq_i << " " << n_ra_i << " " << n_dec_i << " " << n_freq_i << " " << tot_intens << " " << p_tot_intens << " " << n_tot_intens << " " << avg_intens << " " << sigma_intens << " " << rms << " " << min_intens << " " << max_intens << " " << ra_min << " " << ra_max << " " << dec_min << " " << dec_max << " " << freq_min << " " << freq_max << " " << w_max << " " << w50_min << " " << w50_max << " " << w20_min << " " << w20_max << " " << cw_max << " " << cw50_min << " " << cw50_max << " " << cw20_min << " " << cw20_max << " " << std::flush;
   
 }
 
@@ -2989,9 +2989,9 @@ void object_props_dbl::ShowSrep_file(std::fstream& output_file){
   int g;
   
   output_file << ": " << std::flush;
-  for(g = 0; g < (1 + ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1))); g++){ output_file << srep_grid[g] << " "; }
+  for(g = 0; g < (1 + ((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1))); ++g){ output_file << srep_grid[g] << " "; }
   output_file << ": " << std::flush;
-  for(g = 0; g < (2 * srep_grid[((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1))]); g++){ output_file << srep_strings[g] << " "; }
+  for(g = 0; g < (2 * srep_grid[((srep_size[1] - srep_size[0] + 1) * (srep_size[3] - srep_size[2] + 1))]); ++g){ output_file << srep_strings[g] << " "; }
   output_file << std::flush;
 
 }
@@ -3314,12 +3314,12 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       
       // a. grid
       temp_sparse_reps_grid.resize(0);
-      for(g = 0; g < (1 + ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1))); g++){ temp_sparse_reps_grid.push_back(0); }
+      for(g = 0; g < (1 + ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1))); ++g){ temp_sparse_reps_grid.push_back(0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_sparse_reps_grid[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())] = this->Get_srep_grid(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx + 1)) - this->Get_srep_grid(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -3331,13 +3331,13 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       
       // b. mom-0
       temp_mom0.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); g++){ temp_mom0.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); ++g){ temp_mom0.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_mom0[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_mom0(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -3349,13 +3349,13 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       
       // c. RAPV
       temp_RAPV.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_RAPV.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_RAPV.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	    
 	    temp_RAPV[(((sz + this->Get_srep_size(4) - this->GetFREQmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_RAPV(((sz * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -3367,13 +3367,13 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       
       // d. DECPV
       temp_DECPV.resize(0);
-      for(g = 0; g < ((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_DECPV.push_back(0.0); }
+      for(g = 0; g < ((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_DECPV.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	    
 	    temp_DECPV[(((sz + this->Get_srep_size(4) - this->GetFREQmin()) * (this->GetDECmax() - this->GetDECmin() + 1)) + sy + this->Get_srep_size(2) - this->GetDECmin())]+=this->Get_DECPV(((sz * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + sy));
 	    
@@ -3387,22 +3387,22 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       if((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) >= 10){
 	
 	temp_ref_spec.resize(0);
-	for(g = 0; g < (2 * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_ref_spec.push_back(0.0); }
+	for(g = 0; g < (2 * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_ref_spec.push_back(0.0); }
 	
 	if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	  
-	  for(sz = 0; sz < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); sz++){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 
+	  for(sz = 0; sz < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++sz){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 
 	  
 	}
 	
       } else {
 	
 	temp_ref_spec.resize(0);
-	for(g = 0; g < (this->GetFREQmax() - this->GetFREQmin() + 11); g++){ temp_ref_spec.push_back(0.0); }
+	for(g = 0; g < (this->GetFREQmax() - this->GetFREQmin() + 11); ++g){ temp_ref_spec.push_back(0.0); }
 	
 	if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); sz++){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 		    
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); ++sz){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 		    
 	  
 	}
 	
@@ -3410,10 +3410,10 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       
       // f. obj_spec
       temp_obj_spec.resize(0);
-      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); g++){ temp_obj_spec.push_back(0.0); }		  
+      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++g){ temp_obj_spec.push_back(0.0); }		  
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_obj_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_ospec(sz);
 	  
@@ -3423,13 +3423,13 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       
       // g. vfield
       temp_vfield.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); g++){ temp_vfield.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); ++g){ temp_vfield.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_vfield[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_vfield(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -3442,9 +3442,9 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       // write the merged object's sparse representations into temporary arrays
       
       // a. grid
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_sparse_reps_grid[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=(merged.Get_srep_grid(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx + 1)) - merged.Get_srep_grid(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx)));
 	  
@@ -3453,9 +3453,9 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       }
       
       // b. mom-0
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_mom0[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_mom0(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -3464,9 +3464,9 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       }
       
       // c. RAPV
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_RAPV[(((sz + merged.Get_srep_size(4) - this->GetFREQmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_RAPV(((sz * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -3475,9 +3475,9 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       }
       
       // d. DECPV
-      for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+      for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_DECPV[(((sz + merged.Get_srep_size(4) - this->GetFREQmin()) * (this->GetDECmax() - this->GetDECmin() + 1)) + sy + merged.Get_srep_size(2) - this->GetDECmin())]+=merged.Get_DECPV(((sz * (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1)) + sy));
 	  
@@ -3488,7 +3488,7 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       // e. ref_spec
       if((merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1) >= 10){
 	
-	for(sz = 0; sz < (2 * (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1)); sz++){ 
+	for(sz = 0; sz < (2 * (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1)); ++sz){ 
 	  
 	  if((sz + merged.Get_srep_size(4) - merged.GetFREQmin()) >= 0){
 	    
@@ -3500,7 +3500,7 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
 	
       } else {
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 11); sz++){ 
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 11); ++sz){ 
 	  
 	  if((sz + merged.Get_srep_size(4) - this->GetFREQmin()) >= 0){
 	    
@@ -3513,16 +3513,16 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       }
       
       // f. obj_spec
-      for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	
 	temp_obj_spec[(sz + merged.Get_srep_size(4) - this->GetFREQmin())]+=merged.Get_ospec(sz);
 	
       }
       
       // g. vfield
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_vfield[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_vfield(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -3533,20 +3533,20 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       // convert temp_sparse_reps_grid from differential to cumulative counts using temp_sparse_reps_string as an intermediary
       temp_sparse_reps_strings.resize(1);
       temp_sparse_reps_strings[0] = 0;
-      for(g = 1; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); g++){ temp_sparse_reps_strings.push_back(temp_sparse_reps_strings[(g - 1)] + temp_sparse_reps_grid[(g - 1)]); }
-      for(g = 0; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); g++){ temp_sparse_reps_grid[g] = temp_sparse_reps_strings[g]; }
+      for(g = 1; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); ++g){ temp_sparse_reps_strings.push_back(temp_sparse_reps_strings[(g - 1)] + temp_sparse_reps_grid[(g - 1)]); }
+      for(g = 0; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); ++g){ temp_sparse_reps_grid[g] = temp_sparse_reps_strings[g]; }
       
       // write new sparse_reps_strings value to temp_sparse_reps_strings array, using various grids to achieve indexing
       
       // a. initialise temp_sparse_reps_strings
       temp_sparse_reps_strings.resize(0);
-      for(g = 0; g < (2 * temp_sparse_reps_grid[((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetRAmax() - this->GetRAmin() + 1))]); g++){ temp_sparse_reps_strings.push_back(0); }
+      for(g = 0; g < (2 * temp_sparse_reps_grid[((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetRAmax() - this->GetRAmin() + 1))]); ++g){ temp_sparse_reps_strings.push_back(0); }
       
       
       // b. for each line of sight through the new existing object bounding box, retrieve the channel range of each object string along this LoS
-      for(sy = this->GetDECmin(); sy <= this->GetDECmax(); sy++){
+      for(sy = this->GetDECmin(); sy <= this->GetDECmax(); ++sy){
 	
-	for(sx = this->GetRAmin(); sx <= this->GetRAmax(); sx++){
+	for(sx = this->GetRAmin(); sx <= this->GetRAmax(); ++sx){
 	  
 	  // initialise the number of object strings written to this LoS
 	  k = 0;
@@ -3559,12 +3559,12 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
 	    
 	    if((sx >= this->Get_srep_size(0)) && (sx <= this->Get_srep_size(1)) && (sy >= this->Get_srep_size(2)) && (sy <= this->Get_srep_size(3))){
 	      
-	      for(g = this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0))); g < this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0) + 1)); g++){
+	      for(g = this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0))); g < this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0) + 1)); ++g){
 		
 		temp_sparse_reps_strings[(j + k)] = this->Get_srep_strings((2 * g));
-		k++;
+		++k;
 		temp_sparse_reps_strings[(j + k)] = this->Get_srep_strings(((2 * g) + 1));
-		k++;
+		++k;
 		
 	      }
 	      
@@ -3577,22 +3577,22 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
 	  // write match_init[i] object strings to temp_strings_array
 	  if((sx >= merged.Get_srep_size(0)) && (sx <= merged.Get_srep_size(1)) && (sy >= merged.Get_srep_size(2)) && (sy <= merged.Get_srep_size(3))){
 	    
-	    for(g = merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0))); g < merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0) + 1)); g++){
+	    for(g = merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0))); g < merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0) + 1)); ++g){
 	      
 	      temp_sparse_reps_strings[(j + k)] = merged.Get_srep_strings((2 * g));
-	      k++;
+	      ++k;
 	      temp_sparse_reps_strings[(j + k)] = merged.Get_srep_strings(((2 * g) + 1));
-	      k++;
+	      ++k;
 	      
 	    }
 	    
 	    // if((sx >= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][0]) && (sx <= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][1]) && (sy >= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][2]) && (sy <= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][3]))
 	  }
 	  
-	  // for(sx = 0; sx < (); sx++)
+	  // for(sx = 0; sx < (); ++sx)
 	}
 	
-	// for(sy = 0; sy < (); sy++)
+	// for(sy = 0; sy < (); ++sy)
       }
       
       // over-write the existing object's sparse representations with the existing+merged sparse representations
@@ -3606,51 +3606,51 @@ void object_props_dbl::AddObject(object_props_dbl & merged){
       // a. grid
       this->Free_srep_grid();
       this->Create_srep_grid((((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1));
-      for(g = 0; g < (((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1); g++){ this->Set_srep_grid(g,temp_sparse_reps_grid[g]); }
+      for(g = 0; g < (((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1); ++g){ this->Set_srep_grid(g,temp_sparse_reps_grid[g]); }
       
       // b. mini_mom0
       this->Free_mom0();
       this->Create_mom0(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); g++){ this->Set_mom0(g,temp_mom0[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); ++g){ this->Set_mom0(g,temp_mom0[g]); }
       
       // c. mini_RAPV
       this->Free_RAPV();
       this->Create_RAPV(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_RAPV(g,temp_RAPV[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_RAPV(g,temp_RAPV[g]); }
       
       // d. mini_DECPV
       this->Free_DECPV();
       this->Create_DECPV(((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(3) - this->Get_srep_size(2) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_DECPV(g,temp_DECPV[g]); }
+      for(g = 0; g < ((this->Get_srep_size(3) - this->Get_srep_size(2) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_DECPV(g,temp_DECPV[g]); }
       
       // e. mini_obj_spec
       this->Free_ospec();
       this->Create_ospec((this->Get_srep_size(5) - this->Get_srep_size(4) + 1));
-      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); g++){ this->Set_ospec(g,temp_obj_spec[g]); }
+      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++g){ this->Set_ospec(g,temp_obj_spec[g]); }
       
       // f. mini_ref_spec
       this->Free_rspec();
       if((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) >= 10){
 	
 	this->Create_rspec((2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)));
-	for(g = 0; g < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_rspec(g,temp_ref_spec[g]); }
+	for(g = 0; g < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_rspec(g,temp_ref_spec[g]); }
 	
       } else {
 	
 	this->Create_rspec((this->Get_srep_size(5) - this->Get_srep_size(4) + 11));
-	for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); g++){ this->Set_rspec(g,temp_ref_spec[g]); }
+	for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); ++g){ this->Set_rspec(g,temp_ref_spec[g]); }
 	
       }
       
       // g. mini_vfield
       this->Free_vfield();
       this->Create_vfield(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); g++){ this->Set_vfield(g,temp_vfield[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); ++g){ this->Set_vfield(g,temp_vfield[g]); }
       
       // h. sparse_reps_strings
       this->Free_srep_strings();
       this->Create_srep_strings((2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))));
-      for(g = 0; g < (2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))); g++){ this->Set_srep_strings(g,temp_sparse_reps_strings[g]); }
+      for(g = 0; g < (2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))); ++g){ this->Set_srep_strings(g,temp_sparse_reps_strings[g]); }
       
     }
   
@@ -3692,12 +3692,12 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       
       // a. grid
       temp_sparse_reps_grid.resize(0);
-      for(g = 0; g < (1 + ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1))); g++){ temp_sparse_reps_grid.push_back(0); }
+      for(g = 0; g < (1 + ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1))); ++g){ temp_sparse_reps_grid.push_back(0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_sparse_reps_grid[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())] = this->Get_srep_grid(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx + 1)) - this->Get_srep_grid(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -3709,13 +3709,13 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       
       // b. mom-0
       temp_mom0.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); g++){ temp_mom0.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); ++g){ temp_mom0.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_mom0[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_mom0(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -3727,13 +3727,13 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       
       // c. RAPV
       temp_RAPV.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_RAPV.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_RAPV.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	    
 	    temp_RAPV[(((sz + this->Get_srep_size(4) - this->GetFREQmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_RAPV(((sz * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -3745,13 +3745,13 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       
       // d. DECPV
       temp_DECPV.resize(0);
-      for(g = 0; g < ((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_DECPV.push_back(0.0); }
+      for(g = 0; g < ((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_DECPV.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	    
 	    temp_DECPV[(((sz + this->Get_srep_size(4) - this->GetFREQmin()) * (this->GetDECmax() - this->GetDECmin() + 1)) + sy + this->Get_srep_size(2) - this->GetDECmin())]+=this->Get_DECPV(((sz * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + sy));
 	    
@@ -3765,22 +3765,22 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       if((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) >= 10){
 	
 	temp_ref_spec.resize(0);
-	for(g = 0; g < (2 * (this->GetFREQmax() - this->GetFREQmin() + 1)); g++){ temp_ref_spec.push_back(0.0); }
+	for(g = 0; g < (2 * (this->GetFREQmax() - this->GetFREQmin() + 1)); ++g){ temp_ref_spec.push_back(0.0); }
 	
 	if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	  
-	  for(sz = 0; sz < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); sz++){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 
+	  for(sz = 0; sz < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++sz){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 
 	  
 	}
 	
       } else {
 	
 	temp_ref_spec.resize(0);
-	for(g = 0; g < (this->GetFREQmax() - this->GetFREQmin() + 11); g++){ temp_ref_spec.push_back(0.0); }
+	for(g = 0; g < (this->GetFREQmax() - this->GetFREQmin() + 11); ++g){ temp_ref_spec.push_back(0.0); }
 	
 	if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	  
-	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); sz++){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 		    
+	  for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); ++sz){ temp_ref_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_rspec(sz); } 		    
 	  
 	}
 	
@@ -3788,10 +3788,10 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       
       // f. obj_spec
       temp_obj_spec.resize(0);
-      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); g++){ temp_obj_spec.push_back(0.0); }		  
+      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++g){ temp_obj_spec.push_back(0.0); }		  
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_obj_spec[(sz + this->Get_srep_size(4) - this->GetFREQmin())]+=this->Get_ospec(sz);
 	  
@@ -3801,13 +3801,13 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       
       // g. vfield
       temp_vfield.resize(0);
-      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); g++){ temp_vfield.push_back(0.0); }
+      for(g = 0; g < ((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)); ++g){ temp_vfield.push_back(0.0); }
       
       if((this->Get_srep_update() != 0) && (this->Get_srep_size(0) >= 0)){
 	
-	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (this->Get_srep_size(1) - this->Get_srep_size(0) + 1); ++sx){
 	  
-	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); sy++){
+	  for(sy = 0; sy < (this->Get_srep_size(3) - this->Get_srep_size(2) + 1); ++sy){
 	    
 	    temp_vfield[(((sy + this->Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + this->Get_srep_size(0) - this->GetRAmin())]+=this->Get_vfield(((sy * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx));
 	    
@@ -3820,9 +3820,9 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       // write the merged object's sparse representations into temporary arrays
       
       // a. grid
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_sparse_reps_grid[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=(merged.Get_srep_grid(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx + 1)) - merged.Get_srep_grid(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx)));
 	  
@@ -3831,9 +3831,9 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       }
       
       // b. mom-0
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_mom0[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_mom0(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -3842,9 +3842,9 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       }
       
       // c. RAPV
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_RAPV[(((sz + merged.Get_srep_size(4) - this->GetFREQmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_RAPV(((sz * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -3853,9 +3853,9 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       }
       
       // d. DECPV
-      for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+      for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	  
 	  temp_DECPV[(((sz + merged.Get_srep_size(4) - this->GetFREQmin()) * (this->GetDECmax() - this->GetDECmin() + 1)) + sy + merged.Get_srep_size(2) - this->GetDECmin())]+=merged.Get_DECPV(((sz * (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1)) + sy));
 	  
@@ -3866,7 +3866,7 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       // e. ref_spec
       if((merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1) >= 10){
 	
-	for(sz = 0; sz < (2 * (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1)); sz++){ 
+	for(sz = 0; sz < (2 * (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1)); ++sz){ 
 	  
 	  if((sz + merged.Get_srep_size(4) - merged.GetFREQmin()) >= 0){
 	    
@@ -3878,7 +3878,7 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
 	
       } else {
 	
-	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 11); sz++){ 
+	for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 11); ++sz){ 
 	  
 	  if((sz + merged.Get_srep_size(4) - this->GetFREQmin()) >= 0){
 	    
@@ -3891,16 +3891,16 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       }
       
       // f. obj_spec
-      for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (merged.Get_srep_size(5) - merged.Get_srep_size(4) + 1); ++sz){
 	
 	temp_obj_spec[(sz + merged.Get_srep_size(4) - this->GetFREQmin())]+=merged.Get_ospec(sz);
 	
       }
       
       // g. vfield
-      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); sx++){
+      for(sx = 0; sx < (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1); ++sx){
 	
-	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (merged.Get_srep_size(3) - merged.Get_srep_size(2) + 1); ++sy){
 	  
 	  temp_vfield[(((sy + merged.Get_srep_size(2) - this->GetDECmin()) * (this->GetRAmax() - this->GetRAmin() + 1)) + sx + merged.Get_srep_size(0) - this->GetRAmin())]+=merged.Get_vfield(((sy * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx));
 	  
@@ -3911,20 +3911,20 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       // convert temp_sparse_reps_grid from differential to cumulative counts using temp_sparse_reps_string as an intermediary
       temp_sparse_reps_strings.resize(1);
       temp_sparse_reps_strings[0] = 0;
-      for(g = 1; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); g++){ temp_sparse_reps_strings.push_back(temp_sparse_reps_strings[(g - 1)] + temp_sparse_reps_grid[(g - 1)]); }
-      for(g = 0; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); g++){ temp_sparse_reps_grid[g] = temp_sparse_reps_strings[g]; }
+      for(g = 1; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); ++g){ temp_sparse_reps_strings.push_back(temp_sparse_reps_strings[(g - 1)] + temp_sparse_reps_grid[(g - 1)]); }
+      for(g = 0; g < (((this->GetRAmax() - this->GetRAmin() + 1) * (this->GetDECmax() - this->GetDECmin() + 1)) + 1); ++g){ temp_sparse_reps_grid[g] = temp_sparse_reps_strings[g]; }
       
       // write new sparse_reps_strings value to temp_sparse_reps_strings array, using various grids to achieve indexing
       
       // a. initialise temp_sparse_reps_strings
       temp_sparse_reps_strings.resize(0);
-      for(g = 0; g < (2 * temp_sparse_reps_grid[((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetRAmax() - this->GetRAmin() + 1))]); g++){ temp_sparse_reps_strings.push_back(0); }
+      for(g = 0; g < (2 * temp_sparse_reps_grid[((this->GetDECmax() - this->GetDECmin() + 1) * (this->GetRAmax() - this->GetRAmin() + 1))]); ++g){ temp_sparse_reps_strings.push_back(0); }
       
       
       // b. for each line of sight through the new existing object bounding box, retrieve the channel range of each object string along this LoS
-      for(sy = this->GetDECmin(); sy <= this->GetDECmax(); sy++){
+      for(sy = this->GetDECmin(); sy <= this->GetDECmax(); ++sy){
 	
-	for(sx = this->GetRAmin(); sx <= this->GetRAmax(); sx++){
+	for(sx = this->GetRAmin(); sx <= this->GetRAmax(); ++sx){
 	  
 	  // initialise the number of object strings written to this LoS
 	  k = 0;
@@ -3937,12 +3937,12 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
 	    
 	    if((sx >= this->Get_srep_size(0)) && (sx <= this->Get_srep_size(1)) && (sy >= this->Get_srep_size(2)) && (sy <= this->Get_srep_size(3))){
 	      
-	      for(g = this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0))); g < this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0) + 1)); g++){
+	      for(g = this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0))); g < this->Get_srep_grid((((sy - this->Get_srep_size(2)) * (this->Get_srep_size(1) - this->Get_srep_size(0) + 1)) + sx - this->Get_srep_size(0) + 1)); ++g){
 		
 		temp_sparse_reps_strings[(j + k)] = this->Get_srep_strings((2 * g));
-		k++;
+		++k;
 		temp_sparse_reps_strings[(j + k)] = this->Get_srep_strings(((2 * g) + 1));
-		k++;
+		++k;
 		
 	      }
 	      
@@ -3955,22 +3955,22 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
 	  // write match_init[i] object strings to temp_strings_array
 	  if((sx >= merged.Get_srep_size(0)) && (sx <= merged.Get_srep_size(1)) && (sy >= merged.Get_srep_size(2)) && (sy <= merged.Get_srep_size(3))){
 	    
-	    for(g = merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0))); g < merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0) + 1)); g++){
+	    for(g = merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0))); g < merged.Get_srep_grid((((sy - merged.Get_srep_size(2)) * (merged.Get_srep_size(1) - merged.Get_srep_size(0) + 1)) + sx - merged.Get_srep_size(0) + 1)); ++g){
 	      
 	      temp_sparse_reps_strings[(j + k)] = merged.Get_srep_strings((2 * g));
-	      k++;
+	      ++k;
 	      temp_sparse_reps_strings[(j + k)] = merged.Get_srep_strings(((2 * g) + 1));
-	      k++;
+	      ++k;
 	      
 	    }
 	    
 	    // if((sx >= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][0]) && (sx <= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][1]) && (sy >= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][2]) && (sy <= sparse_reps_size[obj_batch][(existing - (obj_batch * obj_limit))][3]))
 	  }
 	  
-	  // for(sx = 0; sx < (); sx++)
+	  // for(sx = 0; sx < (); ++sx)
 	}
 	
-	// for(sy = 0; sy < (); sy++)
+	// for(sy = 0; sy < (); ++sy)
       }
       
       // over-write the existing object's sparse representations with the existing+merged sparse representations
@@ -3984,51 +3984,51 @@ void object_props_dbl::AddObject(object_props_dbl & merged,vector<int> & temp_sp
       // a. grid
       this->Free_srep_grid();
       this->Create_srep_grid((((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1));
-      for(g = 0; g < (((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1); g++){ this->Set_srep_grid(g,temp_sparse_reps_grid[g]); }
+      for(g = 0; g < (((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)) + 1); ++g){ this->Set_srep_grid(g,temp_sparse_reps_grid[g]); }
       
       // b. mini_mom0
       this->Free_mom0();
       this->Create_mom0(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); g++){ this->Set_mom0(g,temp_mom0[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); ++g){ this->Set_mom0(g,temp_mom0[g]); }
       
       // c. mini_RAPV
       this->Free_RAPV();
       this->Create_RAPV(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_RAPV(g,temp_RAPV[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_RAPV(g,temp_RAPV[g]); }
       
       // d. mini_DECPV
       this->Free_DECPV();
       this->Create_DECPV(((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(3) - this->Get_srep_size(2) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_DECPV(g,temp_DECPV[g]); }
+      for(g = 0; g < ((this->Get_srep_size(3) - this->Get_srep_size(2) + 1) * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_DECPV(g,temp_DECPV[g]); }
       
       // e. mini_obj_spec
       this->Free_ospec();
       this->Create_ospec((this->Get_srep_size(5) - this->Get_srep_size(4) + 1));
-      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); g++){ this->Set_ospec(g,temp_obj_spec[g]); }
+      for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 1); ++g){ this->Set_ospec(g,temp_obj_spec[g]); }
       
       // f. mini_ref_spec
       this->Free_rspec();
       if((this->Get_srep_size(5) - this->Get_srep_size(4) + 1) >= 10){
 	
 	this->Create_rspec((2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)));
-	for(g = 0; g < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); g++){ this->Set_rspec(g,temp_ref_spec[g]); }
+	for(g = 0; g < (2 * (this->Get_srep_size(5) - this->Get_srep_size(4) + 1)); ++g){ this->Set_rspec(g,temp_ref_spec[g]); }
 	
       } else {
 	
 	this->Create_rspec((this->Get_srep_size(5) - this->Get_srep_size(4) + 11));
-	for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); g++){ this->Set_rspec(g,temp_ref_spec[g]); }
+	for(g = 0; g < (this->Get_srep_size(5) - this->Get_srep_size(4) + 11); ++g){ this->Set_rspec(g,temp_ref_spec[g]); }
 	
       }
       
       // g. mini_vfield
       this->Free_vfield();
       this->Create_vfield(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)));
-      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); g++){ this->Set_vfield(g,temp_vfield[g]); }
+      for(g = 0; g < ((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)); ++g){ this->Set_vfield(g,temp_vfield[g]); }
       
       // h. sparse_reps_strings
       this->Free_srep_strings();
       this->Create_srep_strings((2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))));
-      for(g = 0; g < (2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))); g++){ this->Set_srep_strings(g,temp_sparse_reps_strings[g]); }
+      for(g = 0; g < (2 * this->Get_srep_grid(((this->Get_srep_size(1) - this->Get_srep_size(0) + 1) * (this->Get_srep_size(3) - this->Get_srep_size(2) + 1)))); ++g){ this->Set_srep_strings(g,temp_sparse_reps_strings[g]); }
       
     }
   

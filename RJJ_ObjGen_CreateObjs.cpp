@@ -137,7 +137,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
   // that ID to the grid point, otherwise, assign current value of obj and increment obj.
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); z++){
+  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
 
     // if the z value is sufficiently large that objects have started to pop out of the merging box,
     // then check if the objects outside of the merging box are sufficiently large
@@ -148,7 +148,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
       NOi = 0;
       
       // apply size threshold to objects added since last size thresholding
-      for(i = 0; i < NO_check_obj_ids; i++){
+      for(i = 0; i < NO_check_obj_ids; ++i){
 	
 	// calculate the obj_batch value for the existing object
 	obj_batch = (int) floorf(((float) check_obj_ids[i] / (float) obj_limit));
@@ -183,28 +183,28 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    if(sy_start < 0){ sy_start = 0; }
 	    sz_start = detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_start;
 	    if(sz_start < 0){ sz_start = 0; }
-	    for(sz = sz_start; ((sz <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start)) && (sz < size_z)); sz++){
+	    for(sz = sz_start; ((sz <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start)) && (sz < size_z)); ++sz){
 	      
-	      for(sy = sy_start; ((sy <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start)) && (sy < size_y)); sy++){
+	      for(sy = sy_start; ((sy <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start)) && (sy < size_y)); ++sy){
 		
-		for(sx = sx_start; ((sx <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start)) && (sx < size_x)); sx++){
+		for(sx = sx_start; ((sx <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start)) && (sx < size_x)); ++sx){
 		  
 		  if(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx * data_metric[0]))] == check_obj_ids[i]){ flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx * data_metric[0]))] = -99; }
 		  
-		  // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sx++)
+		  // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sx)
 		}
 		
-		// for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sy++)
+		// for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sy)
 	      }
 	      
-	      // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sz++)
+	      // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sz)
 	    }
 	    
 	    // add object id to list of available ids
 	    j = -1;
-	    for(g = 0; g < NO_obj_ids; g++){ if(obj_ids[g] == check_obj_ids[i]){ j = 1; break; } }
+	    for(g = 0; g < NO_obj_ids; ++g){ if(obj_ids[g] == check_obj_ids[i]){ j = 1; break; } }
 	    if(j == -1){
-	      NO_obj_ids++;
+	      ++NO_obj_ids;
 	      obj_ids.push_back(check_obj_ids[i]);
 	    }
 
@@ -214,12 +214,12 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	} else {
 	  
 	  check_obj_ids[NOi] = check_obj_ids[i];
-	  NOi++;
+	  ++NOi;
 	  
 	  // else . . . if(z_finish[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))] < (z - merge_z - 1))
 	}
 	
-	// for(i = 0; i < NO_check_obj_ids; i++)
+	// for(i = 0; i < NO_check_obj_ids; ++i)
       }
 
       // update NO_check_obj_ids
@@ -229,9 +229,9 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
       // if(z > (merge_z + 2))
     }
     
-    for(y = y_start; (y < size_y) && ((chunk_y_start + y) < max_y_val); y++){
+    for(y = y_start; (y < size_y) && ((chunk_y_start + y) < max_y_val); ++y){
       
-      for(x = x_start; (x < size_x) && ((chunk_x_start + x) < max_x_val); x++){
+      for(x = x_start; (x < size_x) && ((chunk_x_start + x) < max_x_val); ++x){
 	
 	// if this is a source voxel, check if it is associated with a previously identified
 	// source voxel
@@ -259,18 +259,18 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    
 	    // use a rectangular paralleliped to do the linking
 
-	    for(sz = sz_start; (sz < z); sz++){
+	    for(sz = sz_start; (sz < z); ++sz){
 	    
-	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); sy++){
+	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); ++sy){
 	      
-		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		  // check if this test voxel is source
 		  if((flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		    
 		    // check if this is a new objid
 		    prev = -1;
-		    for(i = 0; (i < NOi) && (i < init_limit); i++){
+		    for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		      
 		      if(match_init[i] == flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 			
@@ -284,7 +284,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		      
 		      // add current object to list of previous matches
 		      match_init.push_back(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
-		      NOi++;
+		      ++NOi;
 
 		    }
 		    
@@ -293,24 +293,24 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		    
 		  }
 		  
-		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); sx++)
+		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); ++sx)
 		}
 		
-		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); sy++)
+		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); ++sy)
 	      }
 	      
-	      // for(sz = z_start; (sz < z); sz++)
+	      // for(sz = z_start; (sz < z); ++sz)
 	    }
-	    for(sy = sy_start; (sy < y); sy++){
+	    for(sy = sy_start; (sy < y); ++sy){
 	      
-	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		// check if this test voxel is source
 		if((flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		  
 		  // check if this is a new objid, move on if not
 		  prev = -1;
-		  for(i = 0; (i < NOi) && (i < init_limit); i++){
+		  for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		    
 		    if(match_init[i] == flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 		      
@@ -323,7 +323,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		  if(prev == -1){ 
 		    
 		    // add current object to list of previous matches
-		    NOi++;
+		    ++NOi;
 		    match_init.push_back(flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		  }
@@ -333,19 +333,19 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		  
 		}		
 		
-		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); sx++)
+		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); ++sx)
 	      }
 	      
-	      // for(sy = y_start; (sy < y) && (sy < size_y); sy++)
+	      // for(sy = y_start; (sy < y) && (sy < size_y); ++sy)
 	    }
-	    for(sx = sx_start; sx < x; sx++){
+	    for(sx = sx_start; sx < x; ++sx){
 	      
 	      // check if this test voxel is source
 	      if((flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		
 		// check if this is a new objid, move on if not
 		prev = -1;
-		for(i = 0; (i < NOi) && (i < init_limit); i++){
+		for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		  
 		  if(match_init[i] == flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]){
 		    
@@ -358,7 +358,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		if(prev == -1){ 
 		  
 		  // add current object to list of previous matches
-		  NOi++;
+		  ++NOi;
 		  match_init.push_back(flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]);
 
 		}
@@ -368,7 +368,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		
 	      }	  
 	      
-	      // for(sx = x_start; sx <= x; sx++)
+	      // for(sx = x_start; sx <= x; ++sx)
 	    }
 	  
 	    // if(ss_mode == 1)
@@ -376,11 +376,11 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 
 	    // use a cylinder for the linking lengths
 
-	    for(sz = sz_start; (sz < z); sz++){
+	    for(sz = sz_start; (sz < z); ++sz){
 	    
-	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); sy++){
+	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); ++sy){
 	      
-		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		  // check if the test voxel is within the boundaries of the spatial ellipse
 		  if(((((float) (x - sx)) * ((float) (x - sx)) / (((float) (merge_x + 1)) * ((float) (merge_x + 1)))) + (((float) (y - sy)) * ((float) (y - sy)) / (((float) (merge_y + 1)) * ((float) (merge_y + 1))))) > 1.0){ continue; }
@@ -390,7 +390,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 
 		    // check if this is a new objid
 		    prev = -1;
-		    for(i = 0; (i < NOi) && (i < init_limit); i++){
+		    for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		      
 		      if(match_init[i] == flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 			
@@ -403,7 +403,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		    if(prev == -1){ 
 		      
 		      // add current object to list of previous matches
-		      NOi++;
+		      ++NOi;
 		      match_init.push_back(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		    }
@@ -413,17 +413,17 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		    
 		  }
 		  
-		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); sx++)
+		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); ++sx)
 		}
 		
-		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); sy++)
+		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); ++sy)
 	      }
 	      
-	      // for(sz = z_start; (sz < z); sz++)
+	      // for(sz = z_start; (sz < z); ++sz)
 	    }
-	    for(sy = sy_start; (sy < y); sy++){
+	    for(sy = sy_start; (sy < y); ++sy){
 	      
-	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		// check if the test voxel is within the boundaries of the spatial ellipse
 		if(((((float) (x - sx)) * ((float) (x - sx)) / (((float) (merge_x + 1)) * ((float) (merge_x + 1)))) + (((float) (y - sy)) * ((float) (y - sy)) / (((float) (merge_y + 1)) * ((float) (merge_y + 1))))) > 1.0){ continue; }
@@ -433,7 +433,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		  
 		  // check if this is a new objid, move on if not
 		  prev = -1;
-		  for(i = 0; (i < NOi) && (i < init_limit); i++){
+		  for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		    
 		    if(match_init[i] == flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 		      
@@ -446,7 +446,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		  if(prev == -1){ 
 		    
 		    // add current object to list of previous matches
-		    NOi++;
+		    ++NOi;
 		    match_init.push_back(flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		  }
@@ -456,19 +456,19 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		  
 		}		
 		
-		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); sx++)
+		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); ++sx)
 	      }
 	      
-	      // for(sy = y_start; (sy < y) && (sy < size_y); sy++)
+	      // for(sy = y_start; (sy < y) && (sy < size_y); ++sy)
 	    }
-	    for(sx = sx_start; sx < x; sx++){
+	    for(sx = sx_start; sx < x; ++sx){
 	      
 	      // check if this test voxel is source
 	      if((flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		
 		// check if this is a new objid, move on if not
 		prev = -1;
-		for(i = 0; (i < NOi) && (i < init_limit); i++){
+		for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		  
 		  if(match_init[i] == flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]){
 		    
@@ -481,7 +481,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		if(prev == -1){ 
 		  
 		  // add current object to list of previous matches
-		  NOi++;
+		  ++NOi;
 		  match_init.push_back(flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]);
 		  
 		}
@@ -491,7 +491,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		
 	      }	  
 	      
-	      // for(sx = x_start; sx <= x; sx++)
+	      // for(sx = x_start; sx <= x; ++sx)
 	    }
 
 	    // else . . . if(ss_mode == 1)
@@ -517,10 +517,10 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 
 	    // push id to list of objects that need to be size thresholded
 	    i = -1;
-	    for(g = 0; g < NO_check_obj_ids; g++){ if(check_obj_ids[g] == obj_ids[0]){ i = 1; break; } }
+	    for(g = 0; g < NO_check_obj_ids; ++g){ if(check_obj_ids[g] == obj_ids[0]){ i = 1; break; } }
 	    if(i == -1){
 
-	      NO_check_obj_ids++;
+	      ++NO_check_obj_ids;
 	      check_obj_ids.push_back(obj_ids[0]);
 	      
 	    }
@@ -528,13 +528,13 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    // adjust obj and obj_ids
 	    if(NO_obj_ids > 1){
 	      
-	      for(i = 0; i < (NO_obj_ids - 1); i++){ obj_ids[i] = obj_ids[(i + 1)]; }
-	      NO_obj_ids--;
+	      for(i = 0; i < (NO_obj_ids - 1); ++i){ obj_ids[i] = obj_ids[(i + 1)]; }
+	      --NO_obj_ids;
 	      obj_ids.resize(NO_obj_ids);
 
 	    } else {
 	      
-	      obj++;
+	      ++obj;
 
 	      obj_ids[0] = obj;
 	      
@@ -558,10 +558,10 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    
 	    // add object to list of objects within the merging box, provided that it hasn't been added already
 	    i = -1;
-	    for(g = 0; g < NO_check_obj_ids; g++){ if(check_obj_ids[g] == existing){ i = 1; break; } }
+	    for(g = 0; g < NO_check_obj_ids; ++g){ if(check_obj_ids[g] == existing){ i = 1; break; } }
 	    if(i == -1){
 
-	      NO_check_obj_ids++;
+	      ++NO_check_obj_ids;
 	      check_obj_ids.push_back(existing);
 
 	    }
@@ -579,7 +579,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    // to be the same as the other part of this object, and update the bounding box at the same time
 	    if(NOi > 1){
 	      
-	      for(i = 0; i < NOi; i++){
+	      for(i = 0; i < NOi; ++i){
 		
 		// move on if this is the existing object
 		if(match_init[i] == existing){ 
@@ -602,21 +602,21 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		if(sy_start < 0){ sy_start = 0; }
 		sz_start = detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmin() - chunk_z_start;
 		if(sz_start < 0){ sz_start = 0; }
-		for(sz = sz_start; (sz <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmax() - chunk_z_start) && (sz < size_z); sz++){
+		for(sz = sz_start; (sz <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmax() - chunk_z_start) && (sz < size_z); ++sz){
 		  
-		  for(sy = sy_start; (sy <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetDECmax() - chunk_y_start) && (sy < size_y); sy++){
+		  for(sy = sy_start; (sy <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetDECmax() - chunk_y_start) && (sy < size_y); ++sy){
 		    
-		    for(sx = sx_start; (sx <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetRAmax() - chunk_x_start) && (sx < size_x); sx++){
+		    for(sx = sx_start; (sx <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetRAmax() - chunk_x_start) && (sx < size_x); ++sx){
 		      
 		      if(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == match_init[i]){ flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] = existing; }
 		      
-		      // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sx++)
+		      // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sx)
 		    }
 		    
-		    // for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sy++)
+		    // for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sy)
 		  }
 		  
-		  // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sz++)
+		  // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sz)
 		}
 		
 		// re-initialise the `object' values for the match_init[i] object that has just been merged into the existing object, 
@@ -632,15 +632,15 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].Set_srep_update(0);
 
 		j = -1;
-		for(g = 0; g < NO_obj_ids; g++){ if(obj_ids[g] == match_init[i]){ j = 1; break; } }
+		for(g = 0; g < NO_obj_ids; ++g){ if(obj_ids[g] == match_init[i]){ j = 1; break; } }
 		if(j == -1){
 		  
-		  NO_obj_ids++;
+		  ++NO_obj_ids;
 		  obj_ids.push_back(match_init[i]);
 		  		  
 		}
 		
-		// for(i = 0; i < NOi; i++)
+		// for(i = 0; i < NOi; ++i)
 	      }
 	      
 	      // if(NOi > 1)
@@ -655,13 +655,13 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	// update progress on display
 	while(progress <= (((float) ((z * size_x * size_y) + (y * size_x) + x + 1)) / ((float) (size_x * size_y * size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
-	// for(x = 0; x < size_x; x++)
+	// for(x = 0; x < size_x; ++x)
       }
       
-      // for(y = 0; y < size_y; y++)
+      // for(y = 0; y < size_y; ++y)
     }
     
-    // for(z = 0; z < size_z; z++)
+    // for(z = 0; z < size_z; ++z)
   }
   std::cout << "* done." << std::endl;
   
@@ -670,7 +670,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
   std::cout << "Generating/updating sparse representations of sources . . . " << std::endl;
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(i = 0; i < obj; i++){
+  for(i = 0; i < obj; ++i){
     
     // calculate the obj_batch value for this object
     obj_batch = floorf(((float) i / (float) obj_limit));
@@ -729,34 +729,34 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
       sz_finish = detections[obj_batch][(i - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start;
       
       // count the number of object sections that make up this object
-      for(sy = sy_start; (sy <= sy_finish) && (sy < size_y); sy++){
+      for(sy = sy_start; (sy <= sy_finish) && (sy < size_y); ++sy){
 	
-	for(sx = sx_start; (sx <= sx_finish) && (sx < size_x); sx++){
+	for(sx = sx_start; (sx <= sx_finish) && (sx < size_x); ++sx){
 	  
 	  // initialise the dummy integer j
 	  j = -1;
 	  
-	  for(sz = sz_start; (sz <= sz_finish) && (sz < size_z); sz++){
+	  for(sz = sz_start; (sz <= sz_finish) && (sz < size_z); ++sz){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
 	    if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
 	      
 	      // if previously this was not part of an object string, j == -1, then increment the number of object strings and
 	      // adjust the value of j
-	      if(j == -1){ NOi++; }
+	      if(j == -1){ ++NOi; }
 	      
 	      // change j to reflect that this voxel belongs to the object
 	      j = 1; 
 	      
 	    } else { j = -1; }
 	    
-	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_size; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_size); sz++)
+	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_size; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_size); ++sz)
 	  }
 	  
-	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_size; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_size); sx++)
+	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_size; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_size); ++sx)
 	}
 	
-	// for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_size; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_size); sy++)
+	// for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_size; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_size); ++sy)
       }
 
       // create an array element to store this sparse representation
@@ -791,50 +791,50 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
       detections[obj_batch][(i - (obj_batch * obj_limit))].Create_vfield((sx_finish * sy_finish));
       
       // initialise the mini_mom0 values
-      for(sy = 0; sy < sy_finish; sy++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sy = 0; sy < sy_finish; ++sy){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(i - (obj_batch * obj_limit))].Set_mom0(((sy * sx_finish) + sx),0.0);
 	}
       }
 
       // initialise the mini_RAPV values
-      for(sz = 0; sz < sz_finish; sz++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sz = 0; sz < sz_finish; ++sz){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(i - (obj_batch * obj_limit))].Set_RAPV(((sz * sx_finish) + sx),0.0);
 	}
       }
       
       // initialise the mini_DECPV values
-      for(sz = 0; sz < sz_finish; sz++){
-	for(sy = 0; sy < sy_finish; sy++){
+      for(sz = 0; sz < sz_finish; ++sz){
+	for(sy = 0; sy < sy_finish; ++sy){
 	  detections[obj_batch][(i - (obj_batch * obj_limit))].Set_DECPV(((sz * sy_finish) + sy),0.0);
 	}
       }
       
       // initialise the mini_spec values
-      for(sz = 0; sz < sz_finish; sz++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_ospec(sz,0.0); }
+      for(sz = 0; sz < sz_finish; ++sz){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_ospec(sz,0.0); }
       if(sz_finish >= 10){
 
-	for(sz = 0; sz < (2 * sz_finish); sz++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
+	for(sz = 0; sz < (2 * sz_finish); ++sz){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
 
       } else {
 
-	for(sz = 0; sz < (10 + sz_finish); sz++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
+	for(sz = 0; sz < (10 + sz_finish); ++sz){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
 
       }
             
       // initialise the mini_vfield values
-      for(sy = 0; sy < sy_finish; sy++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sy = 0; sy < sy_finish; ++sy){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(i - (obj_batch * obj_limit))].Set_vfield(((sy * sx_finish) + sx),0.0);
 	}
       }
 
       // populate the sparse array representation and postage stamp images
       NOi = 0;
-      for(sy = 0; sy < sy_finish; sy++){
+      for(sy = 0; sy < sy_finish; ++sy){
 	
-	for(sx = 0; sx < sx_finish; sx++){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  
 	  // write the current number of object strings to the grid
 	  detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_grid(((sy * sx_finish) + sx),NOi);
@@ -842,7 +842,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	  // initialise the dummy integer j 
 	  j = -1;
 	  
-	  for(sz = 0; sz < sz_finish; sz++){
+	  for(sz = 0; sz < sz_finish; ++sz){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
 	    if(flag_vals[(((sz + sz_start) * data_metric[2]) + ((sy + sy_start) * data_metric[1]) + ((sx + sx_start) * data_metric[0]))] == i){ 
@@ -870,7 +870,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_strings((2 * NOi),(sz_start + chunk_z_start + sz));
 		
 		// increment NOi
-		NOi++; 
+		++NOi; 
 		
 		// initialise the end of the object string in sparse_reps
 		detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_strings(((2 * NOi) - 1),(sz_start + chunk_z_start + sz));
@@ -892,13 +892,13 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	      
 	    }
 	    
-	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREmin() - chunk_z_start + 1; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start + 1); sz++)
+	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREmin() - chunk_z_start + 1; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start + 1); ++sz)
 	  }
 	  
-	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_start + 1; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start + 1); sx++)
+	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_start + 1; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start + 1); ++sx)
 	}
 	
-	//for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_start + 1; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start + 1); sy++)
+	//for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_start + 1; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start + 1); ++sy)
       }
             
       // update sparse_reps with the final value of NOi
@@ -907,11 +907,11 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
       // create the reference spectrum
       if(sz_finish >= 10){
 	
-	for(sz = -1 * (int) floorf((0.5 * (float) sz_finish)); sz < (sz_finish + ((int) floorf((0.5 * (float) sz_finish)))); sz++){
+	for(sz = -1 * (int) floorf((0.5 * (float) sz_finish)); sz < (sz_finish + ((int) floorf((0.5 * (float) sz_finish)))); ++sz){
 	  
-	  for(sy = 0; sy < sy_finish; sy++){
+	  for(sy = 0; sy < sy_finish; ++sy){
 	  
-	    for(sx = 0; sx < sx_finish; sx++){
+	    for(sx = 0; sx < sx_finish; ++sx){
 	    
 	      if(((sz + sz_start) >= 0) && ((sz + sz_start) < size_z)){
 		
@@ -929,11 +929,11 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	// if(sz_finish >= 10)
       } else {
 
-	for(sz = -5; sz < (sz_finish + 5); sz++){
+	for(sz = -5; sz < (sz_finish + 5); ++sz){
 	  
-	  for(sy = 0; sy < sy_finish; sy++){
+	  for(sy = 0; sy < sy_finish; ++sy){
 	  
-	    for(sx = 0; sx < sx_finish; sx++){
+	    for(sx = 0; sx < sx_finish; ++sx){
 	    
 	      if(((sz + sz_start) >= 0) && ((sz + sz_start) < size_z)){
 		
@@ -974,9 +974,9 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
       // 3.a if inside the chunk and outside the existing sparse rep grid, run the routine to count the number
       //     of object strings along the current line of sight
       // 3.b otherwise use the grid value to increment NOi
-      for(sy = sy_start; sy <= sy_finish; sy++){
+      for(sy = sy_start; sy <= sy_finish; ++sy){
 	
-	for(sx = sx_start; sx <= sx_finish; sx++){
+	for(sx = sx_start; sx <= sx_finish; ++sx){
 	  	  
 	  // case 3.a triggered
 	  if(((sx > merge_x) || (chunk_x_start == 0)) && ((sy > merge_y) || (chunk_y_start == 0))){
@@ -984,7 +984,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    // initialise the dummy integer j 
 	    j = -1;
 	    
-	    for(sz = sz_start; sz <= sz_finish; sz++){
+	    for(sz = sz_start; sz <= sz_finish; ++sz){
 	      
 	      // change i to reflect if this voxel in the flag_vals array belongs to the source
 	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
@@ -994,7 +994,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		if(j == -1){ 
 		  
 		  // increment NOi
-		  NOi++; 
+		  ++NOi; 
 		  
 		} 
 		
@@ -1003,7 +1003,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		
 	      } else { j = -1; }
 	      
-	      // for(sz = sz_start; sz <= sz_finish; sz++)
+	      // for(sz = sz_start; sz <= sz_finish; ++sz)
 	    }
 	    
 	  } else {
@@ -1013,48 +1013,48 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    
 	  }     
 	  
-	  // for(sx = sx_start; sx <= sx_finish; sx++)
+	  // for(sx = sx_start; sx <= sx_finish; ++sx)
 	}
 	
-	// for(sy = sy_start; sy <= sy_finish; sy++)
+	// for(sy = sy_start; sy <= sy_finish; ++sy)
       }
       
       // 4. allocate memory to store temporary sparse representation and postage stamp images, then
       //    initialise the postage stamp image arrays
       temp_mom0.resize(0);
-      for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_mom0.push_back(0.0);
 	}
       }
       temp_RAPV.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_RAPV.push_back(0.0);
 	}
       }
       temp_DECPV.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){
-	for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){
+	for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
 	  temp_DECPV.push_back(0.0);
 	}
       }
       temp_obj_spec.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){ temp_obj_spec.push_back(0.0); }
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){ temp_obj_spec.push_back(0.0); }
       if((sz_finish - sz_start + 1) >= 10){
 
 	temp_ref_spec.resize(0);
-	for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); sz++){ temp_ref_spec.push_back(0.0); }
+	for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); ++sz){ temp_ref_spec.push_back(0.0); }
 
       } else {
 
 	temp_ref_spec.resize(0);
-	for(sz = 0; sz < (sz_finish - sz_start + 11); sz++){ temp_ref_spec.push_back(0.0); }
+	for(sz = 0; sz < (sz_finish - sz_start + 11); ++sz){ temp_ref_spec.push_back(0.0); }
 
       }
       temp_vfield.resize(0);
-      for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_vfield.push_back(0.0);
 	}
       }
@@ -1070,9 +1070,9 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
       NOi = 0;
       
       // initialise RA PV image
-      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){
 
-	for(sx = 0; sx < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1); ++sx){
 	
 	  temp_RAPV[(((sz + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start) * (sx_finish - sx_start + 1)) + sx + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) - sx_start - chunk_x_start)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_RAPV(((sz * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx));
 	  
@@ -1081,9 +1081,9 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
       }
 
       // initialise Dec PV image
-      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){
 
-	for(sy = 0; sy < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1); ++sy){
 	
 	  temp_DECPV[(((sz + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start) * (sy_finish - sy_start + 1)) + sy + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) - sy_start - chunk_y_start)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_DECPV(((sz * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1)) + sy));
 	  
@@ -1092,7 +1092,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
       }
 
       // initialise mini spec's
-      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){ temp_obj_spec[(sz + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_ospec(sz); }
+      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){ temp_obj_spec[(sz + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_ospec(sz); }
 
       if((sz_finish - sz_start + 1) >= 10){
 
@@ -1102,7 +1102,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 
 	  k = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (float) (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1))));
 
-	  for(sz = 0; sz < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); sz++){
+	  for(sz = 0; sz < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++sz){
 
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -1112,7 +1112,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	  
 	  k = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 
-	  for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); sz++){
+	  for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++sz){
 	    
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -1128,7 +1128,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 
 	  k = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (float) (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1))));
 
-	  for(sz = 0; sz < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); sz++){
+	  for(sz = 0; sz < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++sz){
 
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -1138,7 +1138,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	  
 	  k = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 
-	  for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); sz++){
+	  for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++sz){
 	    
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -1149,9 +1149,9 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
       }
       
       // search through LoS's of updated bounding box and take action as dictated by case 5.a or 5.b
-      for(sy = sy_start; sy <= sy_finish; sy++){
+      for(sy = sy_start; sy <= sy_finish; ++sy){
 	
-	for(sx = sx_start; sx <= sx_finish; sx++){
+	for(sx = sx_start; sx <= sx_finish; ++sx){
 	  	  
 	  // add value to temp_sparse_rep_grid
 	  temp_sparse_reps_grid[(((sy - sy_start) * (sx_finish - sx_start + 1)) + sx - sx_start)] = NOi;
@@ -1162,7 +1162,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    // initialise the dummy integer j 
 	    j = -1;
 	    
-	    for(sz = sz_start; sz <= sz_finish; sz++){
+	    for(sz = sz_start; sz <= sz_finish; ++sz){
 	      
 	      // change j to reflect if this voxel in the flag_vals array belongs to the source
 	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
@@ -1190,7 +1190,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		  temp_sparse_reps_strings[(2 * NOi)] = chunk_z_start + sz;
 		  
 		  // increment NOi
-		  NOi++; 
+		  ++NOi; 
 		  		  
 		  // initialise the end of the object string in sparse_reps
 		  temp_sparse_reps_strings[((2 * NOi) - 1)] = chunk_z_start + sz;
@@ -1212,7 +1212,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 		
 	      }
 	      
-	      // for(sz = sz_start; sz <= sz_finish; sz++)
+	      // for(sz = sz_start; sz <= sz_finish; ++sz)
 	    }
 	    
 	    // add values to temp_ref_spec
@@ -1220,7 +1220,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	      
 	      k = (int) floorf((0.5 * (float) (sz_finish - sz_start + 1)));
 	      
-	      for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); sz++){
+	      for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); ++sz){
 	  	
 		if(((sz + sz_start - k) >= 0) && ((sz + sz_start - k) < size_z)){
 		  
@@ -1234,7 +1234,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	      // if(sz_finish >= 10)
 	    } else {
 	      
-	      for(sz = 0; sz < (sz_finish - sz_start + 11); sz++){
+	      for(sz = 0; sz < (sz_finish - sz_start + 11); ++sz){
 		
 		if(((sz + sz_start - 5) >= 0) && ((sz + sz_start - 5) < size_z)){
 		  
@@ -1255,11 +1255,11 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    j = 0;
 	    if(((sx + chunk_x_start) >= detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0)) && ((sx + chunk_x_start) <= (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) + 1)) && ((sy + chunk_y_start) >= detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2)) && ((sy + chunk_y_start) <= (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) + 1))){
 	      
-	      for(g = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0))); g < detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)); g++){
+	      for(g = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0))); g < detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)); ++g){
 		
 		temp_sparse_reps_strings[(NOi + j)] = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_strings((2 * g));
 		temp_sparse_reps_strings[(NOi + j + 1)] = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1));
-		j++;
+		++j;
 		
 	      }
 	      
@@ -1277,10 +1277,10 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    // else . . . case 5.b
 	  }
 	    
-	  // for(sx = sx_start; sx <= sx_finish; sx++)
+	  // for(sx = sx_start; sx <= sx_finish; ++sx)
 	}
 		
-	// for(sy = sy_start; sy <= sy_finish; sy++)
+	// for(sy = sy_start; sy <= sy_finish; ++sy)
       }
             
       temp_sparse_reps_grid[((sx_finish - sx_start + 1) * (sy_finish - sy_start + 1))] = NOi;
@@ -1319,21 +1319,21 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 
       }
    
-      for(j = 0; j < (1 + ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1))); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_grid(j,temp_sparse_reps_grid[j]); }
-      for(j = 0; j < (2 * NOi); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_strings(j,temp_sparse_reps_strings[j]); }
-      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_mom0(j,temp_mom0[j]); }
-      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_RAPV(j,temp_RAPV[j]); }
-      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_DECPV(j,temp_DECPV[j]); }
-      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_vfield(j,temp_vfield[j]); }
+      for(j = 0; j < (1 + ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1))); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_grid(j,temp_sparse_reps_grid[j]); }
+      for(j = 0; j < (2 * NOi); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_strings(j,temp_sparse_reps_strings[j]); }
+      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_mom0(j,temp_mom0[j]); }
+      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_RAPV(j,temp_RAPV[j]); }
+      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_DECPV(j,temp_DECPV[j]); }
+      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_vfield(j,temp_vfield[j]); }
 
-      for(j = 0; j < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_ospec(j,temp_obj_spec[j]); }
+      for(j = 0; j < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_ospec(j,temp_obj_spec[j]); }
       if((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1) >= 10){
 
-	for(j = 0; j < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
+	for(j = 0; j < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
 	
       } else {
 
-	for(j = 0; j < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
+	for(j = 0; j < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
 
       }
       
@@ -1343,7 +1343,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
     // update progress on display
     while(progress <= (((float) (i + 1) / ((float) obj)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }  
    
-    // for(i = 0; i < obj; i++)
+    // for(i = 0; i < obj; ++i)
   }
   std::cout << "* done." << std::endl;
     
@@ -1486,7 +1486,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
   // that ID to the grid point, otherwise, assign current value of obj and increment obj.
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); z++){
+  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
 
     // if the z value is sufficiently large that objects have started to pop out of the merging box,
     // then check if the objects outside of the merging box are sufficiently large
@@ -1497,7 +1497,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       NOi = 0;
       
       // apply size threshold to objects added since last size thresholding
-      for(i = 0; i < NO_check_obj_ids; i++){
+      for(i = 0; i < NO_check_obj_ids; ++i){
 	
 	// calculate the obj_batch value for the existing object
 	obj_batch = (long int) floor(((double) check_obj_ids[i] / (double) obj_limit));
@@ -1532,28 +1532,28 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    if(sy_start < 0){ sy_start = 0; }
 	    sz_start = detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_start;
 	    if(sz_start < 0){ sz_start = 0; }
-	    for(sz = sz_start; ((sz <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start)) && (sz < size_z)); sz++){
+	    for(sz = sz_start; ((sz <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start)) && (sz < size_z)); ++sz){
 	      
-	      for(sy = sy_start; ((sy <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start)) && (sy < size_y)); sy++){
+	      for(sy = sy_start; ((sy <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start)) && (sy < size_y)); ++sy){
 		
-		for(sx = sx_start; ((sx <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start)) && (sx < size_x)); sx++){
+		for(sx = sx_start; ((sx <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start)) && (sx < size_x)); ++sx){
 		  
 		  if(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx * data_metric[0]))] == check_obj_ids[i]){ flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx * data_metric[0]))] = -99; }
 		  
-		  // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sx++)
+		  // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sx)
 		}
 		
-		// for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sy++)
+		// for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sy)
 	      }
 	      
-	      // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sz++)
+	      // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sz)
 	    }
 	    
 	    // add object id to list of available ids
 	    j = -1;
-	    for(g = 0; g < NO_obj_ids; g++){ if(obj_ids[g] == check_obj_ids[i]){ j = 1; break; } }
+	    for(g = 0; g < NO_obj_ids; ++g){ if(obj_ids[g] == check_obj_ids[i]){ j = 1; break; } }
 	    if(j == -1){
-	      NO_obj_ids++;
+	      ++NO_obj_ids;
 	      obj_ids.push_back(check_obj_ids[i]);
 	    }
 
@@ -1563,12 +1563,12 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	} else {
 	  
 	  check_obj_ids[NOi] = check_obj_ids[i];
-	  NOi++;
+	  ++NOi;
 	  
 	  // else . . . if(z_finish[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))] < (z - merge_z - 1))
 	}
 	
-	// for(i = 0; i < NO_check_obj_ids; i++)
+	// for(i = 0; i < NO_check_obj_ids; ++i)
       }
 
       // update NO_check_obj_ids
@@ -1578,9 +1578,9 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       // if(z > (merge_z + 2))
     }
     
-    for(y = y_start; (y < size_y) && ((chunk_y_start + y) < max_y_val); y++){
+    for(y = y_start; (y < size_y) && ((chunk_y_start + y) < max_y_val); ++y){
       
-      for(x = x_start; (x < size_x) && ((chunk_x_start + x) < max_x_val); x++){
+      for(x = x_start; (x < size_x) && ((chunk_x_start + x) < max_x_val); ++x){
 	
 	// if this is a source voxel, check if it is associated with a previously identified
 	// source voxel
@@ -1608,18 +1608,18 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    
 	    // use a rectangular paralleliped to do the linking
 
-	    for(sz = sz_start; (sz < z); sz++){
+	    for(sz = sz_start; (sz < z); ++sz){
 	    
-	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); sy++){
+	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); ++sy){
 	      
-		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		  // check if this test voxel is source
 		  if((flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		    
 		    // check if this is a new objid
 		    prev = -1;
-		    for(i = 0; (i < NOi) && (i < init_limit); i++){
+		    for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		      
 		      if(match_init[i] == flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 			
@@ -1633,7 +1633,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		      
 		      // add current object to list of previous matches
 		      match_init.push_back(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
-		      NOi++;
+		      ++NOi;
 
 		    }
 		    
@@ -1642,24 +1642,24 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		    
 		  }
 		  
-		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); sx++)
+		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); ++sx)
 		}
 		
-		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); sy++)
+		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); ++sy)
 	      }
 	      
-	      // for(sz = z_start; (sz < z); sz++)
+	      // for(sz = z_start; (sz < z); ++sz)
 	    }
-	    for(sy = sy_start; (sy < y); sy++){
+	    for(sy = sy_start; (sy < y); ++sy){
 	      
-	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		// check if this test voxel is source
 		if((flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		  
 		  // check if this is a new objid, move on if not
 		  prev = -1;
-		  for(i = 0; (i < NOi) && (i < init_limit); i++){
+		  for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		    
 		    if(match_init[i] == flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 		      
@@ -1672,7 +1672,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		  if(prev == -1){ 
 		    
 		    // add current object to list of previous matches
-		    NOi++;
+		    ++NOi;
 		    match_init.push_back(flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		  }
@@ -1682,19 +1682,19 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		  
 		}		
 		
-		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); sx++)
+		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); ++sx)
 	      }
 	      
-	      // for(sy = y_start; (sy < y) && (sy < size_y); sy++)
+	      // for(sy = y_start; (sy < y) && (sy < size_y); ++sy)
 	    }
-	    for(sx = sx_start; sx < x; sx++){
+	    for(sx = sx_start; sx < x; ++sx){
 	      
 	      // check if this test voxel is source
 	      if((flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		
 		// check if this is a new objid, move on if not
 		prev = -1;
-		for(i = 0; (i < NOi) && (i < init_limit); i++){
+		for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		  
 		  if(match_init[i] == flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]){
 		    
@@ -1707,7 +1707,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		if(prev == -1){ 
 		  
 		  // add current object to list of previous matches
-		  NOi++;
+		  ++NOi;
 		  match_init.push_back(flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]);
 
 		}
@@ -1717,7 +1717,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		
 	      }	  
 	      
-	      // for(sx = x_start; sx <= x; sx++)
+	      // for(sx = x_start; sx <= x; ++sx)
 	    }
 	  
 	    // if(ss_mode == 1)
@@ -1725,11 +1725,11 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 
 	    // use a cylinder for the linking lengths
 
-	    for(sz = sz_start; (sz < z); sz++){
+	    for(sz = sz_start; (sz < z); ++sz){
 	    
-	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); sy++){
+	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); ++sy){
 	      
-		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		  // check if the test voxel is within the boundaries of the spatial ellipse
 		  if(((((float) (x - sx)) * ((float) (x - sx)) / (((float) (merge_x + 1)) * ((float) (merge_x + 1)))) + (((float) (y - sy)) * ((float) (y - sy)) / (((float) (merge_y + 1)) * ((float) (merge_y + 1))))) > 1.0){ continue; }
@@ -1739,7 +1739,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 
 		    // check if this is a new objid
 		    prev = -1;
-		    for(i = 0; (i < NOi) && (i < init_limit); i++){
+		    for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		      
 		      if(match_init[i] == flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 			
@@ -1752,7 +1752,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		    if(prev == -1){ 
 		      
 		      // add current object to list of previous matches
-		      NOi++;
+		      ++NOi;
 		      match_init.push_back(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		    }
@@ -1762,17 +1762,17 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		    
 		  }
 		  
-		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); sx++)
+		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); ++sx)
 		}
 		
-		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); sy++)
+		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); ++sy)
 	      }
 	      
-	      // for(sz = z_start; (sz < z); sz++)
+	      // for(sz = z_start; (sz < z); ++sz)
 	    }
-	    for(sy = sy_start; (sy < y); sy++){
+	    for(sy = sy_start; (sy < y); ++sy){
 	      
-	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		// check if the test voxel is within the boundaries of the spatial ellipse
 		if(((((float) (x - sx)) * ((float) (x - sx)) / (((float) (merge_x + 1)) * ((float) (merge_x + 1)))) + (((float) (y - sy)) * ((float) (y - sy)) / (((float) (merge_y + 1)) * ((float) (merge_y + 1))))) > 1.0){ continue; }
@@ -1782,7 +1782,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		  
 		  // check if this is a new objid, move on if not
 		  prev = -1;
-		  for(i = 0; (i < NOi) && (i < init_limit); i++){
+		  for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		    
 		    if(match_init[i] == flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 		      
@@ -1795,7 +1795,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		  if(prev == -1){ 
 		    
 		    // add current object to list of previous matches
-		    NOi++;
+		    ++NOi;
 		    match_init.push_back(flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		  }
@@ -1805,19 +1805,19 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		  
 		}		
 		
-		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); sx++)
+		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); ++sx)
 	      }
 	      
-	      // for(sy = y_start; (sy < y) && (sy < size_y); sy++)
+	      // for(sy = y_start; (sy < y) && (sy < size_y); ++sy)
 	    }
-	    for(sx = sx_start; sx < x; sx++){
+	    for(sx = sx_start; sx < x; ++sx){
 	      
 	      // check if this test voxel is source
 	      if((flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		
 		// check if this is a new objid, move on if not
 		prev = -1;
-		for(i = 0; (i < NOi) && (i < init_limit); i++){
+		for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		  
 		  if(match_init[i] == flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]){
 		    
@@ -1830,7 +1830,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		if(prev == -1){ 
 		  
 		  // add current object to list of previous matches
-		  NOi++;
+		  ++NOi;
 		  match_init.push_back(flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]);
 		  
 		}
@@ -1840,7 +1840,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		
 	      }	  
 	      
-	      // for(sx = x_start; sx <= x; sx++)
+	      // for(sx = x_start; sx <= x; ++sx)
 	    }
 
 	    // else . . . if(ss_mode == 1)
@@ -1866,10 +1866,10 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 
 	    // push id to list of objects that need to be size thresholded
 	    i = -1;
-	    for(g = 0; g < NO_check_obj_ids; g++){ if(check_obj_ids[g] == obj_ids[0]){ i = 1; break; } }
+	    for(g = 0; g < NO_check_obj_ids; ++g){ if(check_obj_ids[g] == obj_ids[0]){ i = 1; break; } }
 	    if(i == -1){
 
-	      NO_check_obj_ids++;
+	      ++NO_check_obj_ids;
 	      check_obj_ids.push_back(obj_ids[0]);
 	      
 	    }
@@ -1877,13 +1877,13 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    // adjust obj and obj_ids
 	    if(NO_obj_ids > 1){
 	      
-	      for(i = 0; i < (NO_obj_ids - 1); i++){ obj_ids[i] = obj_ids[(i + 1)]; }
-	      NO_obj_ids--;
+	      for(i = 0; i < (NO_obj_ids - 1); ++i){ obj_ids[i] = obj_ids[(i + 1)]; }
+	      --NO_obj_ids;
 	      obj_ids.resize(NO_obj_ids);
 
 	    } else {
 	      
-	      obj++;
+	      ++obj;
 
 	      obj_ids[0] = obj;
 	      
@@ -1907,10 +1907,10 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    
 	    // add object to list of objects within the merging box, provided that it hasn't been added already
 	    i = -1;
-	    for(g = 0; g < NO_check_obj_ids; g++){ if(check_obj_ids[g] == existing){ i = 1; break; } }
+	    for(g = 0; g < NO_check_obj_ids; ++g){ if(check_obj_ids[g] == existing){ i = 1; break; } }
 	    if(i == -1){
 
-	      NO_check_obj_ids++;
+	      ++NO_check_obj_ids;
 	      check_obj_ids.push_back(existing);
 
 	    }
@@ -1928,7 +1928,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    // to be the same as the other part of this object, and update the bounding box at the same time
 	    if(NOi > 1){
 	      
-	      for(i = 0; i < NOi; i++){
+	      for(i = 0; i < NOi; ++i){
 		
 		// move on if this is the existing object
 		if(match_init[i] == existing){ 
@@ -1951,21 +1951,21 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		if(sy_start < 0){ sy_start = 0; }
 		sz_start = detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmin() - chunk_z_start;
 		if(sz_start < 0){ sz_start = 0; }
-		for(sz = sz_start; (sz <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmax() - chunk_z_start) && (sz < size_z); sz++){
+		for(sz = sz_start; (sz <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmax() - chunk_z_start) && (sz < size_z); ++sz){
 		  
-		  for(sy = sy_start; (sy <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetDECmax() - chunk_y_start) && (sy < size_y); sy++){
+		  for(sy = sy_start; (sy <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetDECmax() - chunk_y_start) && (sy < size_y); ++sy){
 		    
-		    for(sx = sx_start; (sx <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetRAmax() - chunk_x_start) && (sx < size_x); sx++){
+		    for(sx = sx_start; (sx <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetRAmax() - chunk_x_start) && (sx < size_x); ++sx){
 		      
 		      if(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == match_init[i]){ flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] = existing; }
 		      
-		      // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sx++)
+		      // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sx)
 		    }
 		    
-		    // for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sy++)
+		    // for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sy)
 		  }
 		  
-		  // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sz++)
+		  // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sz)
 		}
 		
 		// re-initialise the `object' values for the match_init[i] object that has just been merged into the existing object, 
@@ -1981,15 +1981,15 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].Set_srep_update(0);
 
 		j = -1;
-		for(g = 0; g < NO_obj_ids; g++){ if(obj_ids[g] == match_init[i]){ j = 1; break; } }
+		for(g = 0; g < NO_obj_ids; ++g){ if(obj_ids[g] == match_init[i]){ j = 1; break; } }
 		if(j == -1){
 		  
-		  NO_obj_ids++;
+		  ++NO_obj_ids;
 		  obj_ids.push_back(match_init[i]);
 		  		  
 		}
 		
-		// for(i = 0; i < NOi; i++)
+		// for(i = 0; i < NOi; ++i)
 	      }
 	      
 	      // if(NOi > 1)
@@ -2004,13 +2004,13 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	// update progress on display
 	while(progress <= (((float) ((z * size_x * size_y) + (y * size_x) + x + 1)) / ((float) (size_x * size_y * size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
-	// for(x = 0; x < size_x; x++)
+	// for(x = 0; x < size_x; ++x)
       }
       
-      // for(y = 0; y < size_y; y++)
+      // for(y = 0; y < size_y; ++y)
     }
     
-    // for(z = 0; z < size_z; z++)
+    // for(z = 0; z < size_z; ++z)
   }
   std::cout << "* done." << std::endl;
   
@@ -2019,7 +2019,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
   std::cout << "Generating/updating sparse representations of sources . . . " << std::endl;
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(o = 0; o < obj; o++){
+  for(o = 0; o < obj; ++o){
     
     // calculate the obj_batch value for this object
     obj_batch = (long int) floor(((double) o / (double) obj_limit));
@@ -2078,34 +2078,34 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       sz_finish = detections[obj_batch][(o - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start;
       
       // count the number of object sections that make up this object
-      for(sy = sy_start; (sy <= sy_finish) && (sy < size_y); sy++){
+      for(sy = sy_start; (sy <= sy_finish) && (sy < size_y); ++sy){
 	
-	for(sx = sx_start; (sx <= sx_finish) && (sx < size_x); sx++){
+	for(sx = sx_start; (sx <= sx_finish) && (sx < size_x); ++sx){
 	  
 	  // initialise the dummy integer j
 	  j = -1;
 	  
-	  for(sz = sz_start; (sz <= sz_finish) && (sz < size_z); sz++){
+	  for(sz = sz_start; (sz <= sz_finish) && (sz < size_z); ++sz){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
 	    if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
 	      
 	      // if previously this was not part of an object string, j == -1, then increment the number of object strings and
 	      // adjust the value of j
-	      if(j == -1){ NOi++; }
+	      if(j == -1){ ++NOi; }
 	      
 	      // change j to reflect that this voxel belongs to the object
 	      j = 1; 
 	      
 	    } else { j = -1; }
 	    
-	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_size; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_size); sz++)
+	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_size; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_size); ++sz)
 	  }
 	  
-	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_size; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_size); sx++)
+	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_size; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_size); ++sx)
 	}
 	
-	// for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_size; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_size); sy++)
+	// for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_size; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_size); ++sy)
       }
 
       // create an array element to store this sparse representation
@@ -2140,50 +2140,50 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       detections[obj_batch][(o - (obj_batch * obj_limit))].Create_vfield((sx_finish * sy_finish));
       
       // initialise the mini_mom0 values
-      for(sy = 0; sy < sy_finish; sy++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sy = 0; sy < sy_finish; ++sy){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(o - (obj_batch * obj_limit))].Set_mom0(((sy * sx_finish) + sx),0.0);
 	}
       }
 
       // initialise the mini_RAPV values
-      for(sz = 0; sz < sz_finish; sz++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sz = 0; sz < sz_finish; ++sz){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(o - (obj_batch * obj_limit))].Set_RAPV(((sz * sx_finish) + sx),0.0);
 	}
       }
       
       // initialise the mini_DECPV values
-      for(sz = 0; sz < sz_finish; sz++){
-	for(sy = 0; sy < sy_finish; sy++){
+      for(sz = 0; sz < sz_finish; ++sz){
+	for(sy = 0; sy < sy_finish; ++sy){
 	  detections[obj_batch][(o - (obj_batch * obj_limit))].Set_DECPV(((sz * sy_finish) + sy),0.0);
 	}
       }
       
       // initialise the mini_spec values
-      for(sz = 0; sz < sz_finish; sz++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_ospec(sz,0.0); }
+      for(sz = 0; sz < sz_finish; ++sz){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_ospec(sz,0.0); }
       if(sz_finish >= 10){
 
-	for(sz = 0; sz < (2 * sz_finish); sz++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
+	for(sz = 0; sz < (2 * sz_finish); ++sz){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
 
       } else {
 
-	for(sz = 0; sz < (10 + sz_finish); sz++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
+	for(sz = 0; sz < (10 + sz_finish); ++sz){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
 
       }
             
       // initialise the mini_vfield values
-      for(sy = 0; sy < sy_finish; sy++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sy = 0; sy < sy_finish; ++sy){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(o - (obj_batch * obj_limit))].Set_vfield(((sy * sx_finish) + sx),0.0);
 	}
       }
 
       // populate the sparse array representation and postage stamp images
       NOi = 0;
-      for(sy = 0; sy < sy_finish; sy++){
+      for(sy = 0; sy < sy_finish; ++sy){
 	
-	for(sx = 0; sx < sx_finish; sx++){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  
 	  // write the current number of object strings to the grid
 	  detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_grid(((sy * sx_finish) + sx),NOi);
@@ -2191,7 +2191,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	  // initialise the dummy integer j 
 	  j = -1;
 	  
-	  for(sz = 0; sz < sz_finish; sz++){
+	  for(sz = 0; sz < sz_finish; ++sz){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
 	    if(flag_vals[(((sz + sz_start) * data_metric[2]) + ((sy + sy_start) * data_metric[1]) + ((sx + sx_start) * data_metric[0]))] == o){ 
@@ -2219,7 +2219,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_strings((2 * NOi),(sz_start + chunk_z_start + sz));
 		
 		// increment NOi
-		NOi++; 
+		++NOi; 
 		
 		// initialise the end of the object string in sparse_reps
 		detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_strings(((2 * NOi) - 1),(sz_start + chunk_z_start + sz));
@@ -2241,13 +2241,13 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	      
 	    }
 	    
-	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREmin() - chunk_z_start + 1; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start + 1); sz++)
+	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREmin() - chunk_z_start + 1; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start + 1); ++sz)
 	  }
 	  
-	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_start + 1; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start + 1); sx++)
+	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_start + 1; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start + 1); ++sx)
 	}
 	
-	//for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_start + 1; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start + 1); sy++)
+	//for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_start + 1; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start + 1); ++sy)
       }
             
       // update sparse_reps with the final value of NOi
@@ -2256,11 +2256,11 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       // create the reference spectrum
       if(sz_finish >= 10){
 	
-	for(sz = -1 * (int) floorf((0.5 * (float) sz_finish)); sz < (sz_finish + ((int) floorf((0.5 * (float) sz_finish)))); sz++){
+	for(sz = -1 * (int) floorf((0.5 * (float) sz_finish)); sz < (sz_finish + ((int) floorf((0.5 * (float) sz_finish)))); ++sz){
 	  
-	  for(sy = 0; sy < sy_finish; sy++){
+	  for(sy = 0; sy < sy_finish; ++sy){
 	  
-	    for(sx = 0; sx < sx_finish; sx++){
+	    for(sx = 0; sx < sx_finish; ++sx){
 	    
 	      if(((sz + sz_start) >= 0) && ((sz + sz_start) < size_z)){
 		
@@ -2278,11 +2278,11 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	// if(sz_finish >= 10)
       } else {
 
-	for(sz = -5; sz < (sz_finish + 5); sz++){
+	for(sz = -5; sz < (sz_finish + 5); ++sz){
 	  
-	  for(sy = 0; sy < sy_finish; sy++){
+	  for(sy = 0; sy < sy_finish; ++sy){
 	  
-	    for(sx = 0; sx < sx_finish; sx++){
+	    for(sx = 0; sx < sx_finish; ++sx){
 	    
 	      if(((sz + sz_start) >= 0) && ((sz + sz_start) < size_z)){
 		
@@ -2323,9 +2323,9 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       // 3.a if inside the chunk and outside the existing sparse rep grid, run the routine to count the number
       //     of object strings along the current line of sight
       // 3.b otherwise use the grid value to increment NOi
-      for(sy = sy_start; sy <= sy_finish; sy++){
+      for(sy = sy_start; sy <= sy_finish; ++sy){
 	
-	for(sx = sx_start; sx <= sx_finish; sx++){
+	for(sx = sx_start; sx <= sx_finish; ++sx){
 	  	  
 	  // case 3.a triggered
 	  if(((sx > merge_x) || (chunk_x_start == 0)) && ((sy > merge_y) || (chunk_y_start == 0))){
@@ -2333,7 +2333,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    // initialise the dummy integer j 
 	    j = -1;
 	    
-	    for(sz = sz_start; sz <= sz_finish; sz++){
+	    for(sz = sz_start; sz <= sz_finish; ++sz){
 	      
 	      // change i to reflect if this voxel in the flag_vals array belongs to the source
 	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
@@ -2343,7 +2343,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		if(j == -1){ 
 		  
 		  // increment NOi
-		  NOi++; 
+		  ++NOi; 
 		  
 		} 
 		
@@ -2352,7 +2352,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		
 	      } else { j = -1; }
 	      
-	      // for(sz = sz_start; sz <= sz_finish; sz++)
+	      // for(sz = sz_start; sz <= sz_finish; ++sz)
 	    }
 	    
 	  } else {
@@ -2362,48 +2362,48 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    
 	  }     
 	  
-	  // for(sx = sx_start; sx <= sx_finish; sx++)
+	  // for(sx = sx_start; sx <= sx_finish; ++sx)
 	}
 	
-	// for(sy = sy_start; sy <= sy_finish; sy++)
+	// for(sy = sy_start; sy <= sy_finish; ++sy)
       }
       
       // 4. allocate memory to store temporary sparse representation and postage stamp images, then
       //    initialise the postage stamp image arrays
       temp_mom0.resize(0);
-      for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_mom0.push_back(0.0);
 	}
       }
       temp_RAPV.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_RAPV.push_back(0.0);
 	}
       }
       temp_DECPV.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){
-	for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){
+	for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
 	  temp_DECPV.push_back(0.0);
 	}
       }
       temp_obj_spec.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){ temp_obj_spec.push_back(0.0); }
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){ temp_obj_spec.push_back(0.0); }
       if((sz_finish - sz_start + 1) >= 10){
 
 	temp_ref_spec.resize(0);
-	for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); sz++){ temp_ref_spec.push_back(0.0); }
+	for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); ++sz){ temp_ref_spec.push_back(0.0); }
 
       } else {
 
 	temp_ref_spec.resize(0);
-	for(sz = 0; sz < (sz_finish - sz_start + 11); sz++){ temp_ref_spec.push_back(0.0); }
+	for(sz = 0; sz < (sz_finish - sz_start + 11); ++sz){ temp_ref_spec.push_back(0.0); }
 
       }
       temp_vfield.resize(0);
-      for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_vfield.push_back(0.0);
 	}
       }
@@ -2419,9 +2419,9 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       NOi = 0;
       
       // initialise RA PV image
-      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){
 
-	for(sx = 0; sx < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1); ++sx){
 	
 	  temp_RAPV[(((sz + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start) * (sx_finish - sx_start + 1)) + sx + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) - sx_start - chunk_x_start)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_RAPV(((sz * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx));
 	  
@@ -2430,9 +2430,9 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       }
 
       // initialise Dec PV image
-      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){
 
-	for(sy = 0; sy < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1); ++sy){
 	
 	  temp_DECPV[(((sz + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start) * (sy_finish - sy_start + 1)) + sy + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) - sy_start - chunk_y_start)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_DECPV(((sz * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1)) + sy));
 	  
@@ -2441,7 +2441,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       }
 
       // initialise mini spec's
-      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){ temp_obj_spec[(sz + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_ospec(sz); }
+      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){ temp_obj_spec[(sz + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_ospec(sz); }
 
       if((sz_finish - sz_start + 1) >= 10){
 
@@ -2451,7 +2451,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 
 	  k = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (float) (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1))));
 
-	  for(sz = 0; sz < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); sz++){
+	  for(sz = 0; sz < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++sz){
 
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -2461,7 +2461,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	  
 	  k = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 
-	  for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); sz++){
+	  for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++sz){
 	    
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -2477,7 +2477,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 
 	  k = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (float) (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1))));
 
-	  for(sz = 0; sz < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); sz++){
+	  for(sz = 0; sz < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++sz){
 
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -2487,7 +2487,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	  
 	  k = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 
-	  for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); sz++){
+	  for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++sz){
 	    
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -2498,9 +2498,9 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
       }
       
       // search through LoS's of updated bounding box and take action as dictated by case 5.a or 5.b
-      for(sy = sy_start; sy <= sy_finish; sy++){
+      for(sy = sy_start; sy <= sy_finish; ++sy){
 	
-	for(sx = sx_start; sx <= sx_finish; sx++){
+	for(sx = sx_start; sx <= sx_finish; ++sx){
 	  	  
 	  // add value to temp_sparse_rep_grid
 	  temp_sparse_reps_grid[(((sy - sy_start) * (sx_finish - sx_start + 1)) + sx - sx_start)] = NOi;
@@ -2511,7 +2511,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    // initialise the dummy integer j 
 	    j = -1;
 	    
-	    for(sz = sz_start; sz <= sz_finish; sz++){
+	    for(sz = sz_start; sz <= sz_finish; ++sz){
 	      
 	      // change j to reflect if this voxel in the flag_vals array belongs to the source
 	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
@@ -2539,7 +2539,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		  temp_sparse_reps_strings[(2 * NOi)] = chunk_z_start + sz;
 		  
 		  // increment NOi
-		  NOi++; 
+		  ++NOi; 
 		  		  
 		  // initialise the end of the object string in sparse_reps
 		  temp_sparse_reps_strings[((2 * NOi) - 1)] = chunk_z_start + sz;
@@ -2561,7 +2561,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 		
 	      }
 	      
-	      // for(sz = sz_start; sz <= sz_finish; sz++)
+	      // for(sz = sz_start; sz <= sz_finish; ++sz)
 	    }
 	    
 	    // add values to temp_ref_spec
@@ -2569,7 +2569,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	      
 	      k = (int) floorf((0.5 * (float) (sz_finish - sz_start + 1)));
 	      
-	      for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); sz++){
+	      for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); ++sz){
 	  	
 		if(((sz + sz_start - k) >= 0) && ((sz + sz_start - k) < size_z)){
 		  
@@ -2583,7 +2583,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	      // if(sz_finish >= 10)
 	    } else {
 	      
-	      for(sz = 0; sz < (sz_finish - sz_start + 11); sz++){
+	      for(sz = 0; sz < (sz_finish - sz_start + 11); ++sz){
 		
 		if(((sz + sz_start - 5) >= 0) && ((sz + sz_start - 5) < size_z)){
 		  
@@ -2604,11 +2604,11 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    j = 0;
 	    if(((sx + chunk_x_start) >= detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0)) && ((sx + chunk_x_start) <= (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) + 1)) && ((sy + chunk_y_start) >= detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2)) && ((sy + chunk_y_start) <= (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) + 1))){
 	      
-	      for(g = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0))); g < detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)); g++){
+	      for(g = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0))); g < detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)); ++g){
 		
 		temp_sparse_reps_strings[(NOi + j)] = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_strings((2 * g));
 		temp_sparse_reps_strings[(NOi + j + 1)] = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1));
-		j++;
+		++j;
 		
 	      }
 	      
@@ -2626,10 +2626,10 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	    // else . . . case 5.b
 	  }
 	    
-	  // for(sx = sx_start; sx <= sx_finish; sx++)
+	  // for(sx = sx_start; sx <= sx_finish; ++sx)
 	}
 		
-	// for(sy = sy_start; sy <= sy_finish; sy++)
+	// for(sy = sy_start; sy <= sy_finish; ++sy)
       }
             
       temp_sparse_reps_grid[((sx_finish - sx_start + 1) * (sy_finish - sy_start + 1))] = NOi;
@@ -2668,21 +2668,21 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 
       }
    
-      for(j = 0; j < (1 + ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1))); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_grid(j,temp_sparse_reps_grid[j]); }
-      for(j = 0; j < (2 * NOi); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_strings(j,temp_sparse_reps_strings[j]); }
-      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_mom0(j,temp_mom0[j]); }
-      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_RAPV(j,temp_RAPV[j]); }
-      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_DECPV(j,temp_DECPV[j]); }
-      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_vfield(j,temp_vfield[j]); }
+      for(j = 0; j < (1 + ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1))); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_grid(j,temp_sparse_reps_grid[j]); }
+      for(j = 0; j < (2 * NOi); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_strings(j,temp_sparse_reps_strings[j]); }
+      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_mom0(j,temp_mom0[j]); }
+      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_RAPV(j,temp_RAPV[j]); }
+      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_DECPV(j,temp_DECPV[j]); }
+      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_vfield(j,temp_vfield[j]); }
 
-      for(j = 0; j < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_ospec(j,temp_obj_spec[j]); }
+      for(j = 0; j < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_ospec(j,temp_obj_spec[j]); }
       if((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1) >= 10){
 
-	for(j = 0; j < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
+	for(j = 0; j < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
 	
       } else {
 
-	for(j = 0; j < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
+	for(j = 0; j < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
 
       }
       
@@ -2692,7 +2692,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
     // update progress on display
     while(progress <= (((double) (o + 1) / ((double) obj)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }  
    
-    // for(o = 0; o < obj; o++)
+    // for(o = 0; o < obj; ++o)
   }
   std::cout << "* done." << std::endl;
     
@@ -2835,7 +2835,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
   // that ID to the grid point, otherwise, assign current value of obj and increment obj.
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); z++){
+  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
 
     // if the z value is sufficiently large that objects have started to pop out of the merging box,
     // then check if the objects outside of the merging box are sufficiently large
@@ -2846,7 +2846,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
       NOi = 0;
       
       // apply size threshold to objects added since last size thresholding
-      for(i = 0; i < NO_check_obj_ids; i++){
+      for(i = 0; i < NO_check_obj_ids; ++i){
 	
 	// calculate the obj_batch value for the existing object
 	obj_batch = (int) floorf(((float) check_obj_ids[i] / (float) obj_limit));
@@ -2881,28 +2881,28 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	    if(sy_start < 0){ sy_start = 0; }
 	    sz_start = detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_start;
 	    if(sz_start < 0){ sz_start = 0; }
-	    for(sz = sz_start; ((sz <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start)) && (sz < size_z)); sz++){
+	    for(sz = sz_start; ((sz <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start)) && (sz < size_z)); ++sz){
 	      
-	      for(sy = sy_start; ((sy <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start)) && (sy < size_y)); sy++){
+	      for(sy = sy_start; ((sy <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start)) && (sy < size_y)); ++sy){
 		
-		for(sx = sx_start; ((sx <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start)) && (sx < size_x)); sx++){
+		for(sx = sx_start; ((sx <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start)) && (sx < size_x)); ++sx){
 		  
 		  if(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx * data_metric[0]))] == check_obj_ids[i]){ flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx * data_metric[0]))] = -99; }
 		  
-		  // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sx++)
+		  // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sx)
 		}
 		
-		// for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sy++)
+		// for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sy)
 	      }
 	      
-	      // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sz++)
+	      // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sz)
 	    }
 	    
 	    // add object id to list of available ids
 	    j = -1;
-	    for(g = 0; g < NO_obj_ids; g++){ if(obj_ids[g] == check_obj_ids[i]){ j = 1; break; } }
+	    for(g = 0; g < NO_obj_ids; ++g){ if(obj_ids[g] == check_obj_ids[i]){ j = 1; break; } }
 	    if(j == -1){
-	      NO_obj_ids++;
+	      ++NO_obj_ids;
 	      obj_ids.push_back(check_obj_ids[i]);
 	    }
 
@@ -2912,12 +2912,12 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	} else {
 	  
 	  check_obj_ids[NOi] = check_obj_ids[i];
-	  NOi++;
+	  ++NOi;
 	  
 	  // else . . . if(z_finish[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))] < (z - merge_z - 1))
 	}
 	
-	// for(i = 0; i < NO_check_obj_ids; i++)
+	// for(i = 0; i < NO_check_obj_ids; ++i)
       }
 
       // update NO_check_obj_ids
@@ -2927,9 +2927,9 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
       // if(z > (merge_z + 2))
     }
     
-    for(y = y_start; (y < size_y) && ((chunk_y_start + y) < max_y_val); y++){
+    for(y = y_start; (y < size_y) && ((chunk_y_start + y) < max_y_val); ++y){
       
-      for(x = x_start; (x < size_x) && ((chunk_x_start + x) < max_x_val); x++){
+      for(x = x_start; (x < size_x) && ((chunk_x_start + x) < max_x_val); ++x){
 	
 	// if this is a source voxel, check if it is associated with a previously identified
 	// source voxel
@@ -2957,18 +2957,18 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	    
 	    // use a rectangular paralleliped to do the linking
 
-	    for(sz = sz_start; (sz < z); sz++){
+	    for(sz = sz_start; (sz < z); ++sz){
 	    
-	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); sy++){
+	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); ++sy){
 	      
-		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		  // check if this test voxel is source
 		  if((flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		    
 		    // check if this is a new objid
 		    prev = -1;
-		    for(i = 0; (i < NOi) && (i < init_limit); i++){
+		    for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		      
 		      if(match_init[i] == flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 			
@@ -2982,7 +2982,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		      
 		      // add current object to list of previous matches
 		      match_init.push_back(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
-		      NOi++;
+		      ++NOi;
 
 		    }
 		    
@@ -2991,24 +2991,24 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		    
 		  }
 		  
-		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); sx++)
+		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); ++sx)
 		}
 		
-		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); sy++)
+		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); ++sy)
 	      }
 	      
-	      // for(sz = z_start; (sz < z); sz++)
+	      // for(sz = z_start; (sz < z); ++sz)
 	    }
-	    for(sy = sy_start; (sy < y); sy++){
+	    for(sy = sy_start; (sy < y); ++sy){
 	      
-	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		// check if this test voxel is source
 		if((flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		  
 		  // check if this is a new objid, move on if not
 		  prev = -1;
-		  for(i = 0; (i < NOi) && (i < init_limit); i++){
+		  for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		    
 		    if(match_init[i] == flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 		      
@@ -3021,7 +3021,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		  if(prev == -1){ 
 		    
 		    // add current object to list of previous matches
-		    NOi++;
+		    ++NOi;
 		    match_init.push_back(flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		  }
@@ -3031,19 +3031,19 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		  
 		}		
 		
-		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); sx++)
+		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); ++sx)
 	      }
 	      
-	      // for(sy = y_start; (sy < y) && (sy < size_y); sy++)
+	      // for(sy = y_start; (sy < y) && (sy < size_y); ++sy)
 	    }
-	    for(sx = sx_start; sx < x; sx++){
+	    for(sx = sx_start; sx < x; ++sx){
 	      
 	      // check if this test voxel is source
 	      if((flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		
 		// check if this is a new objid, move on if not
 		prev = -1;
-		for(i = 0; (i < NOi) && (i < init_limit); i++){
+		for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		  
 		  if(match_init[i] == flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]){
 		    
@@ -3056,7 +3056,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		if(prev == -1){ 
 		  
 		  // add current object to list of previous matches
-		  NOi++;
+		  ++NOi;
 		  match_init.push_back(flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]);
 
 		}
@@ -3066,7 +3066,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		
 	      }	  
 	      
-	      // for(sx = x_start; sx <= x; sx++)
+	      // for(sx = x_start; sx <= x; ++sx)
 	    }
 	  
 	    // if(ss_mode == 1)
@@ -3074,11 +3074,11 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 
 	    // use a cylinder for the linking lengths
 
-	    for(sz = sz_start; (sz < z); sz++){
+	    for(sz = sz_start; (sz < z); ++sz){
 	    
-	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); sy++){
+	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); ++sy){
 	      
-		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		  // check if the test voxel is within the boundaries of the spatial ellipse
 		  if(((((float) (x - sx)) * ((float) (x - sx)) / (((float) (merge_x + 1)) * ((float) (merge_x + 1)))) + (((float) (y - sy)) * ((float) (y - sy)) / (((float) (merge_y + 1)) * ((float) (merge_y + 1))))) > 1.0){ continue; }
@@ -3088,7 +3088,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 
 		    // check if this is a new objid
 		    prev = -1;
-		    for(i = 0; (i < NOi) && (i < init_limit); i++){
+		    for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		      
 		      if(match_init[i] == flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 			
@@ -3101,7 +3101,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		    if(prev == -1){ 
 		      
 		      // add current object to list of previous matches
-		      NOi++;
+		      ++NOi;
 		      match_init.push_back(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		    }
@@ -3111,17 +3111,17 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		    
 		  }
 		  
-		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); sx++)
+		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); ++sx)
 		}
 		
-		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); sy++)
+		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); ++sy)
 	      }
 	      
-	      // for(sz = z_start; (sz < z); sz++)
+	      // for(sz = z_start; (sz < z); ++sz)
 	    }
-	    for(sy = sy_start; (sy < y); sy++){
+	    for(sy = sy_start; (sy < y); ++sy){
 	      
-	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		// check if the test voxel is within the boundaries of the spatial ellipse
 		if(((((float) (x - sx)) * ((float) (x - sx)) / (((float) (merge_x + 1)) * ((float) (merge_x + 1)))) + (((float) (y - sy)) * ((float) (y - sy)) / (((float) (merge_y + 1)) * ((float) (merge_y + 1))))) > 1.0){ continue; }
@@ -3131,7 +3131,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		  
 		  // check if this is a new objid, move on if not
 		  prev = -1;
-		  for(i = 0; (i < NOi) && (i < init_limit); i++){
+		  for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		    
 		    if(match_init[i] == flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 		      
@@ -3144,7 +3144,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		  if(prev == -1){ 
 		    
 		    // add current object to list of previous matches
-		    NOi++;
+		    ++NOi;
 		    match_init.push_back(flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		  }
@@ -3154,19 +3154,19 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		  
 		}		
 		
-		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); sx++)
+		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); ++sx)
 	      }
 	      
-	      // for(sy = y_start; (sy < y) && (sy < size_y); sy++)
+	      // for(sy = y_start; (sy < y) && (sy < size_y); ++sy)
 	    }
-	    for(sx = sx_start; sx < x; sx++){
+	    for(sx = sx_start; sx < x; ++sx){
 	      
 	      // check if this test voxel is source
 	      if((flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		
 		// check if this is a new objid, move on if not
 		prev = -1;
-		for(i = 0; (i < NOi) && (i < init_limit); i++){
+		for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		  
 		  if(match_init[i] == flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]){
 		    
@@ -3179,7 +3179,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		if(prev == -1){ 
 		  
 		  // add current object to list of previous matches
-		  NOi++;
+		  ++NOi;
 		  match_init.push_back(flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]);
 		  
 		}
@@ -3189,7 +3189,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		
 	      }	  
 	      
-	      // for(sx = x_start; sx <= x; sx++)
+	      // for(sx = x_start; sx <= x; ++sx)
 	    }
 
 	    // else . . . if(ss_mode == 1)
@@ -3215,10 +3215,10 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 
 	    // push id to list of objects that need to be size thresholded
 	    i = -1;
-	    for(g = 0; g < NO_check_obj_ids; g++){ if(check_obj_ids[g] == obj_ids[0]){ i = 1; break; } }
+	    for(g = 0; g < NO_check_obj_ids; ++g){ if(check_obj_ids[g] == obj_ids[0]){ i = 1; break; } }
 	    if(i == -1){
 
-	      NO_check_obj_ids++;
+	      ++NO_check_obj_ids;
 	      check_obj_ids.push_back(obj_ids[0]);
 	      
 	    }
@@ -3226,13 +3226,13 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	    // adjust obj and obj_ids
 	    if(NO_obj_ids > 1){
 	      
-	      for(i = 0; i < (NO_obj_ids - 1); i++){ obj_ids[i] = obj_ids[(i + 1)]; }
-	      NO_obj_ids--;
+	      for(i = 0; i < (NO_obj_ids - 1); ++i){ obj_ids[i] = obj_ids[(i + 1)]; }
+	      --NO_obj_ids;
 	      obj_ids.resize(NO_obj_ids);
 
 	    } else {
 	      
-	      obj++;
+	      ++obj;
 
 	      obj_ids[0] = obj;
 	      
@@ -3256,10 +3256,10 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	    
 	    // add object to list of objects within the merging box, provided that it hasn't been added already
 	    i = -1;
-	    for(g = 0; g < NO_check_obj_ids; g++){ if(check_obj_ids[g] == existing){ i = 1; break; } }
+	    for(g = 0; g < NO_check_obj_ids; ++g){ if(check_obj_ids[g] == existing){ i = 1; break; } }
 	    if(i == -1){
 
-	      NO_check_obj_ids++;
+	      ++NO_check_obj_ids;
 	      check_obj_ids.push_back(existing);
 
 	    }
@@ -3277,7 +3277,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	    // to be the same as the other part of this object, and update the bounding box at the same time
 	    if(NOi > 1){
 	      
-	      for(i = 0; i < NOi; i++){
+	      for(i = 0; i < NOi; ++i){
 		
 		// move on if this is the existing object
 		if(match_init[i] == existing){ 
@@ -3300,21 +3300,21 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		if(sy_start < 0){ sy_start = 0; }
 		sz_start = detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmin() - chunk_z_start;
 		if(sz_start < 0){ sz_start = 0; }
-		for(sz = sz_start; (sz <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmax() - chunk_z_start) && (sz < size_z); sz++){
+		for(sz = sz_start; (sz <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmax() - chunk_z_start) && (sz < size_z); ++sz){
 		  
-		  for(sy = sy_start; (sy <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetDECmax() - chunk_y_start) && (sy < size_y); sy++){
+		  for(sy = sy_start; (sy <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetDECmax() - chunk_y_start) && (sy < size_y); ++sy){
 		    
-		    for(sx = sx_start; (sx <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetRAmax() - chunk_x_start) && (sx < size_x); sx++){
+		    for(sx = sx_start; (sx <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetRAmax() - chunk_x_start) && (sx < size_x); ++sx){
 		      
 		      if(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == match_init[i]){ flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] = existing; }
 		      
-		      // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sx++)
+		      // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sx)
 		    }
 		    
-		    // for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sy++)
+		    // for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sy)
 		  }
 		  
-		  // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sz++)
+		  // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sz)
 		}
 			
 		// re-initialise the `object' values for the match_init[i] object that has just been merged into the existing object, 
@@ -3330,15 +3330,15 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].Set_srep_update(0);
 
 		j = -1;
-		for(g = 0; g < NO_obj_ids; g++){ if(obj_ids[g] == match_init[i]){ j = 1; break; } }
+		for(g = 0; g < NO_obj_ids; ++g){ if(obj_ids[g] == match_init[i]){ j = 1; break; } }
 		if(j == -1){
 		  
-		  NO_obj_ids++;
+		  ++NO_obj_ids;
 		  obj_ids.push_back(match_init[i]);
 		  		  
 		}
 		
-		// for(i = 0; i < NOi; i++)
+		// for(i = 0; i < NOi; ++i)
 	      }
 	      
 	      // if(NOi > 1)
@@ -3353,13 +3353,13 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	// update progress on display
 	while(progress <= (((float) ((z * size_x * size_y) + (y * size_x) + x + 1)) / ((float) (size_x * size_y * size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
-	// for(x = 0; x < size_x; x++)
+	// for(x = 0; x < size_x; ++x)
       }
       
-      // for(y = 0; y < size_y; y++)
+      // for(y = 0; y < size_y; ++y)
     }
     
-    // for(z = 0; z < size_z; z++)
+    // for(z = 0; z < size_z; ++z)
   }
   std::cout << "* done." << std::endl;
   
@@ -3368,7 +3368,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
   std::cout << "Generating/updating sparse representations of sources . . . " << std::endl;
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(i = 0; i < obj; i++){
+  for(i = 0; i < obj; ++i){
     
     // calculate the obj_batch value for this object
     obj_batch = floorf(((float) i / (float) obj_limit));
@@ -3427,34 +3427,34 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
       sz_finish = detections[obj_batch][(i - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start;
       
       // count the number of object sections that make up this object
-      for(sy = sy_start; (sy <= sy_finish) && (sy < size_y); sy++){
+      for(sy = sy_start; (sy <= sy_finish) && (sy < size_y); ++sy){
 	
-	for(sx = sx_start; (sx <= sx_finish) && (sx < size_x); sx++){
+	for(sx = sx_start; (sx <= sx_finish) && (sx < size_x); ++sx){
 	  
 	  // initialise the dummy integer j
 	  j = -1;
 	  
-	  for(sz = sz_start; (sz <= sz_finish) && (sz < size_z); sz++){
+	  for(sz = sz_start; (sz <= sz_finish) && (sz < size_z); ++sz){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
 	    if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
 	      
 	      // if previously this was not part of an object string, j == -1, then increment the number of object strings and
 	      // adjust the value of j
-	      if(j == -1){ NOi++; }
+	      if(j == -1){ ++NOi; }
 	      
 	      // change j to reflect that this voxel belongs to the object
 	      j = 1; 
 	      
 	    } else { j = -1; }
 	    
-	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_size; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_size); sz++)
+	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_size; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_size); ++sz)
 	  }
 	  
-	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_size; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_size); sx++)
+	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_size; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_size); ++sx)
 	}
 	
-	// for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_size; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_size); sy++)
+	// for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_size; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_size); ++sy)
       }
 
       // create an array element to store this sparse representation
@@ -3489,50 +3489,50 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
       detections[obj_batch][(i - (obj_batch * obj_limit))].Create_vfield((sx_finish * sy_finish));
       
       // initialise the mini_mom0 values
-      for(sy = 0; sy < sy_finish; sy++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sy = 0; sy < sy_finish; ++sy){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(i - (obj_batch * obj_limit))].Set_mom0(((sy * sx_finish) + sx),0.0);
 	}
       }
 
       // initialise the mini_RAPV values
-      for(sz = 0; sz < sz_finish; sz++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sz = 0; sz < sz_finish; ++sz){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(i - (obj_batch * obj_limit))].Set_RAPV(((sz * sx_finish) + sx),0.0);
 	}
       }
       
       // initialise the mini_DECPV values
-      for(sz = 0; sz < sz_finish; sz++){
-	for(sy = 0; sy < sy_finish; sy++){
+      for(sz = 0; sz < sz_finish; ++sz){
+	for(sy = 0; sy < sy_finish; ++sy){
 	  detections[obj_batch][(i - (obj_batch * obj_limit))].Set_DECPV(((sz * sy_finish) + sy),0.0);
 	}
       }
       
       // initialise the mini_spec values
-      for(sz = 0; sz < sz_finish; sz++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_ospec(sz,0.0); }
+      for(sz = 0; sz < sz_finish; ++sz){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_ospec(sz,0.0); }
       if(sz_finish >= 10){
 
-	for(sz = 0; sz < (2 * sz_finish); sz++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
+	for(sz = 0; sz < (2 * sz_finish); ++sz){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
 
       } else {
 
-	for(sz = 0; sz < (10 + sz_finish); sz++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
+	for(sz = 0; sz < (10 + sz_finish); ++sz){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
 
       }
             
       // initialise the mini_vfield values
-      for(sy = 0; sy < sy_finish; sy++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sy = 0; sy < sy_finish; ++sy){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(i - (obj_batch * obj_limit))].Set_vfield(((sy * sx_finish) + sx),0.0);
 	}
       }
 
       // populate the sparse array representation and postage stamp images
       NOi = 0;
-      for(sy = 0; sy < sy_finish; sy++){
+      for(sy = 0; sy < sy_finish; ++sy){
 	
-	for(sx = 0; sx < sx_finish; sx++){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  
 	  // write the current number of object strings to the grid
 	  detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_grid(((sy * sx_finish) + sx),NOi);
@@ -3540,7 +3540,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	  // initialise the dummy integer j 
 	  j = -1;
 	  
-	  for(sz = 0; sz < sz_finish; sz++){
+	  for(sz = 0; sz < sz_finish; ++sz){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
 	    if(flag_vals[(((sz + sz_start) * data_metric[2]) + ((sy + sy_start) * data_metric[1]) + ((sx + sx_start) * data_metric[0]))] == i){ 
@@ -3568,7 +3568,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_strings((2 * NOi),(sz_start + chunk_z_start + sz));
 		
 		// increment NOi
-		NOi++; 
+		++NOi; 
 		
 		// initialise the end of the object string in sparse_reps
 		detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_strings(((2 * NOi) - 1),(sz_start + chunk_z_start + sz));
@@ -3590,13 +3590,13 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	      
 	    }
 	    
-	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREmin() - chunk_z_start + 1; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start + 1); sz++)
+	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREmin() - chunk_z_start + 1; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start + 1); ++sz)
 	  }
 	  
-	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_start + 1; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start + 1); sx++)
+	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_start + 1; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start + 1); ++sx)
 	}
 	
-	//for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_start + 1; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start + 1); sy++)
+	//for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_start + 1; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start + 1); ++sy)
       }
             
       // update sparse_reps with the final value of NOi
@@ -3605,11 +3605,11 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
       // create the reference spectrum
       if(sz_finish >= 10){
 	
-	for(sz = -1 * (int) floorf((0.5 * (float) sz_finish)); sz < (sz_finish + ((int) floorf((0.5 * (float) sz_finish)))); sz++){
+	for(sz = -1 * (int) floorf((0.5 * (float) sz_finish)); sz < (sz_finish + ((int) floorf((0.5 * (float) sz_finish)))); ++sz){
 	  
-	  for(sy = 0; sy < sy_finish; sy++){
+	  for(sy = 0; sy < sy_finish; ++sy){
 	  
-	    for(sx = 0; sx < sx_finish; sx++){
+	    for(sx = 0; sx < sx_finish; ++sx){
 	    
 	      if(((sz + sz_start) >= 0) && ((sz + sz_start) < size_z)){
 		
@@ -3627,11 +3627,11 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	// if(sz_finish >= 10)
       } else {
 
-	for(sz = -5; sz < (sz_finish + 5); sz++){
+	for(sz = -5; sz < (sz_finish + 5); ++sz){
 	  
-	  for(sy = 0; sy < sy_finish; sy++){
+	  for(sy = 0; sy < sy_finish; ++sy){
 	  
-	    for(sx = 0; sx < sx_finish; sx++){
+	    for(sx = 0; sx < sx_finish; ++sx){
 	    
 	      if(((sz + sz_start) >= 0) && ((sz + sz_start) < size_z)){
 		
@@ -3672,9 +3672,9 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
       // 3.a if inside the chunk and outside the existing sparse rep grid, run the routine to count the number
       //     of object strings along the current line of sight
       // 3.b otherwise use the grid value to increment NOi
-      for(sy = sy_start; sy <= sy_finish; sy++){
+      for(sy = sy_start; sy <= sy_finish; ++sy){
 	
-	for(sx = sx_start; sx <= sx_finish; sx++){
+	for(sx = sx_start; sx <= sx_finish; ++sx){
 	  	  
 	  // case 3.a triggered
 	  if(((sx > merge_x) || (chunk_x_start == 0)) && ((sy > merge_y) || (chunk_y_start == 0))){
@@ -3682,7 +3682,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	    // initialise the dummy integer j 
 	    j = -1;
 	    
-	    for(sz = sz_start; sz <= sz_finish; sz++){
+	    for(sz = sz_start; sz <= sz_finish; ++sz){
 	      
 	      // change i to reflect if this voxel in the flag_vals array belongs to the source
 	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
@@ -3692,7 +3692,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		if(j == -1){ 
 		  
 		  // increment NOi
-		  NOi++; 
+		  ++NOi; 
 		  
 		} 
 		
@@ -3701,7 +3701,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		
 	      } else { j = -1; }
 	      
-	      // for(sz = sz_start; sz <= sz_finish; sz++)
+	      // for(sz = sz_start; sz <= sz_finish; ++sz)
 	    }
 	    
 	  } else {
@@ -3711,48 +3711,48 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	    
 	  }     
 	  
-	  // for(sx = sx_start; sx <= sx_finish; sx++)
+	  // for(sx = sx_start; sx <= sx_finish; ++sx)
 	}
 	
-	// for(sy = sy_start; sy <= sy_finish; sy++)
+	// for(sy = sy_start; sy <= sy_finish; ++sy)
       }
       
       // 4. allocate memory to store temporary sparse representation and postage stamp images, then
       //    initialise the postage stamp image arrays
       temp_mom0.resize(0);
-      for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_mom0.push_back(0.0);
 	}
       }
       temp_RAPV.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_RAPV.push_back(0.0);
 	}
       }
       temp_DECPV.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){
-	for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){
+	for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
 	  temp_DECPV.push_back(0.0);
 	}
       }
       temp_obj_spec.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){ temp_obj_spec.push_back(0.0); }
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){ temp_obj_spec.push_back(0.0); }
       if((sz_finish - sz_start + 1) >= 10){
 
 	temp_ref_spec.resize(0);
-	for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); sz++){ temp_ref_spec.push_back(0.0); }
+	for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); ++sz){ temp_ref_spec.push_back(0.0); }
 
       } else {
 
 	temp_ref_spec.resize(0);
-	for(sz = 0; sz < (sz_finish - sz_start + 11); sz++){ temp_ref_spec.push_back(0.0); }
+	for(sz = 0; sz < (sz_finish - sz_start + 11); ++sz){ temp_ref_spec.push_back(0.0); }
 
       }
       temp_vfield.resize(0);
-      for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_vfield.push_back(0.0);
 	}
       }
@@ -3768,9 +3768,9 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
       NOi = 0;
       
       // initialise RA PV image
-      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){
 
-	for(sx = 0; sx < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1); ++sx){
 	
 	  temp_RAPV[(((sz + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start) * (sx_finish - sx_start + 1)) + sx + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) - sx_start - chunk_x_start)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_RAPV(((sz * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx));
 	  
@@ -3779,9 +3779,9 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
       }
 
       // initialise Dec PV image
-      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){
 
-	for(sy = 0; sy < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1); ++sy){
 	
 	  temp_DECPV[(((sz + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start) * (sy_finish - sy_start + 1)) + sy + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) - sy_start - chunk_y_start)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_DECPV(((sz * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1)) + sy));
 	  
@@ -3790,7 +3790,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
       }
 
       // initialise mini spec's
-      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){ temp_obj_spec[(sz + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_ospec(sz); }
+      for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){ temp_obj_spec[(sz + detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_ospec(sz); }
 
       if((sz_finish - sz_start + 1) >= 10){
 
@@ -3800,7 +3800,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 
 	  k = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (double) (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1))));
 
-	  for(sz = 0; sz < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); sz++){
+	  for(sz = 0; sz < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++sz){
 
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -3810,7 +3810,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	  
 	  k = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 
-	  for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); sz++){
+	  for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++sz){
 	    
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -3826,7 +3826,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 
 	  k = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (double) (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1))));
 
-	  for(sz = 0; sz < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); sz++){
+	  for(sz = 0; sz < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++sz){
 
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -3836,7 +3836,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	  
 	  k = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 
-	  for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); sz++){
+	  for(sz = 0; sz < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++sz){
 	    
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(i - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -3847,9 +3847,9 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
       }
       
       // search through LoS's of updated bounding box and take action as dictated by case 5.a or 5.b
-      for(sy = sy_start; sy <= sy_finish; sy++){
+      for(sy = sy_start; sy <= sy_finish; ++sy){
 	
-	for(sx = sx_start; sx <= sx_finish; sx++){
+	for(sx = sx_start; sx <= sx_finish; ++sx){
 	  	  
 	  // add value to temp_sparse_rep_grid
 	  temp_sparse_reps_grid[(((sy - sy_start) * (sx_finish - sx_start + 1)) + sx - sx_start)] = NOi;
@@ -3860,7 +3860,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	    // initialise the dummy integer j 
 	    j = -1;
 	    
-	    for(sz = sz_start; sz <= sz_finish; sz++){
+	    for(sz = sz_start; sz <= sz_finish; ++sz){
 	      
 	      // change j to reflect if this voxel in the flag_vals array belongs to the source
 	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
@@ -3888,7 +3888,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		  temp_sparse_reps_strings[(2 * NOi)] = chunk_z_start + sz;
 		  
 		  // increment NOi
-		  NOi++; 
+		  ++NOi; 
 		  		  
 		  // initialise the end of the object string in sparse_reps
 		  temp_sparse_reps_strings[((2 * NOi) - 1)] = chunk_z_start + sz;
@@ -3910,7 +3910,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 		
 	      }
 	      
-	      // for(sz = sz_start; sz <= sz_finish; sz++)
+	      // for(sz = sz_start; sz <= sz_finish; ++sz)
 	    }
 	    
 	    // add values to temp_ref_spec
@@ -3918,7 +3918,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	      
 	      k = (int) floorf((0.5 * (float) (sz_finish - sz_start + 1)));
 	      
-	      for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); sz++){
+	      for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); ++sz){
 	  	
 		if(((sz + sz_start - k) >= 0) && ((sz + sz_start - k) < size_z)){
 		  
@@ -3932,7 +3932,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	      // if(sz_finish >= 10)
 	    } else {
 	      
-	      for(sz = 0; sz < (sz_finish - sz_start + 11); sz++){
+	      for(sz = 0; sz < (sz_finish - sz_start + 11); ++sz){
 		
 		if(((sz + sz_start - 5) >= 0) && ((sz + sz_start - 5) < size_z)){
 		  
@@ -3953,11 +3953,11 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	    j = 0;
 	    if(((sx + chunk_x_start) >= detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0)) && ((sx + chunk_x_start) <= (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) + 1)) && ((sy + chunk_y_start) >= detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2)) && ((sy + chunk_y_start) <= (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) + 1))){
 	      
-	      for(g = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0))); g < detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)); g++){
+	      for(g = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0))); g < detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1)); ++g){
 		
 		temp_sparse_reps_strings[(NOi + j)] = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_strings((2 * g));
 		temp_sparse_reps_strings[(NOi + j + 1)] = detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1));
-		j++;
+		++j;
 		
 	      }
 	      
@@ -3975,10 +3975,10 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	    // else . . . case 5.b
 	  }
 	    
-	  // for(sx = sx_start; sx <= sx_finish; sx++)
+	  // for(sx = sx_start; sx <= sx_finish; ++sx)
 	}
 		
-	// for(sy = sy_start; sy <= sy_finish; sy++)
+	// for(sy = sy_start; sy <= sy_finish; ++sy)
       }
             
       temp_sparse_reps_grid[((sx_finish - sx_start + 1) * (sy_finish - sy_start + 1))] = NOi;
@@ -4017,21 +4017,21 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 
       }
    
-      for(j = 0; j < (1 + ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1))); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_grid(j,temp_sparse_reps_grid[j]); }
-      for(j = 0; j < (2 * NOi); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_strings(j,temp_sparse_reps_strings[j]); }
-      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_mom0(j,temp_mom0[j]); }
-      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_RAPV(j,temp_RAPV[j]); }
-      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_DECPV(j,temp_DECPV[j]); }
-      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_vfield(j,temp_vfield[j]); }
+      for(j = 0; j < (1 + ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1))); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_grid(j,temp_sparse_reps_grid[j]); }
+      for(j = 0; j < (2 * NOi); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_srep_strings(j,temp_sparse_reps_strings[j]); }
+      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_mom0(j,temp_mom0[j]); }
+      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_RAPV(j,temp_RAPV[j]); }
+      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_DECPV(j,temp_DECPV[j]); }
+      for(j = 0; j < ((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_vfield(j,temp_vfield[j]); }
 
-      for(j = 0; j < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_ospec(j,temp_obj_spec[j]); }
+      for(j = 0; j < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_ospec(j,temp_obj_spec[j]); }
       if((detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1) >= 10){
 
-	for(j = 0; j < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
+	for(j = 0; j < (2 * (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
 	
       } else {
 
-	for(j = 0; j < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); j++){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
+	for(j = 0; j < (detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(i - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++j){ detections[obj_batch][(i - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
 
       }
       
@@ -4041,7 +4041,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
     // update progress on display
     while(progress <= (((float) (i + 1) / ((float) obj)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }  
    
-    // for(i = 0; i < obj; i++)
+    // for(i = 0; i < obj; ++i)
   }
   std::cout << "* done." << std::endl;
     
@@ -4184,7 +4184,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
   // that ID to the grid point, otherwise, assign current value of obj and increment obj.
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); z++){
+  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
 
     // if the z value is sufficiently large that objects have started to pop out of the merging box,
     // then check if the objects outside of the merging box are sufficiently large
@@ -4195,7 +4195,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       NOi = 0;
       
       // apply size threshold to objects added since last size thresholding
-      for(i = 0; i < NO_check_obj_ids; i++){
+      for(i = 0; i < NO_check_obj_ids; ++i){
 	
 	// calculate the obj_batch value for the existing object
 	obj_batch = (long int) floor(((double) check_obj_ids[i] / (double) obj_limit));
@@ -4230,28 +4230,28 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    if(sy_start < 0){ sy_start = 0; }
 	    sz_start = detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_start;
 	    if(sz_start < 0){ sz_start = 0; }
-	    for(sz = sz_start; ((sz <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start)) && (sz < size_z)); sz++){
+	    for(sz = sz_start; ((sz <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start)) && (sz < size_z)); ++sz){
 	      
-	      for(sy = sy_start; ((sy <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start)) && (sy < size_y)); sy++){
+	      for(sy = sy_start; ((sy <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start)) && (sy < size_y)); ++sy){
 		
-		for(sx = sx_start; ((sx <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start)) && (sx < size_x)); sx++){
+		for(sx = sx_start; ((sx <= (detections[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start)) && (sx < size_x)); ++sx){
 		  
 		  if(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx * data_metric[0]))] == check_obj_ids[i]){ flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx * data_metric[0]))] = -99; }
 		  
-		  // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sx++)
+		  // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sx)
 		}
 		
-		// for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sy++)
+		// for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sy)
 	      }
 	      
-	      // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sz++)
+	      // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sz)
 	    }
 	    
 	    // add object id to list of available ids
 	    j = -1;
-	    for(g = 0; g < NO_obj_ids; g++){ if(obj_ids[g] == check_obj_ids[i]){ j = 1; break; } }
+	    for(g = 0; g < NO_obj_ids; ++g){ if(obj_ids[g] == check_obj_ids[i]){ j = 1; break; } }
 	    if(j == -1){
-	      NO_obj_ids++;
+	      ++NO_obj_ids;
 	      obj_ids.push_back(check_obj_ids[i]);
 	    }
 
@@ -4261,12 +4261,12 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	} else {
 	  
 	  check_obj_ids[NOi] = check_obj_ids[i];
-	  NOi++;
+	  ++NOi;
 	  
 	  // else . . . if(z_finish[obj_batch][(check_obj_ids[i] - (obj_batch * obj_limit))] < (z - merge_z - 1))
 	}
 	
-	// for(i = 0; i < NO_check_obj_ids; i++)
+	// for(i = 0; i < NO_check_obj_ids; ++i)
       }
 
       // update NO_check_obj_ids
@@ -4276,9 +4276,9 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       // if(z > (merge_z + 2))
     }
     
-    for(y = y_start; (y < size_y) && ((chunk_y_start + y) < max_y_val); y++){
+    for(y = y_start; (y < size_y) && ((chunk_y_start + y) < max_y_val); ++y){
       
-      for(x = x_start; (x < size_x) && ((chunk_x_start + x) < max_x_val); x++){
+      for(x = x_start; (x < size_x) && ((chunk_x_start + x) < max_x_val); ++x){
 	
 	// if this is a source voxel, check if it is associated with a previously identified
 	// source voxel
@@ -4306,18 +4306,18 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    
 	    // use a rectangular paralleliped to do the linking
 
-	    for(sz = sz_start; (sz < z); sz++){
+	    for(sz = sz_start; (sz < z); ++sz){
 	    
-	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); sy++){
+	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); ++sy){
 	      
-		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		  // check if this test voxel is source
 		  if((flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		    
 		    // check if this is a new objid
 		    prev = -1;
-		    for(i = 0; (i < NOi) && (i < init_limit); i++){
+		    for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		      
 		      if(match_init[i] == flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 			
@@ -4331,7 +4331,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		      
 		      // add current object to list of previous matches
 		      match_init.push_back(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
-		      NOi++;
+		      ++NOi;
 
 		    }
 		    
@@ -4340,24 +4340,24 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		    
 		  }
 		  
-		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); sx++)
+		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); ++sx)
 		}
 		
-		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); sy++)
+		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); ++sy)
 	      }
 	      
-	      // for(sz = z_start; (sz < z); sz++)
+	      // for(sz = z_start; (sz < z); ++sz)
 	    }
-	    for(sy = sy_start; (sy < y); sy++){
+	    for(sy = sy_start; (sy < y); ++sy){
 	      
-	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		// check if this test voxel is source
 		if((flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		  
 		  // check if this is a new objid, move on if not
 		  prev = -1;
-		  for(i = 0; (i < NOi) && (i < init_limit); i++){
+		  for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		    
 		    if(match_init[i] == flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 		      
@@ -4370,7 +4370,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		  if(prev == -1){ 
 		    
 		    // add current object to list of previous matches
-		    NOi++;
+		    ++NOi;
 		    match_init.push_back(flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		  }
@@ -4380,19 +4380,19 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		  
 		}		
 		
-		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); sx++)
+		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); ++sx)
 	      }
 	      
-	      // for(sy = y_start; (sy < y) && (sy < size_y); sy++)
+	      // for(sy = y_start; (sy < y) && (sy < size_y); ++sy)
 	    }
-	    for(sx = sx_start; sx < x; sx++){
+	    for(sx = sx_start; sx < x; ++sx){
 	      
 	      // check if this test voxel is source
 	      if((flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		
 		// check if this is a new objid, move on if not
 		prev = -1;
-		for(i = 0; (i < NOi) && (i < init_limit); i++){
+		for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		  
 		  if(match_init[i] == flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]){
 		    
@@ -4405,7 +4405,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		if(prev == -1){ 
 		  
 		  // add current object to list of previous matches
-		  NOi++;
+		  ++NOi;
 		  match_init.push_back(flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]);
 
 		}
@@ -4415,7 +4415,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		
 	      }	  
 	      
-	      // for(sx = x_start; sx <= x; sx++)
+	      // for(sx = x_start; sx <= x; ++sx)
 	    }
 	  
 	    // if(ss_mode == 1)
@@ -4423,11 +4423,11 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 
 	    // use a cylinder for the linking lengths
 
-	    for(sz = sz_start; (sz < z); sz++){
+	    for(sz = sz_start; (sz < z); ++sz){
 	    
-	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); sy++){
+	      for(sy = sy_start; (sy <= (y + merge_y + 1)) && (sy < size_y); ++sy){
 	      
-		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+		for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		  // check if the test voxel is within the boundaries of the spatial ellipse
 		  if(((((float) (x - sx)) * ((float) (x - sx)) / (((float) (merge_x + 1)) * ((float) (merge_x + 1)))) + (((float) (y - sy)) * ((float) (y - sy)) / (((float) (merge_y + 1)) * ((float) (merge_y + 1))))) > 1.0){ continue; }
@@ -4437,7 +4437,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 
 		    // check if this is a new objid
 		    prev = -1;
-		    for(i = 0; (i < NOi) && (i < init_limit); i++){
+		    for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		      
 		      if(match_init[i] == flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 			
@@ -4450,7 +4450,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		    if(prev == -1){ 
 		      
 		      // add current object to list of previous matches
-		      NOi++;
+		      ++NOi;
 		      match_init.push_back(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		    }
@@ -4460,17 +4460,17 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		    
 		  }
 		  
-		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); sx++)
+		  // for(sx = x_start; (sx < (x + merge_x + 1)) && (sx < size_x); ++sx)
 		}
 		
-		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); sy++)
+		// for(sy = y_start; (sy < (y + merge_y + 1)) && (sy < size_y); ++sy)
 	      }
 	      
-	      // for(sz = z_start; (sz < z); sz++)
+	      // for(sz = z_start; (sz < z); ++sz)
 	    }
-	    for(sy = sy_start; (sy < y); sy++){
+	    for(sy = sy_start; (sy < y); ++sy){
 	      
-	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); sx++){
+	      for(sx = sx_start; (sx <= (x + merge_x + 1)) && (sx < size_x); ++sx){
 		
 		// check if the test voxel is within the boundaries of the spatial ellipse
 		if(((((float) (x - sx)) * ((float) (x - sx)) / (((float) (merge_x + 1)) * ((float) (merge_x + 1)))) + (((float) (y - sy)) * ((float) (y - sy)) / (((float) (merge_y + 1)) * ((float) (merge_y + 1))))) > 1.0){ continue; }
@@ -4480,7 +4480,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		  
 		  // check if this is a new objid, move on if not
 		  prev = -1;
-		  for(i = 0; (i < NOi) && (i < init_limit); i++){
+		  for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		    
 		    if(match_init[i] == flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]){
 		      
@@ -4493,7 +4493,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		  if(prev == -1){ 
 		    
 		    // add current object to list of previous matches
-		    NOi++;
+		    ++NOi;
 		    match_init.push_back(flag_vals[((z*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))]);
 
 		  }
@@ -4503,19 +4503,19 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		  
 		}		
 		
-		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); sx++)
+		// for(sx = x_start; (sx < = (x + merge_x + 1)) && (sx < size_x); ++sx)
 	      }
 	      
-	      // for(sy = y_start; (sy < y) && (sy < size_y); sy++)
+	      // for(sy = y_start; (sy < y) && (sy < size_y); ++sy)
 	    }
-	    for(sx = sx_start; sx < x; sx++){
+	    for(sx = sx_start; sx < x; ++sx){
 	      
 	      // check if this test voxel is source
 	      if((flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] == flag_value) || (flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))] >= 0)){
 		
 		// check if this is a new objid, move on if not
 		prev = -1;
-		for(i = 0; (i < NOi) && (i < init_limit); i++){
+		for(i = 0; (i < NOi) && (i < init_limit); ++i){
 		  
 		  if(match_init[i] == flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]){
 		    
@@ -4528,7 +4528,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		if(prev == -1){ 
 		  
 		  // add current object to list of previous matches
-		  NOi++;
+		  ++NOi;
 		  match_init.push_back(flag_vals[((z*data_metric[2]) + (y*data_metric[1]) + (sx*data_metric[0]))]);
 		  
 		}
@@ -4538,7 +4538,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		
 	      }	  
 	      
-	      // for(sx = x_start; sx <= x; sx++)
+	      // for(sx = x_start; sx <= x; ++sx)
 	    }
 
 	    // else . . . if(ss_mode == 1)
@@ -4564,10 +4564,10 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 
 	    // push id to list of objects that need to be size thresholded
 	    i = -1;
-	    for(g = 0; g < NO_check_obj_ids; g++){ if(check_obj_ids[g] == obj_ids[0]){ i = 1; break; } }
+	    for(g = 0; g < NO_check_obj_ids; ++g){ if(check_obj_ids[g] == obj_ids[0]){ i = 1; break; } }
 	    if(i == -1){
 
-	      NO_check_obj_ids++;
+	      ++NO_check_obj_ids;
 	      check_obj_ids.push_back(obj_ids[0]);
 	      
 	    }
@@ -4575,13 +4575,13 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    // adjust obj and obj_ids
 	    if(NO_obj_ids > 1){
 	      
-	      for(i = 0; i < (NO_obj_ids - 1); i++){ obj_ids[i] = obj_ids[(i + 1)]; }
-	      NO_obj_ids--;
+	      for(i = 0; i < (NO_obj_ids - 1); ++i){ obj_ids[i] = obj_ids[(i + 1)]; }
+	      --NO_obj_ids;
 	      obj_ids.resize(NO_obj_ids);
 
 	    } else {
 	      
-	      obj++;
+	      ++obj;
 
 	      obj_ids[0] = obj;
 	      
@@ -4605,10 +4605,10 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    
 	    // add object to list of objects within the merging box, provided that it hasn't been added already
 	    i = -1;
-	    for(g = 0; g < NO_check_obj_ids; g++){ if(check_obj_ids[g] == existing){ i = 1; break; } }
+	    for(g = 0; g < NO_check_obj_ids; ++g){ if(check_obj_ids[g] == existing){ i = 1; break; } }
 	    if(i == -1){
 
-	      NO_check_obj_ids++;
+	      ++NO_check_obj_ids;
 	      check_obj_ids.push_back(existing);
 
 	    }
@@ -4626,7 +4626,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    // to be the same as the other part of this object, and update the bounding box at the same time
 	    if(NOi > 1){
 	      
-	      for(i = 0; i < NOi; i++){
+	      for(i = 0; i < NOi; ++i){
 		
 		// move on if this is the existing object
 		if(match_init[i] == existing){ 
@@ -4649,21 +4649,21 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		if(sy_start < 0){ sy_start = 0; }
 		sz_start = detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmin() - chunk_z_start;
 		if(sz_start < 0){ sz_start = 0; }
-		for(sz = sz_start; (sz <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmax() - chunk_z_start) && (sz < size_z); sz++){
+		for(sz = sz_start; (sz <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetFREQmax() - chunk_z_start) && (sz < size_z); ++sz){
 		  
-		  for(sy = sy_start; (sy <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetDECmax() - chunk_y_start) && (sy < size_y); sy++){
+		  for(sy = sy_start; (sy <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetDECmax() - chunk_y_start) && (sy < size_y); ++sy){
 		    
-		    for(sx = sx_start; (sx <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetRAmax() - chunk_x_start) && (sx < size_x); sx++){
+		    for(sx = sx_start; (sx <= detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].GetRAmax() - chunk_x_start) && (sx < size_x); ++sx){
 		      
 		      if(flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] == match_init[i]){ flag_vals[((sz*data_metric[2]) + (sy*data_metric[1]) + (sx*data_metric[0]))] = existing; }
 		      
-		      // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sx++)
+		      // for(sx = x_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sx <= x_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sx)
 		    }
 		    
-		    // for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sy++)
+		    // for(sy = y_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sy <= y_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sy)
 		  }
 		  
-		  // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; sz++)
+		  // for(sz = z_start[(match_init[i] - (obj_batch_2 * obj_limit))]; sz <= z_finish[(match_init[i] - (obj_batch_2 * obj_limit))]; ++sz)
 		}
 			
 		// re-initialise the `object' values for the match_init[i] object that has just been merged into the existing object, 
@@ -4679,15 +4679,15 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		detections[obj_batch_2][(match_init[i] - (obj_batch_2 * obj_limit))].Set_srep_update(0);
 
 		j = -1;
-		for(g = 0; g < NO_obj_ids; g++){ if(obj_ids[g] == match_init[i]){ j = 1; break; } }
+		for(g = 0; g < NO_obj_ids; ++g){ if(obj_ids[g] == match_init[i]){ j = 1; break; } }
 		if(j == -1){
 		  
-		  NO_obj_ids++;
+		  ++NO_obj_ids;
 		  obj_ids.push_back(match_init[i]);
 		  		  
 		}
 		
-		// for(i = 0; i < NOi; i++)
+		// for(i = 0; i < NOi; ++i)
 	      }
 	      
 	      // if(NOi > 1)
@@ -4702,13 +4702,13 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	// update progress on display
 	while(progress <= (((float) ((z * size_x * size_y) + (y * size_x) + x + 1)) / ((float) (size_x * size_y * size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
-	// for(x = 0; x < size_x; x++)
+	// for(x = 0; x < size_x; ++x)
       }
       
-      // for(y = 0; y < size_y; y++)
+      // for(y = 0; y < size_y; ++y)
     }
     
-    // for(z = 0; z < size_z; z++)
+    // for(z = 0; z < size_z; ++z)
   }
   std::cout << "* done." << std::endl;
   
@@ -4717,7 +4717,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
   std::cout << "Generating/updating sparse representations of sources . . . " << std::endl;
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(o = 0; o < obj; o++){
+  for(o = 0; o < obj; ++o){
     
     // calculate the obj_batch value for this object
     obj_batch = (long int) floor(((double) o / (double) obj_limit));
@@ -4776,34 +4776,34 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       sz_finish = detections[obj_batch][(o - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start;
       
       // count the number of object sections that make up this object
-      for(sy = sy_start; (sy <= sy_finish) && (sy < size_y); sy++){
+      for(sy = sy_start; (sy <= sy_finish) && (sy < size_y); ++sy){
 	
-	for(sx = sx_start; (sx <= sx_finish) && (sx < size_x); sx++){
+	for(sx = sx_start; (sx <= sx_finish) && (sx < size_x); ++sx){
 	  
 	  // initialise the dummy integer j
 	  j = -1;
 	  
-	  for(sz = sz_start; (sz <= sz_finish) && (sz < size_z); sz++){
+	  for(sz = sz_start; (sz <= sz_finish) && (sz < size_z); ++sz){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
 	    if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
 	      
 	      // if previously this was not part of an object string, j == -1, then increment the number of object strings and
 	      // adjust the value of j
-	      if(j == -1){ NOi++; }
+	      if(j == -1){ ++NOi; }
 	      
 	      // change j to reflect that this voxel belongs to the object
 	      j = 1; 
 	      
 	    } else { j = -1; }
 	    
-	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_size; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_size); sz++)
+	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmin() - chunk_z_size; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_size); ++sz)
 	  }
 	  
-	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_size; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_size); sx++)
+	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_size; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_size); ++sx)
 	}
 	
-	// for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_size; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_size); sy++)
+	// for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_size; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_size); ++sy)
       }
 
       // create an array element to store this sparse representation
@@ -4838,50 +4838,50 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       detections[obj_batch][(o - (obj_batch * obj_limit))].Create_vfield((sx_finish * sy_finish));
       
       // initialise the mini_mom0 values
-      for(sy = 0; sy < sy_finish; sy++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sy = 0; sy < sy_finish; ++sy){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(o - (obj_batch * obj_limit))].Set_mom0(((sy * sx_finish) + sx),0.0);
 	}
       }
 
       // initialise the mini_RAPV values
-      for(sz = 0; sz < sz_finish; sz++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sz = 0; sz < sz_finish; ++sz){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(o - (obj_batch * obj_limit))].Set_RAPV(((sz * sx_finish) + sx),0.0);
 	}
       }
       
       // initialise the mini_DECPV values
-      for(sz = 0; sz < sz_finish; sz++){
-	for(sy = 0; sy < sy_finish; sy++){
+      for(sz = 0; sz < sz_finish; ++sz){
+	for(sy = 0; sy < sy_finish; ++sy){
 	  detections[obj_batch][(o - (obj_batch * obj_limit))].Set_DECPV(((sz * sy_finish) + sy),0.0);
 	}
       }
       
       // initialise the mini_spec values
-      for(sz = 0; sz < sz_finish; sz++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_ospec(sz,0.0); }
+      for(sz = 0; sz < sz_finish; ++sz){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_ospec(sz,0.0); }
       if(sz_finish >= 10){
 
-	for(sz = 0; sz < (2 * sz_finish); sz++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
+	for(sz = 0; sz < (2 * sz_finish); ++sz){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
 
       } else {
 
-	for(sz = 0; sz < (10 + sz_finish); sz++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
+	for(sz = 0; sz < (10 + sz_finish); ++sz){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(sz,0.0); }
 
       }
             
       // initialise the mini_vfield values
-      for(sy = 0; sy < sy_finish; sy++){
-	for(sx = 0; sx < sx_finish; sx++){
+      for(sy = 0; sy < sy_finish; ++sy){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  detections[obj_batch][(o - (obj_batch * obj_limit))].Set_vfield(((sy * sx_finish) + sx),0.0);
 	}
       }
 
       // populate the sparse array representation and postage stamp images
       NOi = 0;
-      for(sy = 0; sy < sy_finish; sy++){
+      for(sy = 0; sy < sy_finish; ++sy){
 	
-	for(sx = 0; sx < sx_finish; sx++){
+	for(sx = 0; sx < sx_finish; ++sx){
 	  
 	  // write the current number of object strings to the grid
 	  detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_grid(((sy * sx_finish) + sx),NOi);
@@ -4889,7 +4889,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	  // initialise the dummy integer j 
 	  j = -1;
 	  
-	  for(sz = 0; sz < sz_finish; sz++){
+	  for(sz = 0; sz < sz_finish; ++sz){
 	    
 	    // change j to reflect if this voxel in the flag_vals array belongs to the source
 	    if(flag_vals[(((sz + sz_start) * data_metric[2]) + ((sy + sy_start) * data_metric[1]) + ((sx + sx_start) * data_metric[0]))] == o){ 
@@ -4917,7 +4917,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_strings((2 * NOi),(sz_start + chunk_z_start + sz));
 		
 		// increment NOi
-		NOi++; 
+		++NOi; 
 		
 		// initialise the end of the object string in sparse_reps
 		detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_strings(((2 * NOi) - 1),(sz_start + chunk_z_start + sz));
@@ -4939,13 +4939,13 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	      
 	    }
 	    
-	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREmin() - chunk_z_start + 1; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start + 1); sz++)
+	    // for(sz = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREmin() - chunk_z_start + 1; sz <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetFREQmax() - chunk_z_start + 1); ++sz)
 	  }
 	  
-	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_start + 1; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start + 1); sx++)
+	  // for(sx = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmin() - chunk_x_start + 1; sx <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetRAmax() - chunk_x_start + 1); ++sx)
 	}
 	
-	//for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_start + 1; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start + 1); sy++)
+	//for(sy = detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmin() - chunk_y_start + 1; sy <= (detections[obj_batch][(obj - (obj_batch * obj_limit))].GetDECmax() - chunk_y_start + 1); ++sy)
       }
             
       // update sparse_reps with the final value of NOi
@@ -4954,11 +4954,11 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       // create the reference spectrum
       if(sz_finish >= 10){
 	
-	for(sz = -1 * (int) floorf((0.5 * (float) sz_finish)); sz < (sz_finish + ((int) floorf((0.5 * (float) sz_finish)))); sz++){
+	for(sz = -1 * (int) floorf((0.5 * (float) sz_finish)); sz < (sz_finish + ((int) floorf((0.5 * (float) sz_finish)))); ++sz){
 	  
-	  for(sy = 0; sy < sy_finish; sy++){
+	  for(sy = 0; sy < sy_finish; ++sy){
 	  
-	    for(sx = 0; sx < sx_finish; sx++){
+	    for(sx = 0; sx < sx_finish; ++sx){
 	    
 	      if(((sz + sz_start) >= 0) && ((sz + sz_start) < size_z)){
 		
@@ -4976,11 +4976,11 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	// if(sz_finish >= 10)
       } else {
 
-	for(sz = -5; sz < (sz_finish + 5); sz++){
+	for(sz = -5; sz < (sz_finish + 5); ++sz){
 	  
-	  for(sy = 0; sy < sy_finish; sy++){
+	  for(sy = 0; sy < sy_finish; ++sy){
 	  
-	    for(sx = 0; sx < sx_finish; sx++){
+	    for(sx = 0; sx < sx_finish; ++sx){
 	    
 	      if(((sz + sz_start) >= 0) && ((sz + sz_start) < size_z)){
 		
@@ -5021,9 +5021,9 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       // 3.a if inside the chunk and outside the existing sparse rep grid, run the routine to count the number
       //     of object strings along the current line of sight
       // 3.b otherwise use the grid value to increment NOi
-      for(sy = sy_start; sy <= sy_finish; sy++){
+      for(sy = sy_start; sy <= sy_finish; ++sy){
 	
-	for(sx = sx_start; sx <= sx_finish; sx++){
+	for(sx = sx_start; sx <= sx_finish; ++sx){
 	  	  
 	  // case 3.a triggered
 	  if(((sx > merge_x) || (chunk_x_start == 0)) && ((sy > merge_y) || (chunk_y_start == 0))){
@@ -5031,7 +5031,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    // initialise the dummy integer j 
 	    j = -1;
 	    
-	    for(sz = sz_start; sz <= sz_finish; sz++){
+	    for(sz = sz_start; sz <= sz_finish; ++sz){
 	      
 	      // change i to reflect if this voxel in the flag_vals array belongs to the source
 	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
@@ -5041,7 +5041,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		if(j == -1){ 
 		  
 		  // increment NOi
-		  NOi++; 
+		  ++NOi; 
 		  
 		} 
 		
@@ -5050,7 +5050,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		
 	      } else { j = -1; }
 	      
-	      // for(sz = sz_start; sz <= sz_finish; sz++)
+	      // for(sz = sz_start; sz <= sz_finish; ++sz)
 	    }
 	    
 	  } else {
@@ -5060,48 +5060,48 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    
 	  }     
 	  
-	  // for(sx = sx_start; sx <= sx_finish; sx++)
+	  // for(sx = sx_start; sx <= sx_finish; ++sx)
 	}
 	
-	// for(sy = sy_start; sy <= sy_finish; sy++)
+	// for(sy = sy_start; sy <= sy_finish; ++sy)
       }
       
       // 4. allocate memory to store temporary sparse representation and postage stamp images, then
       //    initialise the postage stamp image arrays
       temp_mom0.resize(0);
-      for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_mom0.push_back(0.0);
 	}
       }
       temp_RAPV.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_RAPV.push_back(0.0);
 	}
       }
       temp_DECPV.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){
-	for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){
+	for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
 	  temp_DECPV.push_back(0.0);
 	}
       }
       temp_obj_spec.resize(0);
-      for(sz = 0; sz < (sz_finish - sz_start + 1); sz++){ temp_obj_spec.push_back(0.0); }
+      for(sz = 0; sz < (sz_finish - sz_start + 1); ++sz){ temp_obj_spec.push_back(0.0); }
       if((sz_finish - sz_start + 1) >= 10){
 
 	temp_ref_spec.resize(0);
-	for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); sz++){ temp_ref_spec.push_back(0.0); }
+	for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); ++sz){ temp_ref_spec.push_back(0.0); }
 
       } else {
 
 	temp_ref_spec.resize(0);
-	for(sz = 0; sz < (sz_finish - sz_start + 11); sz++){ temp_ref_spec.push_back(0.0); }
+	for(sz = 0; sz < (sz_finish - sz_start + 11); ++sz){ temp_ref_spec.push_back(0.0); }
 
       }
       temp_vfield.resize(0);
-      for(sy = 0; sy < (sy_finish - sy_start + 1); sy++){
-	for(sx = 0; sx < (sx_finish - sx_start + 1); sx++){
+      for(sy = 0; sy < (sy_finish - sy_start + 1); ++sy){
+	for(sx = 0; sx < (sx_finish - sx_start + 1); ++sx){
 	  temp_vfield.push_back(0.0);
 	}
       }
@@ -5117,9 +5117,9 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       NOi = 0;
       
       // initialise RA PV image
-      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){
 
-	for(sx = 0; sx < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1); sx++){
+	for(sx = 0; sx < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1); ++sx){
 	
 	  temp_RAPV[(((sz + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start) * (sx_finish - sx_start + 1)) + sx + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) - sx_start - chunk_x_start)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_RAPV(((sz * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx));
 	  
@@ -5128,9 +5128,9 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       }
 
       // initialise Dec PV image
-      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){
+      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){
 
-	for(sy = 0; sy < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1); sy++){
+	for(sy = 0; sy < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1); ++sy){
 	
 	  temp_DECPV[(((sz + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start) * (sy_finish - sy_start + 1)) + sy + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) - sy_start - chunk_y_start)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_DECPV(((sz * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1)) + sy));
 	  
@@ -5139,7 +5139,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       }
 
       // initialise mini spec's
-      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); sz++){ temp_obj_spec[(sz + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_ospec(sz); }
+      for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++sz){ temp_obj_spec[(sz + detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - sz_start - chunk_z_start)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_ospec(sz); }
 
       if((sz_finish - sz_start + 1) >= 10){
 
@@ -5149,7 +5149,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 
 	  k = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (double) (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1))));
 
-	  for(sz = 0; sz < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); sz++){
+	  for(sz = 0; sz < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++sz){
 
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -5159,7 +5159,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	  
 	  k = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 
-	  for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); sz++){
+	  for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++sz){
 	    
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -5175,7 +5175,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 
 	  k = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - ((int) floorf((0.5 * (double) (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1))));
 
-	  for(sz = 0; sz < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); sz++){
+	  for(sz = 0; sz < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++sz){
 
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -5185,7 +5185,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	  
 	  k = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) - 5;
 
-	  for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); sz++){
+	  for(sz = 0; sz < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++sz){
 	    
 	    temp_ref_spec[(sz + k - j)]+=detections[obj_batch][(o - (obj_batch * obj_limit))].Get_rspec(sz);
 
@@ -5196,9 +5196,9 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
       }
       
       // search through LoS's of updated bounding box and take action as dictated by case 5.a or 5.b
-      for(sy = sy_start; sy <= sy_finish; sy++){
+      for(sy = sy_start; sy <= sy_finish; ++sy){
 	
-	for(sx = sx_start; sx <= sx_finish; sx++){
+	for(sx = sx_start; sx <= sx_finish; ++sx){
 	  	  
 	  // add value to temp_sparse_rep_grid
 	  temp_sparse_reps_grid[(((sy - sy_start) * (sx_finish - sx_start + 1)) + sx - sx_start)] = NOi;
@@ -5209,7 +5209,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    // initialise the dummy integer j 
 	    j = -1;
 	    
-	    for(sz = sz_start; sz <= sz_finish; sz++){
+	    for(sz = sz_start; sz <= sz_finish; ++sz){
 	      
 	      // change j to reflect if this voxel in the flag_vals array belongs to the source
 	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == o){ 
@@ -5237,7 +5237,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		  temp_sparse_reps_strings[(2 * NOi)] = chunk_z_start + sz;
 		  
 		  // increment NOi
-		  NOi++; 
+		  ++NOi; 
 		  		  
 		  // initialise the end of the object string in sparse_reps
 		  temp_sparse_reps_strings[((2 * NOi) - 1)] = chunk_z_start + sz;
@@ -5259,7 +5259,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 		
 	      }
 	      
-	      // for(sz = sz_start; sz <= sz_finish; sz++)
+	      // for(sz = sz_start; sz <= sz_finish; ++sz)
 	    }
 	    
 	    // add values to temp_ref_spec
@@ -5267,7 +5267,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	      
 	      k = (int) floorf((0.5 * (float) (sz_finish - sz_start + 1)));
 	      
-	      for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); sz++){
+	      for(sz = 0; sz < (2 * (sz_finish - sz_start + 1)); ++sz){
 	  	
 		if(((sz + sz_start - k) >= 0) && ((sz + sz_start - k) < size_z)){
 		  
@@ -5281,7 +5281,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	      // if(sz_finish >= 10)
 	    } else {
 	      
-	      for(sz = 0; sz < (sz_finish - sz_start + 11); sz++){
+	      for(sz = 0; sz < (sz_finish - sz_start + 11); ++sz){
 		
 		if(((sz + sz_start - 5) >= 0) && ((sz + sz_start - 5) < size_z)){
 		  
@@ -5302,11 +5302,11 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    j = 0;
 	    if(((sx + chunk_x_start) >= detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0)) && ((sx + chunk_x_start) <= (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) + 1)) && ((sy + chunk_y_start) >= detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2)) && ((sy + chunk_y_start) <= (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) + 1))){
 	      
-	      for(g = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0))); g < detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)); g++){
+	      for(g = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0))); g < detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_grid((((sy + chunk_y_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + sx + chunk_x_start - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1)); ++g){
 		
 		temp_sparse_reps_strings[(NOi + j)] = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_strings((2 * g));
 		temp_sparse_reps_strings[(NOi + j + 1)] = detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1));
-		j++;
+		++j;
 		
 	      }
 	      
@@ -5324,10 +5324,10 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	    // else . . . case 5.b
 	  }
 	    
-	  // for(sx = sx_start; sx <= sx_finish; sx++)
+	  // for(sx = sx_start; sx <= sx_finish; ++sx)
 	}
 		
-	// for(sy = sy_start; sy <= sy_finish; sy++)
+	// for(sy = sy_start; sy <= sy_finish; ++sy)
       }
             
       temp_sparse_reps_grid[((sx_finish - sx_start + 1) * (sy_finish - sy_start + 1))] = NOi;
@@ -5366,21 +5366,21 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 
       }
    
-      for(j = 0; j < (1 + ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1))); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_grid(j,temp_sparse_reps_grid[j]); }
-      for(j = 0; j < (2 * NOi); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_strings(j,temp_sparse_reps_strings[j]); }
-      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_mom0(j,temp_mom0[j]); }
-      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_RAPV(j,temp_RAPV[j]); }
-      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_DECPV(j,temp_DECPV[j]); }
-      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_vfield(j,temp_vfield[j]); }
+      for(j = 0; j < (1 + ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1))); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_grid(j,temp_sparse_reps_grid[j]); }
+      for(j = 0; j < (2 * NOi); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_srep_strings(j,temp_sparse_reps_strings[j]); }
+      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_mom0(j,temp_mom0[j]); }
+      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_RAPV(j,temp_RAPV[j]); }
+      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_DECPV(j,temp_DECPV[j]); }
+      for(j = 0; j < ((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) + 1) * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(3) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(2) + 1)); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_vfield(j,temp_vfield[j]); }
 
-      for(j = 0; j < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_ospec(j,temp_obj_spec[j]); }
+      for(j = 0; j < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_ospec(j,temp_obj_spec[j]); }
       if((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1) >= 10){
 
-	for(j = 0; j < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
+	for(j = 0; j < (2 * (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 1)); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
 	
       } else {
 
-	for(j = 0; j < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); j++){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
+	for(j = 0; j < (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(5) - detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(4) + 11); ++j){ detections[obj_batch][(o - (obj_batch * obj_limit))].Set_rspec(j,temp_ref_spec[j]); }
 
       }
       
@@ -5390,7 +5390,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
     // update progress on display
     while(progress <= (((double) (o + 1) / ((double) obj)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }  
    
-    // for(o = 0; o < obj; o++)
+    // for(o = 0; o < obj; ++o)
   }
   std::cout << "* done." << std::endl;
     

@@ -11,9 +11,9 @@ float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props *> & d
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOx; i++){
-
-    for(j = 0; j < NOy; j++){
+  for(j = 0; j < NOy; ++j){
+    
+    for(i = 0; i < NOx; ++i){
       
       plot_array[((j*NOx) + i)] = 0.0;
 
@@ -22,19 +22,19 @@ float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props *> & d
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
-    obj_batch = floorf((float) k / (float) obj_limit);
+    obj_batch = (int) floorf((float) k / (float) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
       sx_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1;
       sy_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1;
 
-      for(i = 0; i < sx_finish; i++){
+      for(j = 0; j < sy_finish; ++j){
+      
+	for(i = 0; i < sx_finish; ++i){
 	
-	for(j = 0; j < sy_finish; j++){
-
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin()) * NOx) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(((j * sx_finish) + i));
 	 
 	}
@@ -43,11 +43,11 @@ float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props *> & d
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOx; i++){
-    for(j = 0; j < NOy; j++){
+  for(j = 0; j < NOy; ++j){
+    for(i = 0; i < NOx; ++i){
       if(plot_array[((j * NOx) + i)] > max){ max = plot_array[((j * NOx) + i)]; }
     }
   }
@@ -63,10 +63,10 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props *
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOx; i++){
-
-    for(j = 0; j < NOy; j++){
-      
+  for(j = 0; j < NOy; ++j){
+  
+    for(i = 0; i < NOx; ++i){
+    
       plot_array[((j*NOx) + i)] = 0.0;
 
     }
@@ -74,7 +74,7 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props *
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
     obj_batch = (long int) floor((double) k / (double) obj_limit);
 
@@ -82,10 +82,10 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props *
 
       sx_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1;
       sy_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1;
-
-      for(i = 0; i < sx_finish; i++){
 	
-	for(j = 0; j < sy_finish; j++){
+      for(j = 0; j < sy_finish; ++j){
+
+	for(i = 0; i < sx_finish; ++i){
 
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin()) * NOx) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(((j * sx_finish) + i));
 	 
@@ -95,11 +95,11 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props *
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOx; i++){
-    for(j = 0; j < NOy; j++){
+  for(j = 0; j < NOy; ++j){
+    for(i = 0; i < NOx; ++i){
       if(plot_array[((j * NOx) + i)] > max){ max = plot_array[((j * NOx) + i)]; }
     }
   }
@@ -114,10 +114,10 @@ float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props *> & det
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOx; i++){
-
-    for(j = 0; j < NOz; j++){
-      
+  for(j = 0; j < NOz; ++j){
+  
+    for(i = 0; i < NOx; ++i){
+    
       plot_array[((j*NOx) + i)] = 0.0;
 
     }
@@ -125,19 +125,19 @@ float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props *> & det
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
-    obj_batch = floorf((float) k / (float) obj_limit);
+    obj_batch = (int) floorf((float) k / (float) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
       sx_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1;
       sz_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1;
 
-      for(i = 0; i < sx_finish; i++){
-	
-	for(j = 0; j < sz_finish; j++){
+      for(j = 0; j < sz_finish; ++j){
 
+	for(i = 0; i < sx_finish; ++i){
+	
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin()) * NOx) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_RAPV(((j * sx_finish) + i));
 	 
 	}
@@ -146,11 +146,11 @@ float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props *> & det
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOx; i++){
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
+    for(i = 0; i < NOx; ++i){
       if(plot_array[((j * NOx) + i)] > max){ max = plot_array[((j * NOx) + i)]; }
     }
   }
@@ -166,10 +166,10 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props *> 
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOx; i++){
-
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
       
+    for(i = 0; i < NOx; ++i){
+
       plot_array[((j*NOx) + i)] = 0.0;
 
     }
@@ -177,7 +177,7 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props *> 
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
     obj_batch = (long int) floor((double) k / (double) obj_limit);
 
@@ -186,10 +186,10 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props *> 
       sx_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1;
       sz_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1;
 
-      for(i = 0; i < sx_finish; i++){
-	
-	for(j = 0; j < sz_finish; j++){
+      for(j = 0; j < sz_finish; ++j){
 
+	for(i = 0; i < sx_finish; ++i){
+	
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin()) * NOx) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_RAPV(((j * sx_finish) + i));
 	 
 	}
@@ -198,11 +198,11 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props *> 
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOx; i++){
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
+    for(i = 0; i < NOx; ++i){
       if(plot_array[((j * NOx) + i)] > max){ max = plot_array[((j * NOx) + i)]; }
     }
   }
@@ -217,10 +217,10 @@ float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props *> & de
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOy; i++){
-
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
       
+    for(i = 0; i < NOy; ++i){
+    
       plot_array[((j*NOy) + i)] = 0.0;
 
     }
@@ -228,19 +228,19 @@ float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props *> & de
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
-    obj_batch = floorf((float) k / (float) obj_limit);
+    obj_batch = (int) floorf((float) k / (float) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
       sy_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1;
       sz_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1;
 
-      for(i = 0; i < sy_finish; i++){
-	
-	for(j = 0; j < sz_finish; j++){
+      for(j = 0; j < sz_finish; ++j){
 
+	for(i = 0; i < sy_finish; ++i){
+	
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin()) * NOy) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_DECPV(((j * sy_finish) + i));
 	 
 	}
@@ -249,11 +249,11 @@ float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props *> & de
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOy; i++){
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
+    for(i = 0; i < NOy; ++i){
       if(plot_array[((j * NOy) + i)] > max){ max = plot_array[((j * NOy) + i)]; }
     }
   }
@@ -269,10 +269,10 @@ float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props *>
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOy; i++){
-
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
       
+    for(i = 0; i < NOy; ++i){
+
       plot_array[((j*NOy) + i)] = 0.0;
 
     }
@@ -280,7 +280,7 @@ float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props *>
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
     obj_batch = (long int) floor((double) k / (double) obj_limit);
 
@@ -289,10 +289,10 @@ float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props *>
       sy_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1;
       sz_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1;
 
-      for(i = 0; i < sy_finish; i++){
-	
-	for(j = 0; j < sz_finish; j++){
+      for(j = 0; j < sz_finish; ++j){
 
+	for(i = 0; i < sy_finish; ++i){
+	
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin()) * NOy) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_DECPV(((j * sy_finish) + i));
 	 
 	}
@@ -301,11 +301,11 @@ float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props *>
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOy; i++){
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
+    for(i = 0; i < NOy; ++i){
       if(plot_array[((j * NOy) + i)] > max){ max = plot_array[((j * NOy) + i)]; }
     }
   }
@@ -322,18 +322,18 @@ int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int siz
   // if it is, add entry to boundary list
 
   // 0. calculate obj_batch value
-  obj_batch = floorf((float) obj / (float) obj_limit);
+  obj_batch = (int) floorf((float) obj / (float) obj_limit);
     
   // 1. identify left edge of source
-  for(j = 0; j < size_y; j++){
+  for(j = 0; j < size_y; ++j){
 
-    for(i = 0; i < size_x; i++){
+    for(i = 0; i < size_x; ++i){
 
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 
 	plot_x[p] = (float) min_x + i - 1;
 	plot_y[p] = (float) min_y + j;
-	p++;
+	++p;
 	break;
 
       }
@@ -345,10 +345,10 @@ int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int siz
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
-  for(i = size_x - 1; i >= 0; i--){
+  for(i = size_x - 1; i >= 0; --i){
 
     if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid((((size_y - 1) * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid((((size_y - 1) * size_x) + i + 1))){ 
 
@@ -362,21 +362,21 @@ int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int siz
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_y + size_y;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_y + size_y - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(j = size_y - 2; j >= 0; j--){
+  for(j = size_y - 2; j >= 0; --j){
 
-    for(i = size_x - 1; i >= 0; i--){
+    for(i = size_x - 1; i >= 0; --i){
 
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 
 	plot_x[p] = (float) min_x + i + 1;
 	plot_y[p] = (float) min_y + j;
-	p++;
+	++p;
 	break;
 	
       }
@@ -388,18 +388,18 @@ int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int siz
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_x - 1)){ plot_x[i] = min_x - 1; }
     if(plot_y[i] < (min_y - 1)){ plot_y[i] = min_y - 1; }
@@ -425,15 +425,15 @@ int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int siz
   obj_batch = (long int) floor((double) obj / (double) obj_limit);
     
   // 1. identify left edge of source
-  for(j = 0; j < size_y; j++){
+  for(j = 0; j < size_y; ++j){
 
-    for(i = 0; i < size_x; i++){
+    for(i = 0; i < size_x; ++i){
 
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 
 	plot_x[p] = (float) min_x + i - 1;
 	plot_y[p] = (float) min_y + j;
-	p++;
+	++p;
 	break;
 
       }
@@ -445,10 +445,10 @@ int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int siz
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
-  for(i = size_x - 1; i >= 0; i--){
+  for(i = size_x - 1; i >= 0; --i){
 
     if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid((((size_y - 1) * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid((((size_y - 1) * size_x) + i + 1))){ 
 
@@ -462,21 +462,21 @@ int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int siz
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_y + size_y;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_y + size_y - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(j = size_y - 2; j >= 0; j--){
+  for(j = size_y - 2; j >= 0; --j){
 
-    for(i = size_x - 1; i >= 0; i--){
+    for(i = size_x - 1; i >= 0; --i){
 
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 
 	plot_x[p] = (float) min_x + i + 1;
 	plot_y[p] = (float) min_y + j;
-	p++;
+	++p;
 	break;
 	
       }
@@ -488,18 +488,18 @@ int CreateMoment0Bounds(vector<object_props *> & detections, int size_x, int siz
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_x - 1)){ plot_x[i] = min_x - 1; }
     if(plot_y[i] < (min_y - 1)){ plot_y[i] = min_y - 1; }
@@ -521,26 +521,26 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
   // if it is, add entry to boundary list
 
   // 0. calculate obj_batch value
-  obj_batch = floorf((float) obj / (float) obj_limit);
+  obj_batch = (int) floorf((float) obj / (float) obj_limit);
     
   // 1. identify left edge of source
-  for(k = 0; k < size_z; k++){
+  for(k = 0; k < size_z; ++k){
 
     found = -1;
     
-    for(i = 0; i < size_x; i++){
-
-      for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 	
+      for(i = 0; i < size_x; ++i){
+
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((k + min_z) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((k + min_z) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_x + i - 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -554,31 +554,31 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
   found = -1;
-  for(i = size_x - 1; i >= 0; i--){
-    
-    for(j = 0; j < size_y; j++){
+  for(j = 0; j < size_y; ++j){
 	
+    for(i = size_x - 1; i >= 0; --i){
+    
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	  
 	  if(((min_z + size_z - 1) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + size_z - 1) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	    
@@ -595,7 +595,7 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
       
       if(found >= 0){ break; }
       
-      // for(j = 0; j < size_y; j++)
+      // for(j = 0; j < size_y; ++j)
     }
     
     if(found >= 0){ break; }
@@ -605,29 +605,29 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(k = size_z - 2; k >= 0; k--){
+  for(k = size_z - 2; k >= 0; --k){
 
     found = -1;
     
-    for(i = size_x - 1; i >= 0; i--){
-
-      for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 	
+      for(i = size_x - 1; i >= 0; --i){
+
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_x + i + 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -641,32 +641,32 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_x - 1)){ plot_x[i] = min_x - 1; }
     if(plot_y[i] < (min_z - 1)){ plot_y[i] = min_z - 1; }
@@ -692,23 +692,23 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
   obj_batch = (long int) floor((double) obj / (double) obj_limit);
     
   // 1. identify left edge of source
-  for(k = 0; k < size_z; k++){
+  for(k = 0; k < size_z; ++k){
 
     found = -1;
     
-    for(i = 0; i < size_x; i++){
-
-      for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 	
+      for(i = 0; i < size_x; ++i){
+
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((k + min_z) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((k + min_z) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_x + i - 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -722,31 +722,31 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
   found = -1;
-  for(i = size_x - 1; i >= 0; i--){
-    
-    for(j = 0; j < size_y; j++){
+  for(j = 0; j < size_y; ++j){
 	
+    for(i = size_x - 1; i >= 0; --i){
+    
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	  
 	  if(((min_z + size_z - 1) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + size_z - 1) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	    
@@ -763,7 +763,7 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
       
       if(found >= 0){ break; }
       
-      // for(j = 0; j < size_y; j++)
+      // for(j = 0; j < size_y; ++j)
     }
     
     if(found >= 0){ break; }
@@ -773,29 +773,29 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(k = size_z - 2; k >= 0; k--){
+  for(k = size_z - 2; k >= 0; --k){
 
     found = -1;
     
-    for(i = size_x - 1; i >= 0; i--){
-
-      for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 	
+      for(i = size_x - 1; i >= 0; --i){
+
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_x + i + 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -809,32 +809,32 @@ int CreateRAPVBounds(vector<object_props *> & detections, int size_x, int size_y
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_x - 1)){ plot_x[i] = min_x - 1; }
     if(plot_y[i] < (min_z - 1)){ plot_y[i] = min_z - 1; }
@@ -856,26 +856,26 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
   // if it is, add entry to boundary list
   
   // 0. calculate obj_batch value
-  obj_batch = floorf((float) obj / (float) obj_limit);
+  obj_batch = (int) floorf((float) obj / (float) obj_limit);
   
   // 1. identify left edge of source
-  for(k = 0; k < size_z; k++){
+  for(k = 0; k < size_z; ++k){
 
     found = -1;
     
-    for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 
-      for(i = 0; i < size_x; i++){
+      for(i = 0; i < size_x; ++i){
 	
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_y + j - 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -889,31 +889,31 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
   found = -1;
-  for(j = size_y - 1; j >= 0; j--){
+  for(j = size_y - 1; j >= 0; --j){
     
-    for(i = 0; i < size_x; i++){
+    for(i = 0; i < size_x; ++i){
 	
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	  
 	  if(((min_z + size_z - 1) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + size_z - 1) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	    
@@ -930,7 +930,7 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
       
       if(found >= 0){ break; }
       
-      // for(j = 0; j < size_y; j++)
+      // for(j = 0; j < size_y; ++j)
     }
     
     if(found >= 0){ break; }
@@ -940,29 +940,29 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(k = size_z - 2; k >= 0; k--){
+  for(k = size_z - 2; k >= 0; --k){
 
     found = -1;
     
-    for(j = size_y - 1; j >= 0; j--){
+    for(j = size_y - 1; j >= 0; --j){
 
-      for(i = 0; i < size_x; i++){
+      for(i = 0; i < size_x; ++i){
 	
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_y + j + 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -976,32 +976,32 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_y - 1)){ plot_x[i] = min_y - 1; }
     if(plot_y[i] < (min_z - 1)){ plot_y[i] = min_z - 1; }
@@ -1027,23 +1027,23 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
   obj_batch = (long int) floor((double) obj / (double) obj_limit);
   
   // 1. identify left edge of source
-  for(k = 0; k < size_z; k++){
+  for(k = 0; k < size_z; ++k){
 
     found = -1;
     
-    for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 
-      for(i = 0; i < size_x; i++){
+      for(i = 0; i < size_x; ++i){
 	
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_y + j - 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -1057,31 +1057,31 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
   found = -1;
-  for(j = size_y - 1; j >= 0; j--){
+  for(j = size_y - 1; j >= 0; --j){
     
-    for(i = 0; i < size_x; i++){
+    for(i = 0; i < size_x; ++i){
 	
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	  
 	  if(((min_z + size_z - 1) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + size_z - 1) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	    
@@ -1098,7 +1098,7 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
       
       if(found >= 0){ break; }
       
-      // for(j = 0; j < size_y; j++)
+      // for(j = 0; j < size_y; ++j)
     }
     
     if(found >= 0){ break; }
@@ -1108,29 +1108,29 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(k = size_z - 2; k >= 0; k--){
+  for(k = size_z - 2; k >= 0; --k){
 
     found = -1;
     
-    for(j = size_y - 1; j >= 0; j--){
+    for(j = size_y - 1; j >= 0; --j){
 
-      for(i = 0; i < size_x; i++){
+      for(i = 0; i < size_x; ++i){
 	
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_y + j + 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -1144,32 +1144,32 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_y - 1)){ plot_x[i] = min_y - 1; }
     if(plot_y[i] < (min_z - 1)){ plot_y[i] = min_z - 1; }
@@ -1191,10 +1191,10 @@ float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props_dbl *>
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOx; i++){
-
-    for(j = 0; j < NOy; j++){
+  for(j = 0; j < NOy; ++j){
       
+    for(i = 0; i < NOx; ++i){
+
       plot_array[((j*NOx) + i)] = 0.0;
 
     }
@@ -1202,19 +1202,19 @@ float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props_dbl *>
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
-    obj_batch = floorf((float) k / (float) obj_limit);
+    obj_batch = (int) floorf((float) k / (float) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
       sx_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1;
       sy_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1;
 
-      for(i = 0; i < sx_finish; i++){
-	
-	for(j = 0; j < sy_finish; j++){
+      for(j = 0; j < sy_finish; ++j){
 
+	for(i = 0; i < sx_finish; ++i){
+	
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin()) * NOx) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(((j * sx_finish) + i));
 	 
 	}
@@ -1223,11 +1223,11 @@ float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props_dbl *>
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOx; i++){
-    for(j = 0; j < NOy; j++){
+  for(j = 0; j < NOy; ++j){
+    for(i = 0; i < NOx; ++i){
       if(plot_array[((j * NOx) + i)] > max){ max = plot_array[((j * NOx) + i)]; }
     }
   }
@@ -1243,10 +1243,10 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props_d
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOx; i++){
-
-    for(j = 0; j < NOy; j++){
+  for(j = 0; j < NOy; ++j){
       
+    for(i = 0; i < NOx; ++i){
+
       plot_array[((j*NOx) + i)] = 0.0;
 
     }
@@ -1254,7 +1254,7 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props_d
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
     obj_batch = (long int) floor((double) k / (double) obj_limit);
 
@@ -1263,10 +1263,10 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props_d
       sx_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1;
       sy_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1;
 
-      for(i = 0; i < sx_finish; i++){
-	
-	for(j = 0; j < sy_finish; j++){
+      for(j = 0; j < sy_finish; ++j){
 
+	for(i = 0; i < sx_finish; ++i){
+	
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin()) * NOx) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_mom0(((j * sx_finish) + i));
 	 
 	}
@@ -1275,11 +1275,11 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props_d
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOx; i++){
-    for(j = 0; j < NOy; j++){
+  for(j = 0; j < NOy; ++j){
+    for(i = 0; i < NOx; ++i){
       if(plot_array[((j * NOx) + i)] > max){ max = plot_array[((j * NOx) + i)]; }
     }
   }
@@ -1294,10 +1294,10 @@ float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> &
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOx; i++){
-
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
       
+    for(i = 0; i < NOx; ++i){
+
       plot_array[((j*NOx) + i)] = 0.0;
 
     }
@@ -1305,19 +1305,19 @@ float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> &
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
-    obj_batch = floorf((float) k / (float) obj_limit);
+    obj_batch = (int) floorf((float) k / (float) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
       sx_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1;
       sz_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1;
 
-      for(i = 0; i < sx_finish; i++){
-	
-	for(j = 0; j < sz_finish; j++){
+      for(j = 0; j < sz_finish; ++j){
 
+	for(i = 0; i < sx_finish; ++i){
+	
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin()) * NOx) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_RAPV(((j * sx_finish) + i));
 	 
 	}
@@ -1326,11 +1326,11 @@ float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> &
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOx; i++){
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
+    for(i = 0; i < NOx; ++i){
       if(plot_array[((j * NOx) + i)] > max){ max = plot_array[((j * NOx) + i)]; }
     }
   }
@@ -1346,10 +1346,10 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props_dbl
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOx; i++){
-
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
       
+    for(i = 0; i < NOx; ++i){
+
       plot_array[((j*NOx) + i)] = 0.0;
 
     }
@@ -1357,7 +1357,7 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props_dbl
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
     obj_batch = (long int) floor((double) k / (double) obj_limit);
 
@@ -1366,10 +1366,10 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props_dbl
       sx_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin() + 1;
       sz_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1;
 
-      for(i = 0; i < sx_finish; i++){
-	
-	for(j = 0; j < sz_finish; j++){
+      for(j = 0; j < sz_finish; ++j){
 
+	for(i = 0; i < sx_finish; ++i){
+	
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin()) * NOx) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetRAmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_RAPV(((j * sx_finish) + i));
 	 
 	}
@@ -1378,11 +1378,11 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props_dbl
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOx; i++){
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
+    for(i = 0; i < NOx; ++i){
       if(plot_array[((j * NOx) + i)] > max){ max = plot_array[((j * NOx) + i)]; }
     }
   }
@@ -1397,10 +1397,10 @@ float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> 
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOy; i++){
-
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
       
+    for(i = 0; i < NOy; ++i){
+
       plot_array[((j*NOy) + i)] = 0.0;
 
     }
@@ -1408,19 +1408,19 @@ float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> 
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
-    obj_batch = floorf((float) k / (float) obj_limit);
+    obj_batch = (int) floorf((float) k / (float) obj_limit);
 
     if(detections[obj_batch][(k - (obj_batch * obj_limit))].ShowVoxels() > 1){
 
       sy_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1;
       sz_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1;
 
-      for(i = 0; i < sy_finish; i++){
-	
-	for(j = 0; j < sz_finish; j++){
+      for(j = 0; j < sz_finish; ++j){
 
+	for(i = 0; i < sy_finish; ++i){
+	
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin()) * NOy) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_DECPV(((j * sy_finish) + i));
 	 
 	}
@@ -1429,11 +1429,11 @@ float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> 
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOy; i++){
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
+    for(i = 0; i < NOy; ++i){
       if(plot_array[((j * NOy) + i)] > max){ max = plot_array[((j * NOy) + i)]; }
     }
   }
@@ -1449,10 +1449,10 @@ float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props_db
   float max = -99.0;
   
   // initialise plot_array
-  for(i = 0; i < NOy; i++){
-
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
       
+    for(i = 0; i < NOy; ++i){
+
       plot_array[((j*NOy) + i)] = 0.0;
 
     }
@@ -1460,7 +1460,7 @@ float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props_db
   }
   
   // search through objects and construct moment 0 map
-  for(k = 0; k < NOobj; k++){
+  for(k = 0; k < NOobj; ++k){
     
     obj_batch = (long int) floor((double) k / (double) obj_limit);
 
@@ -1469,10 +1469,10 @@ float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props_db
       sy_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin() + 1;
       sz_finish = detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmax() - detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin() + 1;
 
-      for(i = 0; i < sy_finish; i++){
-	
-	for(j = 0; j < sz_finish; j++){
+      for(j = 0; j < sz_finish; ++j){
 
+	for(i = 0; i < sy_finish; ++i){
+	
 	  plot_array[(((j + detections[obj_batch][(k - (obj_batch * obj_limit))].GetFREQmin()) * NOy) + i + detections[obj_batch][(k - (obj_batch * obj_limit))].GetDECmin())]+=detections[obj_batch][(k - (obj_batch * obj_limit))].Get_DECPV(((j * sy_finish) + i));
 	 
 	}
@@ -1481,11 +1481,11 @@ float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props_db
 
     }
 
-    // for(k = 0; k < NOobj; k++)
+    // for(k = 0; k < NOobj; ++k)
   }
 
-  for(i = 0; i < NOy; i++){
-    for(j = 0; j < NOz; j++){
+  for(j = 0; j < NOz; ++j){
+    for(i = 0; i < NOy; ++i){
       if(plot_array[((j * NOy) + i)] > max){ max = plot_array[((j * NOy) + i)]; }
     }
   }
@@ -1502,18 +1502,18 @@ int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int
   // if it is, add entry to boundary list
 
   // 0. calculate obj_batch value
-  obj_batch = floorf((float) obj / (float) obj_limit);
+  obj_batch = (int) floorf((float) obj / (float) obj_limit);
     
   // 1. identify left edge of source
-  for(j = 0; j < size_y; j++){
+  for(j = 0; j < size_y; ++j){
 
-    for(i = 0; i < size_x; i++){
+    for(i = 0; i < size_x; ++i){
 
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 
 	plot_x[p] = (float) min_x + i - 1;
 	plot_y[p] = (float) min_y + j;
-	p++;
+	++p;
 	break;
 
       }
@@ -1525,10 +1525,10 @@ int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
-  for(i = size_x - 1; i >= 0; i--){
+  for(i = size_x - 1; i >= 0; --i){
 
     if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid((((size_y - 1) * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid((((size_y - 1) * size_x) + i + 1))){ 
 
@@ -1542,21 +1542,21 @@ int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_y + size_y;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_y + size_y - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(j = size_y - 2; j >= 0; j--){
+  for(j = size_y - 2; j >= 0; --j){
 
-    for(i = size_x - 1; i >= 0; i--){
+    for(i = size_x - 1; i >= 0; --i){
 
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 
 	plot_x[p] = (float) min_x + i + 1;
 	plot_y[p] = (float) min_y + j;
-	p++;
+	++p;
 	break;
 	
       }
@@ -1568,18 +1568,18 @@ int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_x - 1)){ plot_x[i] = min_x - 1; }
     if(plot_y[i] < (min_y - 1)){ plot_y[i] = min_y - 1; }
@@ -1605,15 +1605,15 @@ int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int
   obj_batch = (long int) floor((double) obj / (double) obj_limit);
     
   // 1. identify left edge of source
-  for(j = 0; j < size_y; j++){
+  for(j = 0; j < size_y; ++j){
 
-    for(i = 0; i < size_x; i++){
+    for(i = 0; i < size_x; ++i){
 
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 
 	plot_x[p] = (float) min_x + i - 1;
 	plot_y[p] = (float) min_y + j;
-	p++;
+	++p;
 	break;
 
       }
@@ -1625,10 +1625,10 @@ int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
-  for(i = size_x - 1; i >= 0; i--){
+  for(i = size_x - 1; i >= 0; --i){
 
     if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid((((size_y - 1) * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid((((size_y - 1) * size_x) + i + 1))){ 
 
@@ -1642,21 +1642,21 @@ int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_y + size_y;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_y + size_y - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(j = size_y - 2; j >= 0; j--){
+  for(j = size_y - 2; j >= 0; --j){
 
-    for(i = size_x - 1; i >= 0; i--){
+    for(i = size_x - 1; i >= 0; --i){
 
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 
 	plot_x[p] = (float) min_x + i + 1;
 	plot_y[p] = (float) min_y + j;
-	p++;
+	++p;
 	break;
 	
       }
@@ -1668,18 +1668,18 @@ int CreateMoment0Bounds(vector<object_props_dbl *> & detections, int size_x, int
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_x - 1)){ plot_x[i] = min_x - 1; }
     if(plot_y[i] < (min_y - 1)){ plot_y[i] = min_y - 1; }
@@ -1701,26 +1701,26 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
   // if it is, add entry to boundary list
 
   // 0. calculate obj_batch value
-  obj_batch = floorf((float) obj / (float) obj_limit);
+  obj_batch = (int) floorf((float) obj / (float) obj_limit);
     
   // 1. identify left edge of source
-  for(k = 0; k < size_z; k++){
+  for(k = 0; k < size_z; ++k){
 
     found = -1;
     
-    for(i = 0; i < size_x; i++){
-
-      for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 	
+      for(i = 0; i < size_x; ++i){
+
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((k + min_z) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((k + min_z) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_x + i - 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -1734,31 +1734,31 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
   found = -1;
-  for(i = size_x - 1; i >= 0; i--){
-    
-    for(j = 0; j < size_y; j++){
+  for(j = 0; j < size_y; ++j){
 	
+    for(i = size_x - 1; i >= 0; --i){
+    
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	  
 	  if(((min_z + size_z - 1) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + size_z - 1) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	    
@@ -1775,7 +1775,7 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
       
       if(found >= 0){ break; }
       
-      // for(j = 0; j < size_y; j++)
+      // for(j = 0; j < size_y; ++j)
     }
     
     if(found >= 0){ break; }
@@ -1785,29 +1785,29 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(k = size_z - 2; k >= 0; k--){
+  for(k = size_z - 2; k >= 0; --k){
 
     found = -1;
     
-    for(i = size_x - 1; i >= 0; i--){
-
-      for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 	
+      for(i = size_x - 1; i >= 0; --i){
+
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_x + i + 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -1821,32 +1821,32 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_x - 1)){ plot_x[i] = min_x - 1; }
     if(plot_y[i] < (min_z - 1)){ plot_y[i] = min_z - 1; }
@@ -1872,23 +1872,23 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
   obj_batch = (long int) floor((double) obj / (double) obj_limit);
     
   // 1. identify left edge of source
-  for(k = 0; k < size_z; k++){
+  for(k = 0; k < size_z; ++k){
 
     found = -1;
     
-    for(i = 0; i < size_x; i++){
-
-      for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 	
+      for(i = 0; i < size_x; ++i){
+
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((k + min_z) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((k + min_z) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_x + i - 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -1902,31 +1902,31 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
   found = -1;
-  for(i = size_x - 1; i >= 0; i--){
-    
-    for(j = 0; j < size_y; j++){
+  for(j = 0; j < size_y; ++j){
 	
+    for(i = size_x - 1; i >= 0; --i){
+    
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	  
 	  if(((min_z + size_z - 1) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + size_z - 1) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	    
@@ -1943,7 +1943,7 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
       
       if(found >= 0){ break; }
       
-      // for(j = 0; j < size_y; j++)
+      // for(j = 0; j < size_y; ++j)
     }
     
     if(found >= 0){ break; }
@@ -1953,29 +1953,29 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(k = size_z - 2; k >= 0; k--){
+  for(k = size_z - 2; k >= 0; --k){
 
     found = -1;
     
-    for(i = size_x - 1; i >= 0; i--){
-
-      for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 	
+      for(i = size_x - 1; i >= 0; --i){
+
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_x + i + 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -1989,32 +1989,32 @@ int CreateRAPVBounds(vector<object_props_dbl *> & detections, int size_x, int si
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_x - 1)){ plot_x[i] = min_x - 1; }
     if(plot_y[i] < (min_z - 1)){ plot_y[i] = min_z - 1; }
@@ -2036,26 +2036,26 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
   // if it is, add entry to boundary list
   
   // 0. calculate obj_batch value
-  obj_batch = floorf((float) obj / (float) obj_limit);
+  obj_batch = (int) floorf((float) obj / (float) obj_limit);
   
   // 1. identify left edge of source
-  for(k = 0; k < size_z; k++){
+  for(k = 0; k < size_z; ++k){
 
     found = -1;
     
-    for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 
-      for(i = 0; i < size_x; i++){
+      for(i = 0; i < size_x; ++i){
 	
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_y + j - 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -2069,31 +2069,31 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
   found = -1;
-  for(j = size_y - 1; j >= 0; j--){
+  for(j = size_y - 1; j >= 0; --j){
     
-    for(i = 0; i < size_x; i++){
+    for(i = 0; i < size_x; ++i){
 	
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	  
 	  if(((min_z + size_z - 1) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + size_z - 1) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	    
@@ -2110,7 +2110,7 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
       
       if(found >= 0){ break; }
       
-      // for(j = 0; j < size_y; j++)
+      // for(j = 0; j < size_y; ++j)
     }
     
     if(found >= 0){ break; }
@@ -2120,29 +2120,29 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(k = size_z - 2; k >= 0; k--){
+  for(k = size_z - 2; k >= 0; --k){
 
     found = -1;
     
-    for(j = size_y - 1; j >= 0; j--){
+    for(j = size_y - 1; j >= 0; --j){
 
-      for(i = 0; i < size_x; i++){
+      for(i = 0; i < size_x; ++i){
 	
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_y + j + 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -2156,32 +2156,32 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_y - 1)){ plot_x[i] = min_y - 1; }
     if(plot_y[i] < (min_z - 1)){ plot_y[i] = min_z - 1; }
@@ -2207,23 +2207,23 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
   obj_batch = (long int) floor((double) obj / (double) obj_limit);
   
   // 1. identify left edge of source
-  for(k = 0; k < size_z; k++){
+  for(k = 0; k < size_z; ++k){
 
     found = -1;
     
-    for(j = 0; j < size_y; j++){
+    for(j = 0; j < size_y; ++j){
 
-      for(i = 0; i < size_x; i++){
+      for(i = 0; i < size_x; ++i){
 	
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_y + j - 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -2237,31 +2237,31 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 2. add top left point 
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] + 1;
-  p++;
+  ++p;
 
   // 3. identify top right edge of source
   found = -1;
-  for(j = size_y - 1; j >= 0; j--){
+  for(j = size_y - 1; j >= 0; --j){
     
-    for(i = 0; i < size_x; i++){
+    for(i = 0; i < size_x; ++i){
 	
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	  
 	  if(((min_z + size_z - 1) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + size_z - 1) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	    
@@ -2278,7 +2278,7 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
       
       if(found >= 0){ break; }
       
-      // for(j = 0; j < size_y; j++)
+      // for(j = 0; j < size_y; ++j)
     }
     
     if(found >= 0){ break; }
@@ -2288,29 +2288,29 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
   // 4. add top right point, then just identified top right edge of source
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z;
-  p++;
+  ++p;
   plot_x[p] = (float) found;
   plot_y[p] = (float) min_z + size_z - 1;
-  p++;
+  ++p;
 
   // 5. identify remaining right edge
-  for(k = size_z - 2; k >= 0; k--){
+  for(k = size_z - 2; k >= 0; --k){
 
     found = -1;
     
-    for(j = size_y - 1; j >= 0; j--){
+    for(j = size_y - 1; j >= 0; --j){
 
-      for(i = 0; i < size_x; i++){
+      for(i = 0; i < size_x; ++i){
 	
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)) != detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i + 1))){
 	  
-	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); f++){
+	  for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j * size_x) + i)); f < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((j  * size_x) + i + 1)); ++f){
 	    
 	    if(((min_z + k) >= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * f))) && ((min_z + k) <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * f) + 1)))){
 	      
 	      plot_x[p] = (float) min_y + j + 1;
 	      plot_y[p] = (float) min_z + k;
-	      p++;
+	      ++p;
 	      found = 1;
 	      break;
 	      
@@ -2324,32 +2324,32 @@ int CreateDecPVBounds(vector<object_props_dbl *> & detections, int size_x, int s
 	
 	if(found == 1){ break; }
 	
-	// for(j = 0; j < size_y; j++)
+	// for(j = 0; j < size_y; ++j)
       }
       
       if(found == 1){ break; }
       
-      // for(i = 0; i < size_x; i++)
+      // for(i = 0; i < size_x; ++i)
     }
     
-    // for(k = 0; k < size_z; k++)
+    // for(k = 0; k < size_z; ++k)
   }
 
   // 6. add bottom two points
   plot_x[p] = plot_x[(p - 1)];
   plot_y[p] = plot_y[(p - 1)] - 1;
-  p++;
+  ++p;
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0] - 1;
-  p++;
+  ++p;
 
   // 7. add original boundary point to complete 
   plot_x[p] = plot_x[0];
   plot_y[p] = plot_y[0];
-  p++;
+  ++p;
 
   // 8. check that all of the boundary points are within the bounding box limits
-  for(i = 0; i < p; i++){
+  for(i = 0; i < p; ++i){
 
     if(plot_x[i] < (min_y - 1)){ plot_x[i] = min_y - 1; }
     if(plot_y[i] < (min_z - 1)){ plot_y[i] = min_z - 1; }

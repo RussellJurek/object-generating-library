@@ -78,10 +78,10 @@ float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<
   }
 
   // add the objects within this datacube subregion to the output mask file
-  for(obj = 0; obj < NOobj; obj++){
+  for(obj = 0; obj < NOobj; ++obj){
       
     // calculate obj_batch number for this object
-    obj_batch = floorf(((float) obj / (float) obj_limit));
+    obj_batch = (int) floorf(((float) obj / (float) obj_limit));
     
     // move to the next object if it's been re-initialised
     if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -100,16 +100,16 @@ float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<
     }
     
     // reconstruct the object from the sparse representation and update the flag_vals array
-    for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); x++){
+    for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); ++x){
       
-      for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); y++){
+      for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); ++y){
 	
 	// x,y position of object lies inside boundaries of chunk, so flag the flag_vals array with the obj number for every object string
 	if((x >= chunk_x_start) && (x < (chunk_x_start + chunk_x_size)) && (y >= chunk_y_start) && (y < (chunk_y_start + chunk_y_size))){
 	  
-	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); g++){
+	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); f++){
+	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = temp_indices[obj];
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = temp_indices[obj];
@@ -206,10 +206,10 @@ float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_val
   }
 
   // add the objects within this datacube subregion to the output mask file
-  for(obj = 0; obj < NOobj; obj++){
+  for(obj = 0; obj < NOobj; ++obj){
       
     // calculate obj_batch number for this object
-    obj_batch = floorf(((double) obj / (double) obj_limit));
+    obj_batch = (long int) floor(((double) obj / (double) obj_limit));
     
     // move to the next object if it's been re-initialised
     if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -228,16 +228,16 @@ float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_val
     }
     
     // reconstruct the object from the sparse representation and update the flag_vals array
-    for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); x++){
+    for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); ++x){
       
-      for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); y++){
+      for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); ++y){
 	
 	// x,y position of object lies inside boundaries of chunk, so flag the flag_vals array with the obj number for every object string
 	if((x >= chunk_x_start) && (x < (chunk_x_start + chunk_x_size)) && (y >= chunk_y_start) && (y < (chunk_y_start + chunk_y_size))){
 	  
-	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); g++){
+	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); f++){
+	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = temp_indices[obj];
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = temp_indices[obj];
@@ -298,17 +298,17 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
     // create an array to store indices matching the catalogue IDs
     temp_indices = new int[NOobj];
     x = 1;
-    for(obj = 0; obj < NOobj; obj++){
+    for(obj = 0; obj < NOobj; ++obj){
       
       // calculate obj_batch
-      obj_batch = floorf(((float) obj / (float) obj_limit));
+      obj_batch = (int) floorf(((float) obj / (float) obj_limit));
     
       // move on if this object has been re-initialised
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
            
       // write object properties to output file/terminal
       temp_indices[obj] = x;
-      x++;
+      ++x;
             
       //for(k = 0; k < NOobj; k++) 
     }
@@ -323,9 +323,9 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
     
     // for each chunk, populate the flag_vals array with the catalogue IDs of the objects,
     // then write this array to the output file
-    for(j = 0; j < temp_chunk_y_size; j++){
+    for(j = 0; j < temp_chunk_y_size; ++j){
 
-      for(i = 0; i < temp_chunk_x_size; i++){
+      for(i = 0; i < temp_chunk_x_size; ++i){
 
 	// set parameters for region to be processed	
 	fits_read_start[0] = 1 + (i * chunk_x_size);
@@ -337,9 +337,9 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
 	if(fits_read_finish[1] > NOy){ fits_read_finish[1] = NOy; }
 	
 	// initialise flag_vals array
-	for(z = 0; z < NOf; z++){
-	  for(y = 0; y < chunk_y_size; y++){
-	    for(x = 0; x < chunk_x_size; x++){
+	for(z = 0; z < NOf; ++z){
+	  for(y = 0; y < chunk_y_size; ++y){
+	    for(x = 0; x < chunk_x_size; ++x){
 	      flag_vals[((z * chunk_y_size * chunk_x_size) + (y * chunk_x_size) + x)] = 0;
 	    }
 	  }
@@ -406,17 +406,17 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
     // create an array to store indices matching the catalogue IDs
     temp_indices = new long int[NOobj];
     x = 1;
-    for(obj = 0; obj < NOobj; obj++){
+    for(obj = 0; obj < NOobj; ++obj){
       
       // calculate obj_batch
-      obj_batch = floorf(((double) obj / (double) obj_limit));
+      obj_batch = (long int) floor(((double) obj / (double) obj_limit));
     
       // move on if this object has been re-initialised
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
            
       // write object properties to output file/terminal
       temp_indices[obj] = x;
-      x++;
+      ++x;
             
       //for(k = 0; k < NOobj; k++) 
     }
@@ -431,9 +431,9 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
     
     // for each chunk, populate the flag_vals array with the catalogue IDs of the objects,
     // then write this array to the output file
-    for(j = 0; j < temp_chunk_y_size; j++){
+    for(j = 0; j < temp_chunk_y_size; ++j){
 
-      for(i = 0; i < temp_chunk_x_size; i++){
+      for(i = 0; i < temp_chunk_x_size; ++i){
 
 	// set parameters for region to be processed	
 	fits_read_start[0] = 1 + (i * chunk_x_size);
@@ -445,9 +445,9 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
 	if(fits_read_finish[1] > NOy){ fits_read_finish[1] = NOy; }
 	
 	// initialise flag_vals array
-	for(z = 0; z < NOf; z++){
-	  for(y = 0; y < chunk_y_size; y++){
-	    for(x = 0; x < chunk_x_size; x++){
+	for(z = 0; z < NOf; ++z){
+	  for(y = 0; y < chunk_y_size; ++y){
+	    for(x = 0; x < chunk_x_size; ++x){
 	      flag_vals[((z * chunk_y_size * chunk_x_size) + (y * chunk_x_size) + x)] = 0;
 	    }
 	  }
@@ -550,10 +550,10 @@ float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<
   }
 
   // add the objects within this datacube subregion to the output mask file
-  for(obj = 0; obj < NOobj; obj++){
+  for(obj = 0; obj < NOobj; ++obj){
       
     // calculate obj_batch number for this object
-    obj_batch = floorf(((float) obj / (float) obj_limit));
+    obj_batch = (int) floorf(((float) obj / (float) obj_limit));
     
     // move to the next object if it's been re-initialised
     if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -572,16 +572,16 @@ float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<
     }
     
     // reconstruct the object from the sparse representation and update the flag_vals array
-    for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); x++){
+    for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); ++x){
       
-      for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); y++){
+      for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); ++y){
 	
 	// x,y position of object lies inside boundaries of chunk, so flag the flag_vals array with the obj number for every object string
 	if((x >= chunk_x_start) && (x < (chunk_x_start + chunk_x_size)) && (y >= chunk_y_start) && (y < (chunk_y_start + chunk_y_size))){
 	  
-	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); g++){
+	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); f++){
+	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = temp_indices[obj];
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = temp_indices[obj];
@@ -678,10 +678,10 @@ float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_val
   }
 
   // add the objects within this datacube subregion to the output mask file
-  for(obj = 0; obj < NOobj; obj++){
+  for(obj = 0; obj < NOobj; ++obj){
       
     // calculate obj_batch number for this object
-    obj_batch = floorf(((double) obj / (double) obj_limit));
+    obj_batch = (long int) floor(((double) obj / (double) obj_limit));
     
     // move to the next object if it's been re-initialised
     if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ 
@@ -700,16 +700,16 @@ float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_val
     }
     
     // reconstruct the object from the sparse representation and update the flag_vals array
-    for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); x++){
+    for(x = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0); x <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1); ++x){
       
-      for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); y++){
+      for(y = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2); y <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(3); ++y){
 	
 	// x,y position of object lies inside boundaries of chunk, so flag the flag_vals array with the obj number for every object string
 	if((x >= chunk_x_start) && (x < (chunk_x_start + chunk_x_size)) && (y >= chunk_y_start) && (y < (chunk_y_start + chunk_y_size))){
 	  
-	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); g++){
+	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); f++){
+	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = temp_indices[obj];
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = temp_indices[obj];
@@ -770,17 +770,17 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
     // create an array to store indices matching the catalogue IDs
     temp_indices = new int[NOobj];
     x = 1;
-    for(obj = 0; obj < NOobj; obj++){
+    for(obj = 0; obj < NOobj; ++obj){
       
       // calculate obj_batch
-      obj_batch = floorf(((float) obj / (float) obj_limit));
+      obj_batch = (int) floorf(((float) obj / (float) obj_limit));
     
       // move on if this object has been re-initialised
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
            
       // write object properties to output file/terminal
       temp_indices[obj] = x;
-      x++;
+      ++x;
             
       //for(k = 0; k < NOobj; k++) 
     }
@@ -795,9 +795,9 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
     
     // for each chunk, populate the flag_vals array with the catalogue IDs of the objects,
     // then write this array to the output file
-    for(j = 0; j < temp_chunk_y_size; j++){
+    for(j = 0; j < temp_chunk_y_size; ++j){
 
-      for(i = 0; i < temp_chunk_x_size; i++){
+      for(i = 0; i < temp_chunk_x_size; ++i){
 
 	// set parameters for region to be processed	
 	fits_read_start[0] = 1 + (i * chunk_x_size);
@@ -809,9 +809,9 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
 	if(fits_read_finish[1] > NOy){ fits_read_finish[1] = NOy; }
 	
 	// initialise flag_vals array
-	for(z = 0; z < NOf; z++){
-	  for(y = 0; y < chunk_y_size; y++){
-	    for(x = 0; x < chunk_x_size; x++){
+	for(z = 0; z < NOf; ++z){
+	  for(y = 0; y < chunk_y_size; ++y){
+	    for(x = 0; x < chunk_x_size; ++x){
 	      flag_vals[((z * chunk_y_size * chunk_x_size) + (y * chunk_x_size) + x)] = 0;
 	    }
 	  }
@@ -878,17 +878,17 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
     // create an array to store indices matching the catalogue IDs
     temp_indices = new long int[NOobj];
     x = 1;
-    for(obj = 0; obj < NOobj; obj++){
+    for(obj = 0; obj < NOobj; ++obj){
       
       // calculate obj_batch
-      obj_batch = floorf(((double) obj / (double) obj_limit));
+      obj_batch = (long int) floor(((double) obj / (double) obj_limit));
     
       // move on if this object has been re-initialised
       if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() < 1){ continue; }
            
       // write object properties to output file/terminal
       temp_indices[obj] = x;
-      x++;
+      ++x;
             
       //for(k = 0; k < NOobj; k++) 
     }
@@ -903,9 +903,9 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
     
     // for each chunk, populate the flag_vals array with the catalogue IDs of the objects,
     // then write this array to the output file
-    for(j = 0; j < temp_chunk_y_size; j++){
+    for(j = 0; j < temp_chunk_y_size; ++j){
 
-      for(i = 0; i < temp_chunk_x_size; i++){
+      for(i = 0; i < temp_chunk_x_size; ++i){
 
 	// set parameters for region to be processed	
 	fits_read_start[0] = 1 + (i * chunk_x_size);
@@ -917,9 +917,9 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
 	if(fits_read_finish[1] > NOy){ fits_read_finish[1] = NOy; }
 	
 	// initialise flag_vals array
-	for(z = 0; z < NOf; z++){
-	  for(y = 0; y < chunk_y_size; y++){
-	    for(x = 0; x < chunk_x_size; x++){
+	for(z = 0; z < NOf; ++z){
+	  for(y = 0; y < chunk_y_size; ++y){
+	    for(x = 0; x < chunk_x_size; ++x){
 	      flag_vals[((z * chunk_y_size * chunk_x_size) + (y * chunk_x_size) + x)] = 0;
 	    }
 	  }
