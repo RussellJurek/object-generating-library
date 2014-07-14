@@ -14,6 +14,12 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
   vector<float> temp_mom0, temp_RAPV, temp_DECPV, temp_obj_spec, temp_ref_spec, temp_vfield;
   vector<int> match_init, temp_sparse_reps_grid, temp_sparse_reps_strings;
 
+  // convert the merging lengths from distances (in pixels/voxels) to empty space between linked detections (in pixels/voxels) --- subtract 1 --- this is a more naturual
+  // definition when processing a large file in chunks, because it makes it easier to build up sources that need to be retained for the rest of the input file
+  --merge_x;
+  --merge_y;
+  --merge_z;
+
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
   temp_y[0] = chunk_y_start;
@@ -1362,6 +1368,12 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
   vector<float> temp_mom0, temp_RAPV, temp_DECPV, temp_obj_spec, temp_ref_spec, temp_vfield;
   vector<long int> match_init;
   vector<int> temp_sparse_reps_grid, temp_sparse_reps_strings;
+
+  // convert the merging lengths from distances (in pixels/voxels) to empty space between linked detections (in pixels/voxels) --- subtract 1 --- this is a more naturual
+  // definition when processing a large file in chunks, because it makes it easier to build up sources that need to be retained for the rest of the input file
+  --merge_x;
+  --merge_y;
+  --merge_z;
 
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
@@ -2712,6 +2724,12 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
   vector<double> temp_mom0, temp_RAPV, temp_DECPV, temp_obj_spec, temp_ref_spec, temp_vfield;
   vector<int> match_init, temp_sparse_reps_grid, temp_sparse_reps_strings;
 
+  // convert the merging lengths from distances (in pixels/voxels) to empty space between linked detections (in pixels/voxels) --- subtract 1 --- this is a more naturual
+  // definition when processing a large file in chunks, because it makes it easier to build up sources that need to be retained for the rest of the input file
+  --merge_x;
+  --merge_y;
+  --merge_z;
+
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
   temp_y[0] = chunk_y_start;
@@ -4060,6 +4078,12 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
   vector<double> temp_mom0, temp_RAPV, temp_DECPV, temp_obj_spec, temp_ref_spec, temp_vfield;
   vector<long int> match_init;
   vector<int> temp_sparse_reps_grid, temp_sparse_reps_strings;
+
+  // convert the merging lengths from distances (in pixels/voxels) to empty space between linked detections (in pixels/voxels) --- subtract 1 --- this is a more naturual
+  // definition when processing a large file in chunks, because it makes it easier to build up sources that need to be retained for the rest of the input file
+  --merge_x;
+  --merge_y;
+  --merge_z;
 
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
