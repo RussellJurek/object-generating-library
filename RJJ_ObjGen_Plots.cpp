@@ -12,7 +12,7 @@ using namespace std;
 // functions using floats
 
 void CreateObjPlots(int m, int plot_mode, std::string output_code, int * xyz_order, int NOx, int NOy, int NOf, vector<object_props *> & detections, int NOobj, int obj_limit, int ctype3, float crpix3, float crval3, float cdelt3, float restfreq){
-  
+ 
   int g, i, j, k, obj, obj_batch, plot_points, temp_x, temp_y, temp_z;
   std::string dummy1;
   std::stringstream dummy2;
