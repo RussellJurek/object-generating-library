@@ -1,0 +1,7 @@
+A C++ library that stitches together pixels/voxels in 2D/3D images to create a catalog of objects. This library was developed for 2D/3D astronomical images (fits files), but the library functions are independent of file type. This library is implemented in C++11. It relies on C++11 to create catalogs of arbitrary size (subject to vector limits).
+
+This library defines a class, obj\_props, and a double precision variant, obj\_props\_dbl. This library is designed to quickly combine pixels/voxels to create a catalog of either obj\_props or obj\_props\_dbl objects.
+
+This C++ library implements the algorithm described in Jurek (2012), 'The Characterised Noise HI Source Finder: Detecting HI Galaxies Using a Novel Implementation of Matched Filtering'. This is an extension of Lutz 1 Pass algorithm. It is based upon a novel sparse representation of 3D binary data, which routinely achieves 90%+ compression rates. Both this algorithm and the sparse representation are described in Jurek (2012). Jurek (2012) can be found at http://adsabs.harvard.edu/abs/2012PASA...29..251J . Please cite this paper if you use this library, algorithm or sparse representation.
+
+This library's extended functionality requires valid CFITSIO, PGPLOT and WCSLIB installations. The basic functionality however is completely independent of all three.
