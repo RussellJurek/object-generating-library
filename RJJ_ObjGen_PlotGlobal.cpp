@@ -7,7 +7,8 @@ using namespace std;
 
 float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props *> & detections, int NOx, int NOy, int obj_limit){
   
-  int i,j,k,sx_finish,sy_finish,obj_batch;
+  size_t i,j;
+  int k,sx_finish,sy_finish,obj_batch;
   float max = -99.0;
   
   // initialise plot_array
@@ -58,8 +59,9 @@ float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props *> & d
 
 float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props *> & detections, int NOx, int NOy, int obj_limit){
   
+  size_t i,j;
   long int k,obj_batch;
-  int i,j,sx_finish,sy_finish;
+  int sx_finish,sy_finish;
   float max = -99.0;
   
   // initialise plot_array
@@ -110,7 +112,8 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props *
 
 float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props *> & detections, int NOx, int NOz, int obj_limit){
   
-  int i,j,k,sx_finish,sz_finish,obj_batch;
+  size_t i,j;
+  int k,sx_finish,sz_finish,obj_batch;
   float max = -99.0;
   
   // initialise plot_array
@@ -161,8 +164,9 @@ float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props *> & det
 
 float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props *> & detections, int NOx, int NOz, int obj_limit){
   
+  size_t i,j;
   long int k,obj_batch;
-  int i,j,sx_finish,sz_finish;
+  int sx_finish,sz_finish;
   float max = -99.0;
   
   // initialise plot_array
@@ -213,7 +217,8 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props *> 
 
 float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props *> & detections, int NOy, int NOz, int obj_limit){
   
-  int i,j,k,sy_finish,sz_finish,obj_batch;
+  size_t i,j;
+  int k,sy_finish,sz_finish,obj_batch;
   float max = -99.0;
   
   // initialise plot_array
@@ -264,8 +269,9 @@ float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props *> & de
 
 float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props *> & detections, int NOy, int NOz, int obj_limit){
   
+  size_t i,j;
   long int k,obj_batch;
-  int i,j,sy_finish,sz_finish;
+  int sy_finish,sz_finish;
   float max = -99.0;
   
   // initialise plot_array
@@ -1186,8 +1192,9 @@ int CreateDecPVBounds(vector<object_props *> & detections, int size_x, int size_
 // functions using doubles
 
 float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props_dbl *> & detections, int NOx, int NOy, int obj_limit){
-  
-  int i,j,k,sx_finish,sy_finish,obj_batch;
+
+  size_t i,j;
+  int k,sx_finish,sy_finish,obj_batch;
   float max = -99.0;
   
   // initialise plot_array
@@ -1238,8 +1245,9 @@ float CreateMoment0Map(float * plot_array, int NOobj, vector<object_props_dbl *>
 
 float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props_dbl *> & detections, int NOx, int NOy, int obj_limit){
   
+  size_t i,j;
   long int k,obj_batch;
-  int i,j,sx_finish,sy_finish;
+  int sx_finish,sy_finish;
   float max = -99.0;
   
   // initialise plot_array
@@ -1290,7 +1298,8 @@ float CreateMoment0Map(float * plot_array, long int NOobj, vector<object_props_d
 
 float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> & detections, int NOx, int NOz, int obj_limit){
   
-  int i,j,k,sx_finish,sz_finish,obj_batch;
+  size_t i,j;
+  int k,sx_finish,sz_finish,obj_batch;
   float max = -99.0;
   
   // initialise plot_array
@@ -1341,8 +1350,9 @@ float CreateRAPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> &
 
 float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props_dbl *> & detections, int NOx, int NOz, int obj_limit){
   
+  size_t i,j;
   long int k,obj_batch;
-  int i,j,sx_finish,sz_finish;
+  int sx_finish,sz_finish;
   float max = -99.0;
   
   // initialise plot_array
@@ -1393,7 +1403,8 @@ float CreateRAPVPlot(float * plot_array, long int NOobj, vector<object_props_dbl
 
 float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> & detections, int NOy, int NOz, int obj_limit){
   
-  int i,j,k,sy_finish,sz_finish,obj_batch;
+  size_t i,j;
+  int k,sy_finish,sz_finish,obj_batch;
   float max = -99.0;
   
   // initialise plot_array
@@ -1444,8 +1455,9 @@ float CreateDecPVPlot(float * plot_array, int NOobj, vector<object_props_dbl *> 
 
 float CreateDecPVPlot(float * plot_array, long int NOobj, vector<object_props_dbl *> & detections, int NOy, int NOz, int obj_limit){
   
+  size_t i,j;
   long int k,obj_batch;
-  int i,j,sy_finish,sz_finish;
+  int sy_finish,sz_finish;
   float max = -99.0;
   
   // initialise plot_array

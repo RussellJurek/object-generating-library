@@ -26,14 +26,15 @@ int main(int argc, char* argv[]){
   char dummy3[100];
   int NOf,f,x,y,status,nkeys,i,g,NOg,j,k,m,length,NOx,NOy,xmid,ymid,xfinish,yfinish;
   float * data_vals, ratio, threshold, * signal_vals, fill_factor = 0.7;
-  int * flag_vals, * xyz_order;
+  long int * flag_vals, NOobj, o;
   size_t * data_metric;
+  int * xyz_order;
   int min_z_size = 1, max_z_size = 300, min_x_size = 3, min_y_size = 3, min_v_size, min_LoS_count;
   long fits_read_start[4], fits_read_finish[4], fits_read_inc[4] = {1,1,1,1};
   int chunk_size = 1024 * 1024 * 1024 / 4, NO_chunks, chunk_x_overlap = 10, chunk_y_overlap = 10, chunk_z_overlap = 10;
   int chunk_x_size, chunk_y_size, chunk_z_size, chunk_x_start, chunk_y_start, chunk_z_start;
   int best_NO_chunks, best_chunk_x_size, temp_chunk_x_size, best_chunk_y_size, temp_chunk_y_size;
-  int SFmethod = 1, NOobj, obj, NOtrue, NOobj_positive;
+  int SFmethod = 1, obj, NOtrue, NOobj_positive;
   float label_y_shift = 0.0, progress, intens_thresh_min = -1E10, intens_thresh_max = 1E10;
 
   // variables unique to this code, used to specify 2 flag values
@@ -50,7 +51,7 @@ int main(int argc, char* argv[]){
 
   // variables used for cataloguing
   vector<object_props *> detections;
-  vector<int> obj_ids, check_obj_ids;
+  vector<long int> obj_ids, check_obj_ids;
   int obj_limit = 1000, obj_batch_limit = 10000, obj_batch;
   int NO_check_obj_ids, NO_obj_ids, cat_mode;
   fstream outputfile;
@@ -77,7 +78,7 @@ int main(int argc, char* argv[]){
   dummy2 >> output_code;
 
   // if the output_code is -h, display the command line parameters and exit
-  if(output_code == "-h"){ cout << "\nUsage: ./create_catalog output_code mask_file data_file min_x_size min_y_size min_z_size min_LoS fill_factor flag_val Tflux_thresh_min Tflux_thresh_max merge_x merge_y merge_z plot_mode [-SR] [-C] [-M] [-DO x-order y-order z-order] \n\nInput:\n\nmask_file: A .fits file containing a binary mask of source and non-source pixels/voxels. Non-source pixels/voxels should have a value of 0. All source pixels/voxels should be a single, consistent negative value eg. -10. This is the value that should be specified as \"flag_val\" on the commadn line. Positive values are not allowed. \n\ndata_file: A .fits file containing a 2D/3D image.\n\nmin_x_size: The minimum size requirement, in pixels, of sources along the x axis.\n\nmin_y_size: The minimum size requirement, in pixels, of sources along the y axis.\n\nmin_z_size: The minimum size requirement, in pixels, of sources along the z axis.\n\nmin_LoS: The minimum projected size of sources in the x-y plane.\n\nfill_factor: The minimum `filling factor' of sources. The `filling factor' is the fraction of the source's bounding box that is `filled' with source pixels/voxels. This effectively defines the minimum number of pixels/voxels that comprise a source. An explicit size can be specified by using a negative integer value.\n\nflag_val: The negative integer value in the flag_vals array that denotes a source pixel/voxel.\n\nTflux_thresh_min: The minimum total flux accepted for sources.\n\nTflux_thresh_max: The maximum total flux accepted for sources.\n\nmerge_x: The empty space, in pixels, separating components of a single source.\n\nmerge_y: The empty space, in pixels, separating components of a single source.\n\nmerge_z: The empty space, in pixels, separating components of a single source.\n\nplot_mode: An integer flag specifying the plotting mode to use.\n\nOptional inputs:\n\n-SR: Use this flag to create an output catalog that has each object's sparse representation appended to it.\n\n-C: Use this flag to link source components using an ellipse in the x-y plane instead of a rectangle.\n\n-M: Create an output .fits file containing an image of the data_vals array where each pixel/voxel is labelled with the ID of the object that it belongs to. The output file is \"output_code\"_mask.fits.\n\n-DO x-order y-order z-order: This option allows a user to specify the order of the x/RA, y/Dec, z/Frequency/Velocity axes in the input .fits files. For instance, a .fits file with RA, Dec, Frequency axes would use the order: 1 2 3 (the default). A .fits file with Frequency, RA, Dec axes however would use the order: 3 1 2.\n\nOutput: \n\"output_code\"_obj.cat ; file listing objects and calculated properties. \n\"output_code\"_plots.ps ; moment-0 and position-velocity plots of objects over entire dataset.\n\nplot_mode 0 = no plots, plot_mode 1 = global plot only, plot_mode 2 = spectra + postage stamps only, plot_mode 3 = all plots \n\n" << endl; return 0; }
+  if(output_code == "-h"){ cout << "\nUsage: ./create_HUGE_catalog output_code mask_file data_file min_x_size min_y_size min_z_size min_LoS fill_factor flag_val Tflux_thresh_min Tflux_thresh_max merge_x merge_y merge_z plot_mode [-SR] [-C] [-M] [-DO x-order y-order z-order] \n\nInput:\n\nmask_file: A .fits file containing a binary mask of source and non-source pixels/voxels. Non-source pixels/voxels should have a value of 0. All source pixels/voxels should be a single, consistent negative value eg. -10. This is the value that should be specified as \"flag_val\" on the commadn line. Positive values are not allowed. \n\ndata_file: A .fits file containing a 2D/3D image.\n\nmin_x_size: The minimum size requirement, in pixels, of sources along the x axis.\n\nmin_y_size: The minimum size requirement, in pixels, of sources along the y axis.\n\nmin_z_size: The minimum size requirement, in pixels, of sources along the z axis.\n\nmin_LoS: The minimum projected size of sources in the x-y plane.\n\nfill_factor: The minimum `filling factor' of sources. The `filling factor' is the fraction of the source's bounding box that is `filled' with source pixels/voxels. This effectively defines the minimum number of pixels/voxels that comprise a source. An explicit size can be specified by using a negative integer value.\n\nflag_val: The negative integer value in the flag_vals array that denotes a source pixel/voxel.\n\nTflux_thresh_min: The minimum total flux accepted for sources.\n\nTflux_thresh_max: The maximum total flux accepted for sources.\n\nmerge_x: The empty space, in pixels, separating components of a single source.\n\nmerge_y: The empty space, in pixels, separating components of a single source.\n\nmerge_z: The empty space, in pixels, separating components of a single source.\n\nplot_mode: An integer flag specifying the plotting mode to use.\n\nOptional inputs:\n\n-SR: Use this flag to create an output catalog that has each object's sparse representation appended to it.\n\n-C: Use this flag to link source components using an ellipse in the x-y plane instead of a rectangle.\n\n-M: Create an output .fits file containing an image of the data_vals array where each pixel/voxel is labelled with the ID of the object that it belongs to. The output file is \"output_code\"_mask.fits.\n\n-DO x-order y-order z-order: This option allows a user to specify the order of the x/RA, y/Dec, z/Frequency/Velocity axes in the input .fits files. For instance, a .fits file with RA, Dec, Frequency axes would use the order: 1 2 3 (the default). A .fits file with Frequency, RA, Dec axes however would use the order: 3 1 2.\n\nOutput: \n\"output_code\"_obj.cat ; file listing objects and calculated properties. \n\"output_code\"_plots.ps ; moment-0 and position-velocity plots of objects over entire dataset.\n\nplot_mode 0 = no plots, plot_mode 1 = global plot only, plot_mode 2 = spectra + postage stamps only, plot_mode 3 = all plots \n\n" << endl; return 0; }
 
   // check if the right command line option was entered
   if((argc == 2) && (output_code != "-h")){ cout << "WARNING: Incorrect arguments! Exiting.\nEnter Prototype_Catalog_v6 -h on the command line to see the command line input.\n"; return 1; }
@@ -462,7 +463,7 @@ int main(int argc, char* argv[]){
   data_vals = new float[(chunk_x_size * chunk_y_size * chunk_z_size)];
   
   // create array to store signal
-  flag_vals = new int[(chunk_x_size * chunk_y_size * chunk_z_size)];
+  flag_vals = new long int[(chunk_x_size * chunk_y_size * chunk_z_size)];
   
   // open file containing source mask
   status = 0;
@@ -579,6 +580,8 @@ int main(int argc, char* argv[]){
 
 	      // regular version
 	      flag_vals[((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x)] = -1 * abs(flag_vals[((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x)]); 
+	      // temporary version for processing Attilla's Duchamp code
+	      //flag_vals[((f * chunk_x_size * chunk_y_size) + (y * chunk_x_size) + x)] = -1; 
 
 	    }
 	    	    
@@ -602,13 +605,13 @@ int main(int argc, char* argv[]){
       for(obj = 0; obj < NOobj; ++obj){
 
        	// calculate obj_batch number for this object
-	obj_batch = (int) floorf(((float) obj / (float) obj_limit));
+	obj_batch = (long int) floor(((double) obj / (double) obj_limit));
 
 	// increment count if not a re-initialised object
 	if(detections[obj_batch][(obj - (obj_batch * obj_limit))].ShowVoxels() >= 1){ ++k; }
 	
       }   
-      cout << "Maximum number of objects found so far is " << NOobj << ", " << k << " unique objects remain after merging then size thresholding." << endl;
+      cout << "Maximum number of objects found so far is " << NOobj << ", " << o << " unique objects remain after merging then size thresholding." << endl;
    
       // for(i = 0; i < temp_chunk_x_size; ++i)
     }
@@ -633,7 +636,7 @@ int main(int argc, char* argv[]){
   dummy1.clear();
   dummy1 = output_code+"_obj.cat";
   outputfile.open(dummy1.c_str(),ios::out);
-  outputfile << "# Catalogue produced by create_catalog.cpp.\n# " << endl;
+  outputfile << "# Catalogue produced by create_HUGE_catalog.cpp.\n# " << endl;
   outputfile << "# Input parameters are . . . " << endl;
   outputfile << "# Output code: " << output_code << endl;
   outputfile << "# Mask file: " << maskfile << endl;

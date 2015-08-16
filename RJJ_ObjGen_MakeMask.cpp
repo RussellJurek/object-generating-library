@@ -11,9 +11,9 @@ using namespace std;
 
 // functions using floats
 
-float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<object_props *> & detections, int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, int * data_metric, int * xyz_order){
+float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<object_props *> & detections, int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, size_t * data_metric, int * xyz_order){
 
-  int obj, obj_batch, x, y, g, f, temp_x[2], temp_y[2], temp_z[2];
+  int obj, obj_batch, x, y, g, f, f_start, temp_x[2], temp_y[2], temp_z[2];
 
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
@@ -109,7 +109,9 @@ float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<
 	  
 	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
+	      f_start = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g));
+	      if(f_start < chunk_z_start){ f_start = chunk_z_start; }
+	      for(f = f_start; ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = temp_indices[obj];
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = temp_indices[obj];
@@ -138,10 +140,10 @@ float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<
   
 }
 
-float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_vals, vector<object_props *> & detections, long int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, int * data_metric, int * xyz_order){
+float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_vals, vector<object_props *> & detections, long int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, size_t * data_metric, int * xyz_order){
 
   long int obj, obj_batch;
-  int x, y, g, f, temp_x[2], temp_y[2], temp_z[2];
+  int x, y, g, f, f_start, temp_x[2], temp_y[2], temp_z[2];
 
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
@@ -237,7 +239,9 @@ float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_val
 	  
 	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
+	      f_start = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g));
+	      if(f_start < chunk_z_start){ f_start = chunk_z_start; }
+	      for(f = f_start; ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = temp_indices[obj];
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = temp_indices[obj];
@@ -266,7 +270,7 @@ float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_val
   
 }
 
-void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props *> & detections, int NOobj, int obj_limit, int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, int * data_metric, int * xyz_order){
+void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props *> & detections, int NOobj, int obj_limit, int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, size_t * data_metric, int * xyz_order){
 
   fitsfile * mask_output;
   int * temp_indices; 
@@ -373,7 +377,7 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
      
 }
 
-void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props *> & detections, long int NOobj, int obj_limit, long int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, int * data_metric, int * xyz_order){
+void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props *> & detections, long int NOobj, int obj_limit, long int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, size_t * data_metric, int * xyz_order){
 
   fitsfile * mask_output;
   long int * temp_indices; 
@@ -483,9 +487,9 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
 
 // functions using doubles
 
-float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<object_props_dbl *> & detections, int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, int * data_metric, int * xyz_order){
+float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<object_props_dbl *> & detections, int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, size_t * data_metric, int * xyz_order){
 
-  int obj, obj_batch, x, y, g, f, temp_x[2], temp_y[2], temp_z[2];
+  int obj, obj_batch, x, y, g, f, f_start, temp_x[2], temp_y[2], temp_z[2];
 
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
@@ -581,7 +585,9 @@ float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<
 	  
 	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
+	      f_start = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g));
+	      if(f_start < chunk_z_start){ f_start = chunk_z_start; }
+	      for(f = f_start; ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = temp_indices[obj];
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = temp_indices[obj];
@@ -610,10 +616,10 @@ float AddIDsToChunk(float progress, int * temp_indices, int * flag_vals, vector<
   
 }
 
-float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_vals, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, int * data_metric, int * xyz_order){
+float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_vals, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, int chunk_x_start, int chunk_y_start, int chunk_z_start, int chunk_x_size, int chunk_y_size, int chunk_z_size, size_t * data_metric, int * xyz_order){
 
   long int obj, obj_batch;
-  int x, y, g, f, temp_x[2], temp_y[2], temp_z[2];
+  int x, y, g, f, f_start, temp_x[2], temp_y[2], temp_z[2];
 
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
@@ -709,7 +715,9 @@ float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_val
 	  
 	    for(g = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0)))); g < detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_grid(((((y - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(2)) * (detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(1) - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1)) + x - detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_size(0) + 1))); ++g){
 	      
-	      for(f = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g)); ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
+	      f_start = detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings((2 * g));
+	      if(f_start < chunk_z_start){ f_start = chunk_z_start; }
+	      for(f = f_start; ((f <= detections[obj_batch][(obj - (obj_batch * obj_limit))].Get_srep_strings(((2 * g) + 1))) && (f < (chunk_z_size + chunk_z_start))); ++f){
 		
 		//flag_vals[(((f - chunk_z_start) * (data_x_size - chunk_x_start) * (data_y_size - chunk_y_start)) + ((y - chunk_y_start) * (data_x_size - chunk_x_start)) + x - chunk_x_start)] = temp_indices[obj];
 		flag_vals[(((f - chunk_z_start) * data_metric[2]) + ((y - chunk_y_start) * data_metric[1]) + ((x - chunk_x_start) * data_metric[0]))] = temp_indices[obj];
@@ -738,7 +746,7 @@ float AddIDsToChunk(float progress, long int * temp_indices, long int * flag_val
   
 }
 
-void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props_dbl *> & detections, int NOobj, int obj_limit, int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, int * data_metric, int * xyz_order){
+void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props_dbl *> & detections, int NOobj, int obj_limit, int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, size_t * data_metric, int * xyz_order){
 
   fitsfile * mask_output;
   int * temp_indices; 
@@ -845,7 +853,7 @@ void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<o
      
 }
 
-void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, long int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, int * data_metric, int * xyz_order){
+void CreateFitsMask(std::string output_code, int NOx, int NOy, int NOf, vector<object_props_dbl *> & detections, long int NOobj, int obj_limit, long int * flag_vals, int chunk_x_size, int chunk_y_size, int temp_chunk_x_size, int temp_chunk_y_size, size_t * data_metric, int * xyz_order){
 
   fitsfile * mask_output;
   long int * temp_indices; 

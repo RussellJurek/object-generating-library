@@ -7,6 +7,7 @@
 #include<ctime>
 #include<ctype.h>
 #include<RJJ_ObjGen.h>
+#include<vector>
 extern "C" {
 
 #include<fitsio.h>
@@ -14,9 +15,6 @@ extern "C" {
 }
 
 using namespace std;
-
-// compile line
-// c++ /Users/Jurek83/CatalogCode/latest_prototype/trunk/create_catalog_NP.cpp -o /Users/Jurek83/CatalogCode/latest_prototype/trunk/create_catalog_NP -O2 -lcfitsio -I/usr/local/pgplot -L/usr/local/pgplot -lcpgplot -lpgplot -I/Users/Jurek83/CatalogCode/latest_prototype/trunk -L/Users/Jurek83/CatalogCode/latest_prototype/trunk -lrjj_objgen
 
 int main(int argc, char* argv[]){
 
@@ -26,7 +24,8 @@ int main(int argc, char* argv[]){
   char dummy3[100];
   int NOf,f,x,y,status,nkeys,i,g,NOg,j,k,m,length,NOx,NOy,xmid,ymid,xfinish,yfinish;
   float * data_vals, ratio, threshold, * signal_vals, fill_factor = 0.7;
-  int * flag_vals, * data_metric, * xyz_order;
+  int * flag_vals, * xyz_order;
+  size_t * data_metric;
   int min_z_size = 1, max_z_size = 300, min_x_size = 3, min_y_size = 3, min_v_size, min_LoS_count;
   long fits_read_start[4], fits_read_finish[4], fits_read_inc[4] = {1,1,1,1};
   int chunk_size = 1024 * 1024 * 1024 / 4, NO_chunks, chunk_x_overlap = 10, chunk_y_overlap = 10, chunk_z_overlap = 10;

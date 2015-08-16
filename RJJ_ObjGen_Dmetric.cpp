@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void CreateMetric(int * data_metric, int * xyz_order, int NOx, int NOy, int NOz){
+void CreateMetric(size_t * data_metric, int * xyz_order, int NOx, int NOy, int NOz){
 
   // ensure that the x_order, y_order and z_order values are 1,2,3
   if((xyz_order[0] <= xyz_order[1]) && (xyz_order[0] <= xyz_order[2])){

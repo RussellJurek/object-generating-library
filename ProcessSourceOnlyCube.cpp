@@ -8,7 +8,6 @@
 #include<ctype.h>
 #include<RJJ_ObjGen.h>
 #include<RJJ_ObjGen_Plots.h>
-#include<vector>
 extern "C" {
 
 #include<fitsio.h>
@@ -18,13 +17,15 @@ extern "C" {
 
 using namespace std;
 
+void HeapSort(int n, float ra[]);
+
 int main(int argc, char* argv[]){
 
-  fitsfile * fits_input, * fits_input_source, * mask_input;
+  fitsfile * fits_input, * fits_input_source;
   stringstream dummy2;
   string dummy1, output_code, maskfile, sfile, snfile;
   char dummy3[100];
-  int NOf,f,x,y,status,nkeys,i,g,NOg,j,k,m,length,NOx,NOy,xmid,ymid,xfinish,yfinish;
+  int NOf,f,x,y,status,nkeys,i,g,NOg,j,k,m,length,NOx,NOy,xmid,ymid,xstart,ystart,xfinish,yfinish;
   float * data_vals, ratio, threshold, * signal_vals, fill_factor = 0.7;
   int * flag_vals, * xyz_order;
   size_t * data_metric;
@@ -68,7 +69,7 @@ int main(int argc, char* argv[]){
   // de-bugging variables
 
   // check if the right number of command line parameters have been specified
-  if((argc > 23) || ((argc < 16) && (argc != 2))){ cout << "WARNING: Incorrect number of arguments! Exiting.\nEnter Prototype_Catalog_v7 -h on the command line to see the command line input.\n"; return 1; }
+  if((argc > 22) || ((argc < 15) && (argc != 2))){ cout << "WARNING: Incorrect number of arguments! Exiting.\nEnter ProcessSourceOnlyCube_v2 -h on the command line to see the command line input.\n"; return 1; }
 
   // get input parameters from command line
   dummy2.str("");
@@ -77,10 +78,10 @@ int main(int argc, char* argv[]){
   dummy2 >> output_code;
 
   // if the output_code is -h, display the command line parameters and exit
-  if(output_code == "-h"){ cout << "\nUsage: ./create_catalog output_code mask_file data_file min_x_size min_y_size min_z_size min_LoS fill_factor flag_val Tflux_thresh_min Tflux_thresh_max merge_x merge_y merge_z plot_mode [-SR] [-C] [-M] [-DO x-order y-order z-order] \n\nInput:\n\nmask_file: A .fits file containing a binary mask of source and non-source pixels/voxels. Non-source pixels/voxels should have a value of 0. All source pixels/voxels should be a single, consistent negative value eg. -10. This is the value that should be specified as \"flag_val\" on the commadn line. Positive values are not allowed. \n\ndata_file: A .fits file containing a 2D/3D image.\n\nmin_x_size: The minimum size requirement, in pixels, of sources along the x axis.\n\nmin_y_size: The minimum size requirement, in pixels, of sources along the y axis.\n\nmin_z_size: The minimum size requirement, in pixels, of sources along the z axis.\n\nmin_LoS: The minimum projected size of sources in the x-y plane.\n\nfill_factor: The minimum `filling factor' of sources. The `filling factor' is the fraction of the source's bounding box that is `filled' with source pixels/voxels. This effectively defines the minimum number of pixels/voxels that comprise a source. An explicit size can be specified by using a negative integer value.\n\nflag_val: The negative integer value in the flag_vals array that denotes a source pixel/voxel.\n\nTflux_thresh_min: The minimum total flux accepted for sources.\n\nTflux_thresh_max: The maximum total flux accepted for sources.\n\nmerge_x: The empty space, in pixels, separating components of a single source.\n\nmerge_y: The empty space, in pixels, separating components of a single source.\n\nmerge_z: The empty space, in pixels, separating components of a single source.\n\nplot_mode: An integer flag specifying the plotting mode to use.\n\nOptional inputs:\n\n-SR: Use this flag to create an output catalog that has each object's sparse representation appended to it.\n\n-C: Use this flag to link source components using an ellipse in the x-y plane instead of a rectangle.\n\n-M: Create an output .fits file containing an image of the data_vals array where each pixel/voxel is labelled with the ID of the object that it belongs to. The output file is \"output_code\"_mask.fits.\n\n-DO x-order y-order z-order: This option allows a user to specify the order of the x/RA, y/Dec, z/Frequency/Velocity axes in the input .fits files. For instance, a .fits file with RA, Dec, Frequency axes would use the order: 1 2 3 (the default). A .fits file with Frequency, RA, Dec axes however would use the order: 3 1 2.\n\nOutput: \n\"output_code\"_obj.cat ; file listing objects and calculated properties. \n\"output_code\"_plots.ps ; moment-0 and position-velocity plots of objects over entire dataset.\n\nplot_mode 0 = no plots, plot_mode 1 = global plot only, plot_mode 2 = spectra + postage stamps only, plot_mode 3 = all plots \n\n" << endl; return 0; }
+  if(output_code == "-h"){ cout << "\nUsage: ./ProcessSourceOnlyCube output_code threshold data_file min_x_size min_y_size min_z_size min_LoS fill_factor Tflux_thresh_min Tflux_thresh_max merge_x merge_y merge_z plot_mode [-SR] [-C] [-M] [-DO x-order y-order z-order] \n\nInput:\n\threshold: This value will be applied to the input \"data_file\" to generate a binary mask of source and non-source pixels/voxels. All pixels/voxels greater than or equal to this value will be flagged as source pixels/voxels.\n\ndata_file: A .fits file containing a 2D/3D image.\n\nmin_x_size: The minimum size requirement, in pixels, of sources along the x axis.\n\nmin_y_size: The minimum size requirement, in pixels, of sources along the y axis.\n\nmin_z_size: The minimum size requirement, in pixels, of sources along the z axis.\n\nmin_LoS: The minimum projected size of sources in the x-y plane.\n\nfill_factor: The minimum `filling factor' of sources. The `filling factor' is the fraction of the source's bounding box that is `filled' with source pixels/voxels. This effectively defines the minimum number of pixels/voxels that comprise a source. An explicit size can be specified by using a negative integer value.\n\nTflux_thresh_min: The minimum total flux accepted for sources.\n\nTflux_thresh_max: The maximum total flux accepted for sources.\n\nmerge_x: The empty space, in pixels, separating components of a single source.\n\nmerge_y: The empty space, in pixels, separating components of a single source.\n\nmerge_z: The empty space, in pixels, separating components of a single source.\n\nplot_mode: An integer flag specifying the plotting mode to use.\n\nOptional inputs:\n\n-SR: Use this flag to create an output catalog that has each object's sparse representation appended to it.\n\n-C: Use this flag to link source components using an ellipse in the x-y plane instead of a rectangle.\n\n-M: Create an output .fits file containing an image of the data_vals array where each pixel/voxel is labelled with the ID of the object that it belongs to. The output file is \"output_code\"_mask.fits.\n\n-DO x-order y-order z-order: This option allows a user to specify the order of the x/RA, y/Dec, z/Frequency/Velocity axes in the input .fits files. For instance, a .fits file with RA, Dec, Frequency axes would use the order: 1 2 3 (the default). A .fits file with Frequency, RA, Dec axes however would use the order: 3 1 2.\n\nOutput: \n\"output_code\"_obj.cat ; file listing objects and calculated properties. \n\"output_code\"_plots.ps ; moment-0 and position-velocity plots of objects over entire dataset.\n\nplot_mode 0 = no plots, plot_mode 1 = global plot only, plot_mode 2 = spectra + postage stamps only, plot_mode 3 = all plots \n\n" << endl; return 0; }
 
   // check if the right command line option was entered
-  if((argc == 2) && (output_code != "-h")){ cout << "WARNING: Incorrect arguments! Exiting.\nEnter Prototype_Catalog_v6 -h on the command line to see the command line input.\n"; return 1; }
+  if((argc == 2) && (output_code != "-h")){ cout << "WARNING: Incorrect arguments! Exiting.\nEnter ProcessSourceOnlyCube -h on the command line to see the command line input.\n"; return 1; }
 
   // create initial arrays used for cataloguing and object construction
   InitObjGen(detections,NOobj,obj_limit,obj_ids,check_obj_ids,data_metric,xyz_order);
@@ -88,7 +89,7 @@ int main(int argc, char* argv[]){
   dummy2.str("");
   dummy2.clear();
   dummy2 << argv[2];
-  dummy2 >> maskfile;
+  dummy2 >> threshold;
 
   dummy2.str("");
   dummy2.clear();
@@ -120,40 +121,37 @@ int main(int argc, char* argv[]){
   dummy2 << argv[8];
   dummy2 >> fill_factor;
 
-  dummy2.str("");
-  dummy2.clear();
-  dummy2 << argv[9];
-  dummy2 >> flag_val_em;
+  flag_val_em = -1;
 
   dummy2.str("");
   dummy2.clear();
-  dummy2 << argv[10];
+  dummy2 << argv[9];
   dummy2 >> intens_thresh_min;
 
   dummy2.str("");
   dummy2.clear();
-  dummy2 << argv[11];
+  dummy2 << argv[10];
   dummy2 >> intens_thresh_max;
 
   dummy2.str("");
   dummy2.clear();
-  dummy2 << argv[12];
+  dummy2 << argv[11];
   dummy2 >> merge_x;
 
   dummy2.str("");
   dummy2.clear();
-  dummy2 << argv[13];
+  dummy2 << argv[12];
   dummy2 >> merge_y;
 
   dummy2.str("");
   dummy2.clear();
-  dummy2 << argv[14];
+  dummy2 << argv[13];
   dummy2 >> merge_z;
 
   plot_mode = 1;
   dummy2.str("");
   dummy2.clear();
-  dummy2 << argv[15];
+  dummy2 << argv[14];
   dummy2 >> plot_mode;
   if((plot_mode < 0) || (plot_mode > 3)){ cout << "Invalid plot_mode value entered. Using default plot_mode value of 1." << endl; plot_mode = 1; }
   
@@ -163,7 +161,7 @@ int main(int argc, char* argv[]){
   xyz_order[0] = 1;
   xyz_order[1] = 2;
   xyz_order[2] = 3;
-  for(i = 16; i < argc; ++i){
+  for(i = 15; i < argc; ++i){
 
     dummy2.str("");
     dummy2.clear();
@@ -199,19 +197,19 @@ int main(int argc, char* argv[]){
     }
 
   }
-  
+
   // set overlap region of chunks
   chunk_x_overlap = merge_x + 1;
   chunk_y_overlap = merge_y + 1;
   chunk_z_overlap = merge_z + 1;
 
   // calculate min_v_size from filling factor and other minimum sizes of bounding volume
-  if(fill_factor >= 0.0){ min_v_size = (int) ceilf(((float) min_x_size * (float) min_y_size * (float) min_z_size * fill_factor)); } else { min_v_size = (int) (-1.0 * fill_factor); }
+  if(fill_factor >= 0.0){ min_v_size = (int) ceilf(((float) min_x_size * (float) min_y_size * (float) min_z_size * fill_factor)); } else { min_v_size = (int)(-1.0 * fill_factor); }
 
   // display input parameters
   cout << "Input parameters are . . . " << endl;
   cout << "Output code: " << output_code << endl;
-  cout << "Mask file: " << maskfile << endl;
+  cout << "Using significance threshold of " << threshold << " mJy/beam to identify sources." << endl;
   cout << "Source+noise cube: " << snfile << endl;
   cout << "Minimum extent in voxels along RA: " << min_x_size << endl;
   cout << "Minimum extent in voxels along Dec: " << min_y_size << endl;
@@ -230,9 +228,9 @@ int main(int argc, char* argv[]){
     cout << "Using ellipse to link spatial dimensions." << endl;
 
   }
-  cout << "Merging objects separated by " << merge_x << " (x), " << merge_y << " (y), " << merge_z << " (z) voxels in respective dimensions." << endl;
+  cout << "Merging objects within a distance of: " << (merge_x + 1) << " (x), " << (merge_y + 1) << " (y), " << (merge_z + 1) << " (z)" << endl;
   switch (plot_mode) {
- 
+    
   case 0:
     cout << "Using plot mode 0. Generating no plots." << endl;
     break;
@@ -247,7 +245,6 @@ int main(int argc, char* argv[]){
     break;
   default: 
     cout << "WARNING! Invalid plot mode." << endl;
-    break;
   }
   if(cat_mode > 0){ 
 
@@ -258,7 +255,6 @@ int main(int argc, char* argv[]){
     cout << "Creating object catalogues without sparse representations." << endl;
 
   }
-  cout << "Mapping RA to data dimension: " << xyz_order[0] << ", Dec to data dimension: " << xyz_order[1] << " & Freq. to data dimension: " << xyz_order[2] << endl;
 
   // open input files
   status = 0;
@@ -283,15 +279,11 @@ int main(int argc, char* argv[]){
   fits_read_key(fits_input,TFLOAT,"CRPIX3",&crpix3,NULL,&status);
   fits_read_key(fits_input,TFLOAT,"CRVAL3",&crval3,NULL,&status);
   fits_read_key(fits_input,TFLOAT,"CDELT3",&cdelt3,NULL,&status);
-  if(status > 0){ cdelt3 = 1.0; }
-  status = 0;
   fits_read_key(fits_input,TFLOAT,"RESTFREQ",&restfreq,NULL,&status);
-  if(status > 0){ restfreq = 1.4e9; }
-  status = 0;
   fits_read_key(fits_input,TSTRING,"CTYPE3",&dummy3,NULL,&status);
-  if(status > 0){ 
+  if(status > 0){
 
-    ctype3 = 1; 
+    ctype3 = 1;
 
   } else {
 
@@ -463,14 +455,7 @@ int main(int argc, char* argv[]){
   
   // create array to store signal
   flag_vals = new int[(chunk_x_size * chunk_y_size * chunk_z_size)];
-  
-  // open file containing source mask
-  status = 0;
-  cout << "Attempting to open file: " << maskfile << endl;
-  fits_open_file(&mask_input,maskfile.c_str(),READONLY,&status);
-  cout << "File opened, status = " << status << endl;
-  if(status > 0){ fits_report_error(stderr,status); return 1; }
-  
+    
   // for each chunk, load it into memory, then smooth it, updating progress in terms of 1GB chunk and overall
   for(j = 0; j < temp_chunk_y_size; ++j){
     
@@ -511,16 +496,6 @@ int main(int argc, char* argv[]){
 	}
       }
 
-      // read file containing mask into memory
-      cout << "Reading source+noise flag file into memory . . . " << endl;
-      fits_read_subset(mask_input,TINT,fits_read_start,fits_read_finish,fits_read_inc,NULL,flag_vals,NULL,&status);
-      if(status > 0){ 
-	
-	fits_report_error(stderr,status); 
-	return 1; 
-	
-      }
-
       // initialise data array
       cout << "Initialising data_vals array for this chunk . . . " << endl;
       for(f = 0; f < chunk_z_size; ++f){
@@ -559,6 +534,20 @@ int main(int argc, char* argv[]){
 	}
 	cout << "* done." << endl;
       
+      }
+
+      // calculate the starting indices to be searched for sources
+      if(chunk_x_start == 0){ xstart = 0; } else { xstart = chunk_x_overlap; }
+      if(chunk_y_start == 0){ ystart = 0; } else { ystart = chunk_y_overlap; }
+
+      // call function to update flag_vals array with sources found in data_vals
+      cout << "Finding sources in current chunk . . . " << endl;
+      for(f = 0; (f < chunk_z_size) && (f < (fits_read_finish[2] - fits_read_start[2] + 1)); ++f){
+	for(y = ystart; (y < chunk_y_size) && (y < (fits_read_finish[1] - fits_read_start[1] + 1)); ++y){
+	  for(x = xstart; (x < chunk_x_size) && (x < (fits_read_finish[0] - fits_read_start[0] + 1)); ++x){
+	    if(data_vals[((f * (fits_read_finish[1] - fits_read_start[1] + 1) * (fits_read_finish[0] - fits_read_start[0] + 1)) + (y * (fits_read_finish[0] - fits_read_start[0] + 1)) + x)] >= threshold){ flag_vals[((f * (fits_read_finish[1] - fits_read_start[1] + 1) * (fits_read_finish[0] - fits_read_start[0] + 1)) + (y * (fits_read_finish[0] - fits_read_start[0] + 1)) + x)] = -1; } else { flag_vals[((f * (fits_read_finish[1] - fits_read_start[1] + 1) * (fits_read_finish[0] - fits_read_start[0] + 1)) + (y * (fits_read_finish[0] - fits_read_start[0] + 1)) + x)] = -99; }
+	  }
+	}
       }
 
       // check that the flag_vals array consists of negative definite values
@@ -613,30 +602,27 @@ int main(int argc, char* argv[]){
       // for(i = 0; i < temp_chunk_x_size; ++i)
     }
 
-    // for(j = 0; j < temp_chunk_y_size; ++j)
+    // for(j = 0; j < temp_chunk_y_size; j++)
   }
 
   // close input files
   cout << "\nClosing fits input files . . . "; cout.flush();
   fits_close_file(fits_input,&status);
   cout << "data file closed, status = " << status << endl;
-  fits_close_file(mask_input,&status);
-  cout << "mask file closed, status = " << status << endl;
         
   // Apply final size threshold and intensity threshold
-  cout << "\nApplying final size threshold and additional intensity threshold . . . " << endl;
+  cout << "Applying final size threshold and additional intensity threshold . . . " << endl;
   ThresholdObjs(detections,NOobj,obj_limit,min_x_size,min_y_size,min_z_size,min_v_size,intens_thresh_min,intens_thresh_max,min_LoS_count);
 
   // create output catalogue
-  cout << "\nCreating output catalogues . . . " << endl;
+  cout << "Creating output catalogues . . . " << endl;
   dummy1 = "";
   dummy1.clear();
   dummy1 = output_code+"_obj.cat";
   outputfile.open(dummy1.c_str(),ios::out);
-  outputfile << "# Catalogue produced by create_catalog.cpp.\n# " << endl;
+  outputfile << "# Catalogue produced by ProcessSourceOnlyCube.cpp.\n# " << endl;
   outputfile << "# Input parameters are . . . " << endl;
   outputfile << "# Output code: " << output_code << endl;
-  outputfile << "# Mask file: " << maskfile << endl;
   outputfile << "# Source+noise cube: " << snfile << endl;
   outputfile << "# Minimum extent in voxels along RA: " << min_x_size << endl;
   outputfile << "# Minimum extent in voxels along Dec: " << min_y_size << endl;
@@ -656,7 +642,6 @@ int main(int argc, char* argv[]){
 
   }
   outputfile << "# Merging objects within a distance of: " << (merge_x + 1) << " (x), " << (merge_y + 1) << " (y), " << (merge_z + 1) << " (z)" << endl;
-  outputfile << "# Mapping RA to data dimension: " << xyz_order[0] << ", Dec to data dimension: " << xyz_order[1] << " & Freq. to data dimension: " << xyz_order[2] << endl;
   outputfile << "# \n# " << endl;
   PrintCatalogueHeader(outputfile,cat_mode);
   m = CreateCatalogue(outputfile,detections,NOobj,obj_limit,cat_mode);
@@ -673,13 +658,14 @@ int main(int argc, char* argv[]){
 
   // create plots if at least 1 object has been written to file
   CreateObjPlots(m,plot_mode,output_code,xyz_order,NOx,NOy,NOf,detections,NOobj,obj_limit,ctype3,crpix3,crval3,cdelt3,restfreq);
-    
+        
   // free up memory
   delete [] data_vals;
   delete [] flag_vals;
   FreeObjGen(detections,data_metric,xyz_order);
 
 }
+
 
 
 

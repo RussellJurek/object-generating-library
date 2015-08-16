@@ -5,7 +5,7 @@ $(info Creating busy function C/C++ library and demo programs for ARCH = $(ARCH)
 # specify compilation options
 CXX = c++
 CC = cc
-CFLAGS = -O2 -std=c++11 
+CFLAGS = -O2 -std=c++11
 LDFLAGS = -lm 
 ifndef INSTALL_DIR
   INSTALL_DIR = /usr/local/lib
@@ -157,7 +157,7 @@ else
 endif
 
 # define rules used to create BusyFunction library and test programs
-all: ./librjj_objgen.a ./librjj_objgen_plots.a ./librjj_objgen_wcs.a ./create_catalog_NP ./create_catalog ./create_HUGE_catalog ./ProcessSourceOnlyCube ./Process_HUGE_SourceOnlyCube
+all: ./librjj_objgen.a ./librjj_objgen.so ./librjj_objgen_plots.a ./librjj_objgen_plots.so ./librjj_objgen_wcs.a ./librjj_objgen_wcs.so ./create_catalog_NP ./create_catalog ./create_HUGE_catalog ./ProcessSourceOnlyCube ./Process_HUGE_SourceOnlyCube
 
 ifneq ($(THIS_FITS_DIR), )
 
@@ -165,9 +165,14 @@ INCLUDES = RJJ_ObjGen.h RJJ_ObjGen_Plots.h RJJ_ObjGen_WCS.h
 SOURCES = RJJ_ObjGen_DetectDefn.cpp RJJ_ObjGen_CatPrint.cpp RJJ_ObjGen_PlotGlobal.cpp RJJ_ObjGen_CreateObjs.cpp RJJ_ObjGen_ThreshObjs.cpp RJJ_ObjGen_AddObjs.cpp RJJ_ObjGen_MemManage.cpp RJJ_ObjGen_MakeMask.cpp RJJ_ObjGen_Dmetric.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 ./librjj_objgen.a: $(INCLUDES) $(SOURCES)
-	@echo Creating C++ library --- INCLUDING cfitsio extensions . . . 
+	@echo Creating C++ static library --- INCLUDING cfitsio extensions . . . 
 	$(CXX) $(CFLAGS) -c $(SOURCES) -I. -I/$(THIS_FITS_DIR)/$(THIS_FITS_INC)/ -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/
 	$(LIB_METHOD) $@ $(OBJECTS) -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/ -lcfitsio
+
+./librjj_objgen.so: $(INCLUDES) $(SOURCES)
+	@echo Creating C++ shared library --- INCLUDING cfitsio extensions . . . 
+	$(CXX) $(CFLAGS) -fPIC -c $(SOURCES) -I. -I/$(THIS_FITS_DIR)/$(THIS_FITS_INC)/ -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/
+	$(CXX) -shared -o $@ $(OBJECTS) -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/ -lcfitsio
 
 ./create_catalog_NP: ./create_catalog_NP.cpp ./librjj_objgen.a
 	@echo Creating terminal application create_catalog_NP . . . 
@@ -175,12 +180,18 @@ OBJECTS = $(SOURCES:.cpp=.o)
 
 else
 
+INCLUDES = RJJ_ObjGen.h 
 SOURCES = RJJ_ObjGen_DetectDefn.cpp RJJ_ObjGen_CatPrint.cpp RJJ_ObjGen_PlotGlobal.cpp RJJ_ObjGen_CreateObjs.cpp RJJ_ObjGen_ThreshObjs.cpp RJJ_ObjGen_AddObjs.cpp RJJ_ObjGen_MemManage.cpp RJJ_ObjGen_Dmetric.cpp
 OBJECTS = $(SOURCES:.c=.o)
-./librjj_objgen.a: $(SOURCES)
-	@echo Creating C++ library --- EXCLUDING cfitsio extensions . . . 
+./librjj_objgen.a: $(INCLUDES) $(SOURCES)
+	@echo Creating C++ static library --- EXCLUDING cfitsio extensions . . . 
 	$(CXX) $(CFLAGS) -c $(SOURCES) -I. 
 	$(LIB_METHOD) $@ $(OBJECTS)
+
+./librjj_objgen.so: $(INCLUDES) $(SOURCES)
+	@echo Creating C++ shared library --- EXCLUDING cfitsio extensions . . . 
+	$(CXX) $(CFLAGS) -fPIC -c $(SOURCES) -I. 
+	$(CXX) -shared -o $@ $(OBJECTS)
 
 ./create_catalog_NP: ./create_catalog_NP.cpp ./librjj_objgen.a
 	@echo NOT creating terminal application create_catalog_NP . . . Couldn\'t find cfitsio installation.
@@ -189,10 +200,15 @@ endif
 
 ifneq ($(THIS_PGPLOT_DIR), )
 
-./librjj_objgen_plots.a: RJJ_ObjGen_Plots.cpp 
-	@echo Creating C++ plotting library . . .
-	$(CXX) -c $< $(CFLAGS) -I. -I/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_INC)/ -L/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_LIB)/
+./librjj_objgen_plots.a: RJJ_ObjGen_Plots.cpp RJJ_ObjGen_Plots.h 
+	@echo Creating C++ static plotting library . . .
+	$(CXX) -c RJJ_ObjGen_Plots.cpp $(CFLAGS) -I. -I/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_INC)/ -L/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_LIB)/
 	$(LIB_METHOD) $@ RJJ_ObjGen_Plots.o -L. -lrjj_objgen -L/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_LIB)/ -lcpgplot -lpgplot
+
+./librjj_objgen_plots.so: RJJ_ObjGen_Plots.cpp RJJ_ObjGen_Plots.h 
+	@echo Creating C++ shared plotting library . . .
+	$(CXX) -fPIC -c RJJ_ObjGen_Plots.cpp $(CFLAGS) -I. -I/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_INC)/ -L/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_LIB)/
+	$(CXX) -shared -o $@ RJJ_ObjGen_Plots.o -L. -lrjj_objgen -L/$(THIS_PGPLOT_DIR)/$(THIS_PGPLOT_LIB)/ -lcpgplot -lpgplot
 
 ifneq ($(THIS_FITS_DIR), )
 
@@ -237,10 +253,15 @@ endif
 
 ifneq ($(THIS_WCS_DIR), )
 
-./librjj_objgen_wcs.a: RJJ_ObjGen_CatPrint_WCS.cpp
-	@echo Creating C++ WCS library . . .
-	$(CXX) -c $< $(CFLAGS) -I. -I/$(THIS_WCS_DIR)/$(THIS_WCS_INC)/ -L/$(THIS_WCS_DIR)/$(THIS_WCS_LIB)/
-	$(LIB_METHOD) $@ RJJ_ObjGen_CatPrint_WCS.o -L/. -L/$(THIS_WCS_DIR)/$(THIS_WCS_LIB)/ $(WCS_LIB) 
+./librjj_objgen_wcs.a: RJJ_ObjGen_CatPrint_WCS.cpp RJJ_ObjGen_WCS.h
+	@echo Creating C++ static WCS library . . .
+	$(CXX) -c RJJ_ObjGen_CatPrint_WCS.cpp $(CFLAGS) -I. -I/$(THIS_WCS_DIR)/$(THIS_WCS_INC)/ -L/$(THIS_WCS_DIR)/$(THIS_WCS_LIB)/
+	$(LIB_METHOD) $@ RJJ_ObjGen_CatPrint_WCS.o -L. -L/$(THIS_WCS_DIR)/$(THIS_WCS_LIB)/ $(WCS_LIB)  
+
+./librjj_objgen_wcs.so: RJJ_ObjGen_CatPrint_WCS.cpp RJJ_ObjGen_WCS.h 
+	@echo Creating C++ shared WCS library . . .
+	$(CXX) -fPIC -c RJJ_ObjGen_CatPrint_WCS.cpp $(CFLAGS) -I. -I/$(THIS_WCS_DIR)/$(THIS_WCS_INC)/ -L/$(THIS_WCS_DIR)/$(THIS_WCS_LIB)/
+	$(CXX) -shared -o $@ RJJ_ObjGen_CatPrint_WCS.o -L. -lrjj_objgen -L/$(THIS_WCS_DIR)/$(THIS_WCS_LIB)/ $(WCS_LIB) -I/$(THIS_FITS_DIR)/$(THIS_FITS_INC)/ -L/$(THIS_FITS_DIR)/$(THIS_FITS_LIB)/ -lcfitsio
 
 else
 
@@ -259,6 +280,9 @@ distclean:
 	@rm -vf librjj_objgen.a
 	@rm -vf librjj_objgen_plots.a
 	@rm -vf librjj_objgen_wcs.a
+	@rm -vf librjj_objgen.so
+	@rm -vf librjj_objgen_plots.so
+	@rm -vf librjj_objgen_wcs.so
 	@rm -vf create_catalog
 	@rm -vf create_HUGE_catalog
 	@rm -vf create_catalog_NP
@@ -270,6 +294,9 @@ install:
 	@cp librjj_objgen.a $(INSTALL_DIR)
 	@cp librjj_objgen_plots.a $(INSTALL_DIR)
 	@cp librjj_objgen_wcs.a $(INSTALL_DIR)
+	@cp librjj_objgen.so $(INSTALL_DIR)
+	@cp librjj_objgen_plots.so $(INSTALL_DIR)
+	@cp librjj_objgen_wcs.so $(INSTALL_DIR)
 	@cp RJJ_ObjGen.h $(INSTALL_INC)
 	@cp RJJ_ObjGen_Plots.h $(INSTALL_INC)
 	@cp RJJ_ObjGen_WCS.h $(INSTALL_INC)

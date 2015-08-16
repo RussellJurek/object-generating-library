@@ -5,11 +5,11 @@ using namespace std;
 
 // functions using floats
 
-int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intens_thresh_min, float intens_thresh_max, int flag_value, int start_obj, vector<object_props *> & detections, vector<int> & obj_ids, vector<int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, int * data_metric, int * xyz_order){
+int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intens_thresh_min, float intens_thresh_max, int flag_value, int start_obj, vector<object_props *> & detections, vector<int> & obj_ids, vector<int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, size_t * data_metric, int * xyz_order){
  
-  int x,y,z,obj,existing,sx,sy,sz,sx_start,sy_start,sz_start,sx_finish,sy_finish,sz_finish,init_limit,g;
+  int obj,existing,x,y,z,sx,sy,sz,sx_start,sy_start,sz_start,sx_finish,sy_finish,sz_finish,init_limit,g;
   int i,j,k,NOi, obj_batch, obj_batch_2,NO_obj_ids,NO_check_obj_ids;
-  int prev,x_start,y_start,temp_x[3],temp_y[3],temp_z[3];
+  int prev,x_start,y_start,z_start,temp_x[3],temp_y[3],temp_z[3];
   float progress;
   vector<float> temp_mom0, temp_RAPV, temp_DECPV, temp_obj_spec, temp_ref_spec, temp_vfield;
   vector<int> match_init, temp_sparse_reps_grid, temp_sparse_reps_strings;
@@ -19,6 +19,9 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
   --merge_x;
   --merge_y;
   --merge_z;
+  if(merge_x < 0){ merge_x = 0; }
+  if(merge_y < 0){ merge_y = 0; }
+  if(merge_z < 0){ merge_z = 0; }
 
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
@@ -131,8 +134,10 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
   obj = start_obj;
   x_start = 0;
   y_start = 0;
+  z_start = 0;
   if(chunk_x_start > 0){ x_start = merge_x + 1; }
   if(chunk_y_start > 0){ y_start = merge_y + 1; }
+  if(chunk_z_start > 0){ z_start = merge_z + 1; }
   NO_obj_ids = obj_ids.size();
   NO_check_obj_ids = check_obj_ids.size();
 
@@ -143,7 +148,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
   // that ID to the grid point, otherwise, assign current value of obj and increment obj.
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
+  for(z = z_start; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
 
     // if the z value is sufficiently large that objects have started to pop out of the merging box,
     // then check if the objects outside of the merging box are sufficiently large
@@ -659,7 +664,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	}
 	
 	// update progress on display
-	while(progress <= (((float) ((z * size_x * size_y) + (y * size_x) + x + 1)) / ((float) (size_x * size_y * size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
+	while(progress <= (((((float) z) * ((float) size_x) * ((float) size_y)) + (((float) y) * ((float) size_x)) + ((float) x) + 1.0) / (((float) size_x) * ((float) size_y) * ((float) size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
 	// for(x = 0; x < size_x; ++x)
       }
@@ -990,7 +995,7 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
 	    // initialise the dummy integer j 
 	    j = -1;
 	    
-	    for(sz = sz_start; sz <= sz_finish; ++sz){
+	    for(sz = sz_start; (sz <= sz_finish); ++sz){
 	      
 	      // change i to reflect if this voxel in the flag_vals array belongs to the source
 	      if(flag_vals[((sz * data_metric[2]) + (sy * data_metric[1]) + (sx * data_metric[0]))] == i){ 
@@ -1358,12 +1363,12 @@ int CreateObjects(float * data_vals, int * flag_vals, int size_x, int size_y, in
   
 }
 
-long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intens_thresh_min, float intens_thresh_max, long int flag_value, long int start_obj, vector<object_props *> & detections, vector<long int> & obj_ids, vector<long int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, int * data_metric, int * xyz_order){
+long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, float intens_thresh_min, float intens_thresh_max, long int flag_value, long int start_obj, vector<object_props *> & detections, vector<long int> & obj_ids, vector<long int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, size_t * data_metric, int * xyz_order){
  
   long int o,obj,existing,obj_batch,obj_batch_2;
   int x,y,z,sx,sy,sz,sx_start,sy_start,sz_start,sx_finish,sy_finish,sz_finish;
   int g,i,j,k,NO_obj_ids,NO_check_obj_ids,NOi;
-  int init_limit,prev,x_start,y_start,temp_x[3],temp_y[3],temp_z[3];
+  int init_limit,prev,x_start,y_start,z_start,temp_x[3],temp_y[3],temp_z[3];
   float progress;
   vector<float> temp_mom0, temp_RAPV, temp_DECPV, temp_obj_spec, temp_ref_spec, temp_vfield;
   vector<long int> match_init;
@@ -1374,6 +1379,9 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
   --merge_x;
   --merge_y;
   --merge_z;
+  if(merge_x < 0){ merge_x = 0; }
+  if(merge_y < 0){ merge_y = 0; }
+  if(merge_z < 0){ merge_z = 0; }
 
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
@@ -1486,8 +1494,10 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
   obj = start_obj;
   x_start = 0;
   y_start = 0;
+  z_start = 0;
   if(chunk_x_start > 0){ x_start = merge_x + 1; }
   if(chunk_y_start > 0){ y_start = merge_y + 1; }
+  if(chunk_z_start > 0){ z_start = merge_z + 1; }
   NO_obj_ids = obj_ids.size();
   NO_check_obj_ids = check_obj_ids.size();
 
@@ -1498,7 +1508,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
   // that ID to the grid point, otherwise, assign current value of obj and increment obj.
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
+  for(z = z_start; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
 
     // if the z value is sufficiently large that objects have started to pop out of the merging box,
     // then check if the objects outside of the merging box are sufficiently large
@@ -2014,7 +2024,7 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 	}
 	
 	// update progress on display
-	while(progress <= (((float) ((z * size_x * size_y) + (y * size_x) + x + 1)) / ((float) (size_x * size_y * size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
+	while(progress <= (((((float) z) * ((float) size_x) * ((float) size_y)) + (((float) y) * ((float) size_x)) + ((float) x) + 1.0) / (((float) size_x) * ((float) size_y) * ((float) size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
 	// for(x = 0; x < size_x; ++x)
       }
@@ -2715,11 +2725,11 @@ long int CreateObjects(float * data_vals, long int * flag_vals, int size_x, int 
 
 // functions using doubles
 
-int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, double intens_thresh_min, double intens_thresh_max, int flag_value, int start_obj, vector<object_props_dbl *> & detections, vector<int> & obj_ids, vector<int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, int * data_metric, int * xyz_order){
+int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, double intens_thresh_min, double intens_thresh_max, int flag_value, int start_obj, vector<object_props_dbl *> & detections, vector<int> & obj_ids, vector<int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, size_t * data_metric, int * xyz_order){
  
   int x,y,z,obj,existing,sx,sy,sz,sx_start,sy_start,sz_start,sx_finish,sy_finish,sz_finish,init_limit,g;
   int i,j,k,NOi, obj_batch, obj_batch_2,NO_obj_ids,NO_check_obj_ids;
-  int prev,x_start,y_start,temp_x[3],temp_y[3],temp_z[3];
+  int prev,x_start,y_start,z_start,temp_x[3],temp_y[3],temp_z[3];
   float progress;
   vector<double> temp_mom0, temp_RAPV, temp_DECPV, temp_obj_spec, temp_ref_spec, temp_vfield;
   vector<int> match_init, temp_sparse_reps_grid, temp_sparse_reps_strings;
@@ -2729,6 +2739,9 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
   --merge_x;
   --merge_y;
   --merge_z;
+  if(merge_x < 0){ merge_x = 0; }
+  if(merge_y < 0){ merge_y = 0; }
+  if(merge_z < 0){ merge_z = 0; }
 
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
@@ -2841,8 +2854,10 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
   obj = start_obj;
   x_start = 0;
   y_start = 0;
+  z_start = 0;
   if(chunk_x_start > 0){ x_start = merge_x + 1; }
   if(chunk_y_start > 0){ y_start = merge_y + 1; }
+  if(chunk_z_start > 0){ z_start = merge_z + 1; }
   NO_obj_ids = obj_ids.size();
   NO_check_obj_ids = check_obj_ids.size();
 
@@ -2853,7 +2868,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
   // that ID to the grid point, otherwise, assign current value of obj and increment obj.
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
+  for(z = z_start; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
 
     // if the z value is sufficiently large that objects have started to pop out of the merging box,
     // then check if the objects outside of the merging box are sufficiently large
@@ -3369,7 +3384,7 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
 	}
 	
 	// update progress on display
-	while(progress <= (((float) ((z * size_x * size_y) + (y * size_x) + x + 1)) / ((float) (size_x * size_y * size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
+	while(progress <= (((((float) z) * ((float) size_x) * ((float) size_y)) + (((float) y) * ((float) size_x)) + ((float) x) + 1.0) / (((float) size_x) * ((float) size_y) * ((float) size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
 	// for(x = 0; x < size_x; ++x)
       }
@@ -4068,12 +4083,12 @@ int CreateObjects(double * data_vals, int * flag_vals, int size_x, int size_y, i
   
 }
 
-long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, double intens_thresh_min, double intens_thresh_max, long int flag_value, long int start_obj, vector<object_props_dbl *> & detections, vector<long int> & obj_ids, vector<long int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, int * data_metric, int * xyz_order){
+long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int size_y, int size_z, int chunk_x_start, int chunk_y_start, int chunk_z_start, int merge_x, int merge_y, int merge_z, int min_x_size, int min_y_size, int min_z_size, int min_v_size, double intens_thresh_min, double intens_thresh_max, long int flag_value, long int start_obj, vector<object_props_dbl *> & detections, vector<long int> & obj_ids, vector<long int> & check_obj_ids, int obj_limit, int max_x_val, int max_y_val, int max_z_val, int ss_mode, size_t * data_metric, int * xyz_order){
  
   long int o,obj,existing,obj_batch,obj_batch_2;
   int x,y,z,sx,sy,sz,sx_start,sy_start,sz_start,sx_finish,sy_finish,sz_finish;
   int g,i,j,k,NO_obj_ids,NO_check_obj_ids,NOi;
-  int init_limit,prev,x_start,y_start,temp_x[3],temp_y[3],temp_z[3];
+  int init_limit,prev,x_start,y_start,z_start,temp_x[3],temp_y[3],temp_z[3];
   float progress;
   vector<double> temp_mom0, temp_RAPV, temp_DECPV, temp_obj_spec, temp_ref_spec, temp_vfield;
   vector<long int> match_init;
@@ -4084,6 +4099,9 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
   --merge_x;
   --merge_y;
   --merge_z;
+  if(merge_x < 0){ merge_x = 0; }
+  if(merge_y < 0){ merge_y = 0; }
+  if(merge_z < 0){ merge_z = 0; }
 
   // reorder the datacube and subcube limits to be in x,y,z order
   temp_x[0] = chunk_x_start;
@@ -4196,8 +4214,10 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
   obj = start_obj;
   x_start = 0;
   y_start = 0;
+  z_start = 0;
   if(chunk_x_start > 0){ x_start = merge_x + 1; }
   if(chunk_y_start > 0){ y_start = merge_y + 1; }
+  if(chunk_z_start > 0){ z_start = merge_z + 1; }
   NO_obj_ids = obj_ids.size();
   NO_check_obj_ids = check_obj_ids.size();
 
@@ -4208,7 +4228,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
   // that ID to the grid point, otherwise, assign current value of obj and increment obj.
   std::cout << "0 | |:| | : | |:| | 100% complete" << std::endl;
   progress = 0.0;
-  for(z = 0; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
+  for(z = z_start; ((z < size_z) && ((z + chunk_z_start) < max_z_val)); ++z){
 
     // if the z value is sufficiently large that objects have started to pop out of the merging box,
     // then check if the objects outside of the merging box are sufficiently large
@@ -4724,7 +4744,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
 	}
 	
 	// update progress on display
-	while(progress <= (((float) ((z * size_x * size_y) + (y * size_x) + x + 1)) / ((float) (size_x * size_y * size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
+	while(progress <= (((((float) z) * ((float) size_x) * ((float) size_y)) + (((float) y) * ((float) size_x)) + ((float) x) + 1.0) / (((float) size_x) * ((float) size_y) * ((float) size_z)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }
 	
 	// for(x = 0; x < size_x; ++x)
       }
@@ -4769,7 +4789,7 @@ long int CreateObjects(double * data_vals, long int * flag_vals, int size_x, int
     if((detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_size(0) >= 0) && (detections[obj_batch][(o - (obj_batch * obj_limit))].Get_srep_update() == -1)){
       
       // update progress on display
-      while(progress <= (((double) (i + 1) / ((double) obj)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }  
+      while(progress <= (((double) (o + 1) / ((double) obj)))){ std::cout << "*"; std::cout.flush(); progress+=0.05; }  
       continue; 
 	
     }

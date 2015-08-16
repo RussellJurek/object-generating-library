@@ -1,9 +1,14 @@
-Programmer: Dr. Russell J. Jurek
-Current version: 1.1
-Version date: 19th May 2014
+Programmer: Dr. Russell J. Jurek, Russell.Jurek@gmail.com
+Current version: 1.2
+Version date: 16th Aug 2015
 
 Previous versions:
 1.0 1st April 2014
+1.1 19th May 2014
+
+History of changes:
+1.1: Implemented vector classes for objects. Added shared libraries.
+1.2: Modifed libraries to use size_t for array indexing. Identified cfitsio dependency of wcs shared library, and updated makefile.
 
 ===============================================================================================================================================================
 The current version of my C++ object generating library consists of the following files:
@@ -76,6 +81,9 @@ This library can be installed without installing any of the dependent libraries,
 extended functionality rely on these other libraries. The core functionality however is self-contained. To faciliate this, the library is broken into three
 pieces: librjj_objgen.a, librjj_objgen_plots.a and librjj_objgen_wcs.a.
 
+IMPORTANT: Note that the librjj_objgen_wcs.so shared library *may* depend upon the cfitsio library. When creating the shared library, the wcs shared library 
+will be preferred over the static wcs library. The wcs shared library depends upon the cfitsio library.
+
 Use the included makefile to install the 3 libraries that make up this distribution.
 
 > make all
@@ -123,6 +131,12 @@ CreateObjects() just once. If the data is too large to do this, then the data ca
 process. First, AddObjsToChunk() can be called to pre-load a flag array with a list of existing/previously found objects. 
 The command CreateObjects() can then be used to create objects for the current chunk, while taking into account the objects 
 found in previous chunks.
+
+When processing large datacubes in chunks, the CreateObjects() function assumes that if an axis chunk_start position isn't 0,
+then this chunk overlaps previous chunks. In this situation it ignores the first X rows of this dimension, where X is the 
+merging length in this dimension, because it assumes that this is the size and location of the overlap. If you want to 
+process a chunk that doesn't overlap, then you should add the merging length to both the chunk size and chunk start position 
+of this dimension.
 
 In order to use this library, a user needs to make use of 2 working arrays. Both are 1-dimensional arrays of integers. These 
 arrays are used to keep track of two types of object IDs. The first array, check_obj_ids, keeps track of the IDs of the 
